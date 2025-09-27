@@ -16,11 +16,8 @@ const navItems = [
     to: "/shop/for-her",
     icon: "💃",
     submenu: [
-      { name: "Seductive Rose", to: "/product/seductive-rose", price: "₹2,999", badge: "Bestseller" },
-      { name: "Midnight Desire", to: "/product/midnight-desire", price: "₹3,499", badge: "New" },
-      { name: "Velvet Temptation", to: "/product/velvet-temptation", price: "₹2,799", badge: "Limited" },
-      { name: "Crimson Kiss", to: "/product/crimson-kiss", price: "₹3,199", badge: "Hot" },
-      { name: "Black Orchid", to: "/product/black-orchid", price: "₹3,899", badge: "Premium" },
+      { name: "Bite Me", to: "https://www.edaperfumes.com/product/eclat-damour-bite-me-seductive-floral-citrus-eau-de-parfum-jasmine-rose-patchouli-vanilla-luxury-fragrance-long-lasting-premium-edp-100ml", price: "₹999", badge: "Bestseller" },
+      { name: "Nude Poison", to: "https://www.edaperfumes.com/product/eclat-damour-nude-poison-elegant-unisex-eau-de-parfum-sophisticated-citrus-floral-woody-blend-long-lasting-luxury-fragrance-100ml", price: "₹999", badge: "New" }
     ]
   },
   { 
@@ -28,11 +25,8 @@ const navItems = [
     to: "/shop/for-him",
     icon: "🕺", 
     submenu: [
-      { name: "Dark Knight", to: "/product/dark-knight", price: "₹3,299", badge: "Bestseller" },
-      { name: "Savage Beast", to: "/product/savage-beast", price: "₹3,799", badge: "New" },
-      { name: "Midnight Wolf", to: "/product/midnight-wolf", price: "₹2,999", badge: "Popular" },
-      { name: "Steel Thunder", to: "/product/steel-thunder", price: "₹3,599", badge: "Hot" },
-      { name: "Royal Storm", to: "/product/royal-storm", price: "₹4,199", badge: "Premium" },
+      { name: "Lusty Nights", to: "https://www.edaperfumes.com/product/eclat-damour-lusty-nights-premium-unisex-eau-de-parfum-bold-citrus-spicy-woody-luxury-fragrance-long-lasting-signature-scent-100ml", price: "₹999", badge: "Bestseller" },
+      { name: "Guilty Midnight", to: "https://www.edaperfumes.com/product/eclat-damour-guilty-midnight-shades-premium-eau-de-parfum-bold-unisex-luxury-fragrance-long-lasting-citrus-spicy-woody-notes-100ml", price: "₹999", badge: "New" }
     ]
   },
   { name: "Collections", to: "/collections" },

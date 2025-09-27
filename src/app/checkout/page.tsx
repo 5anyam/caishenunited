@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
@@ -8,18 +7,19 @@ import { toast } from "../../../hooks/use-toast";
 import { useFacebookPixel } from "../../../hooks/useFacebookPixel";
 import type { CartItem } from "../../../lib/facebook-pixel";
 import Script from "next/script";
+import { Shield, Heart, Truck, Gift, ArrowLeft, Sparkles, CreditCard, Check } from "lucide-react";
 
 // ✅ PRODUCTION CONFIGURATION
 const WOOCOMMERCE_CONFIG = {
-  BASE_URL: 'https://cms.amraj.in',
-  CONSUMER_KEY: 'ck_7610f309972822bfa8e87304ea6c47e9e93b8ff6',
-  CONSUMER_SECRET: 'cs_0f117bc7ec4611ca378adde03010f619c0af59b2',
+  BASE_URL: 'https://cms.edaperfumes.com/wp-json/wc/v3',
+  CONSUMER_KEY: 'ck_b1a13e4236dd41ec9b8e6a1720a69397ddd12da6',
+  CONSUMER_SECRET: 'cs_d8439cfabc73ad5b9d82d1d3facea6711f24dfd1',
 };
 
 const RAZORPAY_CONFIG = {
-  KEY_ID: "rzp_live_RJVNEePx4007GD",
-  COMPANY_NAME: "Amraj Wellness",
-  THEME_COLOR: "#14b8a6"
+  KEY_ID: "rzp_live_RJVdefe4sd",
+  COMPANY_NAME: "EDA Perfumes",
+  THEME_COLOR: "#f43f5e"
 };
 
 // ✅ INTERFACES
@@ -49,7 +49,6 @@ interface RazorpayHandlerResponse {
   razorpay_signature: string;
 }
 
-// ✅ FIXED: Separate interface for payment failure
 interface RazorpayFailureResponse {
   error?: {
     description?: string;
@@ -91,7 +90,7 @@ declare global {
   }
 }
 
-// ✅ WOOCOMMERCE API INTEGRATION - Fixed ESLint unused vars
+// ✅ WOOCOMMERCE API INTEGRATION
 const createWooCommerceOrder = async (orderData: Record<string, unknown>): Promise<WooCommerceOrder> => {
   const apiUrl = `${WOOCOMMERCE_CONFIG.BASE_URL}/wp-json/wc/v3/orders`;
   const auth = btoa(`${WOOCOMMERCE_CONFIG.CONSUMER_KEY}:${WOOCOMMERCE_CONFIG.CONSUMER_SECRET}`);
@@ -206,11 +205,18 @@ export default function Checkout(): React.ReactElement {
   // ✅ COUPON VALIDATION
   const validateCoupon = (code: string): { valid: boolean; discount: number; message: string } => {
     const upperCode = code.toUpperCase().trim();
-    if (upperCode === "WELCOME100") {
-      if (total >= 200) {
-        return { valid: true, discount: 100, message: "Coupon applied successfully!" };
+    if (upperCode === "FIRST30") {
+      if (total >= 1000) {
+        return { valid: true, discount: Math.round(total * 0.3), message: "30% discount applied!" };
       } else {
-        return { valid: false, discount: 0, message: "Minimum order amount ₹200 required" };
+        return { valid: false, discount: 0, message: "Minimum order amount ₹1000 required for FIRST30" };
+      }
+    }
+    if (upperCode === "WELCOME100") {
+      if (total >= 500) {
+        return { valid: true, discount: 100, message: "Welcome discount applied!" };
+      } else {
+        return { valid: false, discount: 0, message: "Minimum order amount ₹500 required for WELCOME100" };
       }
     }
     return { valid: false, discount: 0, message: "Invalid coupon code" };
@@ -317,7 +323,7 @@ export default function Checkout(): React.ReactElement {
     }
   }
 
-  // ✅ FIXED PAYMENT HANDLERS - No unused vars
+  // ✅ PAYMENT HANDLERS
   const handlePaymentSuccess = async (wooOrder: WooCommerceOrder, response: RazorpayHandlerResponse): Promise<void> => {
     try {
       await updateWooCommerceOrderStatus(wooOrder.id, 'processing', response);
@@ -333,14 +339,13 @@ export default function Checkout(): React.ReactElement {
       clear();
 
       toast({
-        title: "🎉 Payment Successful!",
-        description: `Order #${wooOrder.id} confirmed! You'll receive WhatsApp updates.`,
+        title: "🌹 Payment Successful!",
+        description: `Order #${wooOrder.id} confirmed! You'll receive WhatsApp updates about your luxury fragrances.`,
       });
 
       router.push(`/order-confirmation?orderId=${response.razorpay_payment_id}&wcOrderId=${wooOrder.id}`);
 
     } catch {
-      // ✅ FIXED: Removed unused 'error' parameter
       toast({
         title: "Payment Completed",
         description: "Your payment was successful. We'll contact you soon for order confirmation.",
@@ -356,7 +361,7 @@ export default function Checkout(): React.ReactElement {
       try {
         await updateWooCommerceOrderStatus(wooOrder.id, 'failed');
       } catch {
-        // ✅ FIXED: Removed unused 'error' parameter - silently handle error
+        // Silently handle error
       }
     }
 
@@ -375,7 +380,7 @@ export default function Checkout(): React.ReactElement {
       try {
         await updateWooCommerceOrderStatus(wooOrder.id, 'cancelled');
       } catch {
-        // ✅ FIXED: Removed unused 'error' parameter - silently handle error
+        // Silently handle error
       }
     }
 
@@ -389,7 +394,7 @@ export default function Checkout(): React.ReactElement {
     setStep("form");
   };
 
-  // ✅ MAIN CHECKOUT HANDLER - Fixed item.id type issue
+  // ✅ MAIN CHECKOUT HANDLER
   async function handleCheckout(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
 
@@ -445,14 +450,13 @@ export default function Checkout(): React.ReactElement {
           postcode: form.pincode,
           country: 'IN',
         },
-        // ✅ FIXED: Proper handling of item.id - ensure it's treated as string then converted to number
         line_items: items.map((item) => ({
           product_id: parseInt(String(item.id), 10),
           quantity: item.quantity,
         })),
         shipping_lines: deliveryCharges > 0 ? [{
           method_id: 'flat_rate',
-          method_title: 'Standard Delivery',
+          method_title: 'Premium Delivery',
           total: deliveryCharges.toString(),
         }] : [],
         coupon_lines: appliedCoupon ? [{
@@ -483,7 +487,7 @@ export default function Checkout(): React.ReactElement {
         amount: Math.round(finalTotal * 100),
         currency: "INR",
         name: RAZORPAY_CONFIG.COMPANY_NAME,
-        description: `Order #${wooOrder.id}`,
+        description: `Luxury Fragrance Order #${wooOrder.id}`,
         handler: (response: RazorpayHandlerResponse) => {
           handlePaymentSuccess(wooOrder!, response);
         },
@@ -516,7 +520,6 @@ export default function Checkout(): React.ReactElement {
       setLoading(false);
 
     } catch (err) {
-      // ✅ FIXED: Use err instead of error to match the parameter name
       if (wooOrder?.id) {
         try {
           await updateWooCommerceOrderStatus(wooOrder.id, 'cancelled');
@@ -538,17 +541,20 @@ export default function Checkout(): React.ReactElement {
   // Empty cart check
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-teal-50 to-orange-50">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-rose-50">
         <div className="max-w-lg mx-auto text-center py-24 px-4">
-          <div className="bg-white rounded-2xl shadow-xl p-8">
-            <div className="text-6xl mb-4">🛒</div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">Your cart is empty</h2>
-            <p className="text-gray-600 mb-6">Add some amazing products to get started!</p>
+          <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
+            <div className="p-6 bg-gradient-to-br from-rose-100 to-pink-100 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+              <Heart className="h-12 w-12 text-rose-500" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Your collection is empty</h2>
+            <p className="text-gray-600 mb-6">Ready to discover your signature scent? Add some seductive fragrances to get started!</p>
             <button
               onClick={() => router.push("/")}
-              className="bg-gradient-to-r from-teal-500 to-orange-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-teal-600 hover:to-orange-600 transition-all"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:-translate-y-1"
             >
-              Continue Shopping
+              <ArrowLeft className="w-4 h-4" />
+              Explore Fragrances
             </button>
           </div>
         </div>
@@ -570,97 +576,122 @@ export default function Checkout(): React.ReactElement {
         }}
       />
 
-      <div className="min-h-screen bg-gradient-to-br from-teal-50 to-orange-50 pb-10">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-rose-50 pb-10">
         <div className="max-w-2xl mx-auto py-10 px-4">
 
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-teal-600 to-orange-600 bg-clip-text text-transparent mb-2">
-              Checkout
+            <div className="inline-flex items-center gap-2 bg-rose-100 text-rose-600 px-4 py-2 rounded-full text-sm font-medium mb-4 border border-rose-200">
+              <Sparkles className="w-4 h-4 animate-pulse" />
+              Secure Luxury Checkout
+            </div>
+            <h1 className="text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-pink-600 to-purple-600 mb-2">
+              Complete Your Order
             </h1>
-            <p className="text-gray-600">Complete your purchase securely</p>
+            <p className="text-gray-600 text-lg">Your signature fragrances await</p>
           </div>
 
           {/* Order Summary */}
-          <div className="bg-white shadow-xl rounded-2xl p-6 mb-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Order Summary</h2>
-            <div className="space-y-2">
-              {items.map((item) => (
-                <div key={item.id} className="flex justify-between items-center py-2 border-b border-gray-100">
-                  <div>
-                    <span className="font-medium text-black">{item.name}</span>
-                    <span className="text-gray-500 ml-2">x{item.quantity}</span>
+          <div className="bg-white shadow-xl rounded-2xl border border-gray-200 overflow-hidden mb-6">
+            <div className="p-6 bg-gradient-to-r from-rose-50 to-pink-50 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                <Gift className="w-5 h-5 text-rose-600" />
+                Your Fragrance Collection
+              </h2>
+            </div>
+            <div className="p-6">
+              <div className="space-y-3">
+                {items.map((item) => (
+                  <div key={item.id} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-gradient-to-br from-rose-100 to-pink-100 rounded-lg flex items-center justify-center">
+                        <Heart className="w-6 h-6 text-rose-500" />
+                      </div>
+                      <div>
+                        <span className="font-bold text-gray-900 block">{item.name}</span>
+                        <span className="text-rose-600 text-sm">Qty: {item.quantity}</span>
+                      </div>
+                    </div>
+                    <span className="font-bold text-rose-600 text-lg">₹{(parseFloat(item.price) * item.quantity).toLocaleString()}</span>
                   </div>
-                  <span className="font-semibold text-teal-500">₹{(parseFloat(item.price) * item.quantity).toFixed(2)}</span>
-                </div>
-              ))}
-              <div className="flex justify-between text-black items-center py-2">
-                <span>Subtotal:</span>
-                <span className="font-semibold text-teal-500">₹{total.toFixed(2)}</span>
-              </div>
-
-              {appliedCoupon && (
-                <div className="flex justify-between text-green-600 items-center py-2">
-                  <div className="flex items-center gap-2">
-                    <span>Coupon ({appliedCoupon}):</span>
-                    <button
-                      onClick={handleRemoveCoupon}
-                      className="text-xs text-red-500 hover:text-red-700 underline"
-                    >
-                      Remove
-                    </button>
+                ))}
+                
+                <div className="pt-4 space-y-2">
+                  <div className="flex justify-between text-gray-600">
+                    <span>Subtotal:</span>
+                    <span className="font-semibold">₹{total.toLocaleString()}</span>
                   </div>
-                  <span className="font-semibold">-₹{couponDiscount.toFixed(2)}</span>
-                </div>
-              )}
 
-              <div className="flex justify-between text-black items-center py-2">
-                <div>
-                  <span>Delivery Charges:</span>
-                  {total >= 500 && <span className="text-teal-600 text-sm ml-1">(Free above ₹500)</span>}
+                  {appliedCoupon && (
+                    <div className="flex justify-between text-emerald-600">
+                      <div className="flex items-center gap-2">
+                        <span>Coupon ({appliedCoupon}):</span>
+                        <button
+                          onClick={handleRemoveCoupon}
+                          className="text-xs text-red-500 hover:text-red-700 underline"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                      <span className="font-bold">-₹{couponDiscount.toLocaleString()}</span>
+                    </div>
+                  )}
+
+                  <div className="flex justify-between text-gray-600">
+                    <div className="flex items-center gap-2">
+                      <Truck className="w-4 h-4 text-rose-500" />
+                      <span>Premium Delivery:</span>
+                      {total >= 500 && <span className="text-emerald-600 text-sm">(Free above ₹500)</span>}
+                    </div>
+                    <span className={`font-semibold ${deliveryCharges === 0 ? 'text-emerald-600' : ''}`}>
+                      {deliveryCharges === 0 ? 'FREE' : `₹${deliveryCharges}`}
+                    </span>
+                  </div>
+                  
+                  <div className="flex justify-between items-center py-3 border-t-2 border-rose-100">
+                    <span className="text-xl font-black text-gray-900">Total:</span>
+                    <span className="text-2xl font-black text-rose-600">₹{finalTotal.toLocaleString()}</span>
+                  </div>
                 </div>
-                <span className={`font-semibold ${deliveryCharges === 0 ? 'text-green-600' : ''}`}>
-                  {deliveryCharges === 0 ? 'FREE' : `₹${deliveryCharges}`}
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-3 border-t-2 border-teal-100">
-                <span className="text-lg text-black font-bold">Total:</span>
-                <span className="text-xl font-bold text-teal-600">₹{finalTotal.toFixed(2)}</span>
               </div>
             </div>
           </div>
 
           {/* Coupon Section */}
-          <div className="bg-white shadow-xl rounded-2xl p-6 mb-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Have a Coupon Code?</h2>
+          <div className="bg-white shadow-xl rounded-2xl border border-gray-200 p-6 mb-6">
+            <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <Gift className="w-5 h-5 text-rose-600" />
+              Exclusive Offers
+            </h2>
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="flex-1">
                 <input
                   type="text"
-                  placeholder="Enter coupon code (e.g., WELCOME100)"
+                  placeholder="Enter coupon code (e.g., FIRST30, WELCOME100)"
                   value={couponCode}
                   onChange={(e) => {
                     setCouponCode(e.target.value);
                     setCouponError("");
                   }}
-                  className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-teal-500 focus:outline-none transition-colors text-black"
+                  className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-rose-500 focus:outline-none transition-colors text-black"
                   disabled={!!appliedCoupon}
                 />
                 {couponError && (
                   <p className="text-red-500 text-sm mt-1">{couponError}</p>
                 )}
                 {appliedCoupon && (
-                  <p className="text-green-600 text-sm mt-1 flex items-center gap-1">
-                    <span>✅</span> Coupon {appliedCoupon} applied successfully!
+                  <p className="text-emerald-600 text-sm mt-1 flex items-center gap-1">
+                    <Check className="w-4 h-4" />
+                    Coupon {appliedCoupon} applied successfully!
                   </p>
                 )}
               </div>
               <button
                 onClick={appliedCoupon ? handleRemoveCoupon : handleApplyCoupon}
                 disabled={isApplyingCoupon}
-                className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+                className={`px-6 py-3 rounded-lg font-bold transition-all ${
                   appliedCoupon
                     ? 'bg-red-500 hover:bg-red-600 text-white'
-                    : 'bg-gradient-to-r from-teal-500 to-orange-500 hover:from-teal-600 hover:to-orange-600 text-white'
+                    : 'bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white'
                 } ${isApplyingCoupon ? 'opacity-60 cursor-not-allowed' : ''}`}
               >
                 {isApplyingCoupon ? 'Applying...' : appliedCoupon ? 'Remove' : 'Apply Coupon'}
@@ -669,8 +700,11 @@ export default function Checkout(): React.ReactElement {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleCheckout} className="bg-white shadow-xl rounded-2xl p-8">
-            <h2 className="text-xl font-semibold text-gray-800 mb-6">Delivery Information</h2>
+          <form onSubmit={handleCheckout} className="bg-white shadow-xl rounded-2xl border border-gray-200 p-8">
+            <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+              <Truck className="w-5 h-5 text-rose-600" />
+              Delivery Information
+            </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <div>
@@ -681,7 +715,7 @@ export default function Checkout(): React.ReactElement {
                   className={`w-full p-3 rounded-lg border-2 text-black transition-colors focus:outline-none ${
                     errors.name 
                       ? 'border-red-300 focus:border-red-500' 
-                      : 'border-gray-200 focus:border-teal-500'
+                      : 'border-gray-200 focus:border-rose-500'
                   }`}
                   placeholder="Enter your full name"
                   value={form.name}
@@ -699,7 +733,7 @@ export default function Checkout(): React.ReactElement {
                   className={`w-full p-3 rounded-lg border-2 text-black transition-colors focus:outline-none ${
                     errors.email 
                       ? 'border-red-300 focus:border-red-500' 
-                      : 'border-gray-200 focus:border-teal-500'
+                      : 'border-gray-200 focus:border-rose-500'
                   }`}
                   placeholder="your@email.com"
                   value={form.email}
@@ -718,7 +752,7 @@ export default function Checkout(): React.ReactElement {
                   className={`w-full p-3 rounded-lg border-2 text-black transition-colors focus:outline-none ${
                     errors.phone 
                       ? 'border-red-300 focus:border-red-500' 
-                      : 'border-gray-200 focus:border-teal-500'
+                      : 'border-gray-200 focus:border-rose-500'
                   }`}
                   placeholder="10-digit mobile number"
                   value={form.phone}
@@ -733,7 +767,7 @@ export default function Checkout(): React.ReactElement {
                   <button
                     type="button"
                     onClick={copyPhoneToWhatsApp}
-                    className="ml-2 text-xs bg-gradient-to-r from-teal-500 to-orange-500 text-white px-2 py-1 rounded hover:from-teal-600 hover:to-orange-600 transition-all"
+                    className="ml-2 text-xs bg-gradient-to-r from-rose-500 to-pink-600 text-white px-2 py-1 rounded hover:from-rose-600 hover:to-pink-700 transition-all"
                   >
                     Same as phone
                   </button>
@@ -746,9 +780,9 @@ export default function Checkout(): React.ReactElement {
                   className={`w-full p-3 rounded-lg border-2 text-black transition-colors focus:outline-none ${
                     errors.whatsapp 
                       ? 'border-red-300 focus:border-red-500' 
-                      : 'border-gray-200 focus:border-teal-500'
+                      : 'border-gray-200 focus:border-rose-500'
                   }`}
-                  placeholder="WhatsApp number for updates"
+                  placeholder="WhatsApp number for order updates"
                   value={form.whatsapp}
                   onChange={onChange}
                 />
@@ -765,7 +799,7 @@ export default function Checkout(): React.ReactElement {
                 className={`w-full p-3 rounded-lg border-2 text-black transition-colors focus:outline-none ${
                   errors.address 
                     ? 'border-red-300 focus:border-red-500' 
-                    : 'border-gray-200 focus:border-teal-500'
+                    : 'border-gray-200 focus:border-rose-500'
                 }`}
                 placeholder="House/Flat No., Street, Area, Landmark"
                 value={form.address}
@@ -785,7 +819,7 @@ export default function Checkout(): React.ReactElement {
                   className={`w-full p-3 rounded-lg border-2 text-black transition-colors focus:outline-none ${
                     errors.pincode 
                       ? 'border-red-300 focus:border-red-500' 
-                      : 'border-gray-200 focus:border-teal-500'
+                      : 'border-gray-200 focus:border-rose-500'
                   }`}
                   placeholder="6-digit pincode"
                   value={form.pincode}
@@ -802,7 +836,7 @@ export default function Checkout(): React.ReactElement {
                   className={`w-full p-3 rounded-lg border-2 text-black transition-colors focus:outline-none ${
                     errors.city 
                       ? 'border-red-300 focus:border-red-500' 
-                      : 'border-gray-200 focus:border-teal-500'
+                      : 'border-gray-200 focus:border-rose-500'
                   }`}
                   placeholder="Your city"
                   value={form.city}
@@ -819,7 +853,7 @@ export default function Checkout(): React.ReactElement {
                   className={`w-full p-3 rounded-lg border-2 text-black transition-colors focus:outline-none ${
                     errors.state 
                       ? 'border-red-300 focus:border-red-500' 
-                      : 'border-gray-200 focus:border-teal-500'
+                      : 'border-gray-200 focus:border-rose-500'
                   }`}
                   value={form.state}
                   onChange={onChange}
@@ -854,26 +888,26 @@ export default function Checkout(): React.ReactElement {
             </div>
 
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Order Notes (Optional)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Special Instructions (Optional)</label>
               <textarea
                 name="notes"
                 rows={2}
-                className="w-full p-3 rounded-lg border-2 text-black border-gray-200 focus:border-teal-500 focus:outline-none transition-colors"
-                placeholder="Any special instructions for delivery"
+                className="w-full p-3 rounded-lg border-2 text-black border-gray-200 focus:border-rose-500 focus:outline-none transition-colors"
+                placeholder="Any special delivery instructions or gift message"
                 value={form.notes}
                 onChange={onChange}
               />
             </div>
 
-            <div className="bg-gradient-to-r from-teal-50 to-orange-50 rounded-xl p-4 mb-6">
-              <div className="flex items-center justify-between text-lg font-bold">
-                <span className="text-gray-800">Final Amount:</span>
+            <div className="bg-gradient-to-r from-rose-50 to-pink-50 rounded-xl p-6 mb-6 border border-rose-200">
+              <div className="flex items-center justify-between">
+                <span className="text-xl font-black text-gray-800">Final Amount:</span>
                 <div className="text-right">
-                  <span className="text-2xl bg-gradient-to-r from-teal-600 to-orange-600 bg-clip-text text-transparent">
-                    ₹{finalTotal.toFixed(2)}
+                  <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-pink-600">
+                    ₹{finalTotal.toLocaleString()}
                   </span>
                   {appliedCoupon && (
-                    <p className="text-sm text-green-600 mt-1">You saved ₹{couponDiscount} with {appliedCoupon}!</p>
+                    <p className="text-sm text-emerald-600 mt-1 font-bold">You saved ₹{couponDiscount.toLocaleString()} with {appliedCoupon}!</p>
                   )}
                 </div>
               </div>
@@ -882,7 +916,7 @@ export default function Checkout(): React.ReactElement {
             {/* Payment Button */}
             <button
               type="submit"
-              className={`w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-4 rounded-xl font-semibold text-lg transition-all transform hover:scale-105 ${
+              className={`w-full bg-gradient-to-r from-rose-500 via-pink-600 to-purple-600 hover:from-rose-600 hover:via-pink-700 hover:to-purple-700 text-white py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-xl hover:shadow-2xl ${
                 loading || step === "processing" || !razorpayLoaded 
                   ? "opacity-60 pointer-events-none scale-100" 
                   : ""
@@ -900,37 +934,36 @@ export default function Checkout(): React.ReactElement {
                   Loading Payment System...
                 </div>
               ) : (
-                <div className="flex items-center justify-center">
-                  <span className="mr-2">💳</span>
-                  Pay Securely ₹{finalTotal.toFixed(2)}
+                <div className="flex items-center justify-center gap-2">
+                  <CreditCard className="w-5 h-5" />
+                  Pay Securely ₹{finalTotal.toLocaleString()}
                 </div>
               )}
             </button>
 
             {step === "processing" && (
-              <div className="text-center text-blue-600 text-sm mt-3 animate-pulse">
+              <div className="text-center text-rose-600 text-sm mt-3 animate-pulse">
                 🔄 Creating order and processing payment...
               </div>
             )}
           </form>
 
           <div className="mt-8 text-center">
-            <div className="flex items-center justify-center space-x-4 text-gray-500 text-sm">
-              <div className="flex items-center">
-                <span className="mr-1">🔒</span>
-                <span>SSL Secured</span>
-              </div>
-              <div className="flex items-center">
-                <span className="mr-1">📱</span>
-                <span>WhatsApp Updates</span>
-              </div>
-              <div className="flex items-center">
-                <span className="mr-1">⚡</span>
-                <span>Fast Delivery</span>
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 text-sm">
+              {[
+                { icon: <Shield className="w-5 h-5 text-emerald-500" />, text: "SSL Secured" },
+                { icon: <Heart className="w-5 h-5 text-rose-500" />, text: "WhatsApp Updates" },
+                { icon: <Truck className="w-5 h-5 text-blue-500" />, text: "Premium Delivery" },
+                { icon: <Gift className="w-5 h-5 text-purple-500" />, text: "Luxury Packaging" },
+              ].map((item, idx) => (
+                <div key={idx} className="flex items-center justify-center gap-2 text-gray-600">
+                  {item.icon}
+                  <span className="font-medium">{item.text}</span>
+                </div>
+              ))}
             </div>
-            <p className="text-gray-400 text-xs mt-2">
-              Your payment information is secure and encrypted
+            <p className="text-gray-400 text-xs mt-4">
+              Your payment information is secure and encrypted with the highest industry standards
             </p>
           </div>
         </div>
