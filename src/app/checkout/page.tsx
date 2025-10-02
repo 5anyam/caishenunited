@@ -17,7 +17,7 @@ const WOOCOMMERCE_CONFIG = {
 };
 
 const RAZORPAY_CONFIG = {
-  KEY_ID: "rzp_live_RJVdefe4sd",
+  KEY_ID: "rzp_live_ROhFH4ehWnRMKy",
   COMPANY_NAME: "EDA Perfumes",
   THEME_COLOR: "#f43f5e"
 };
