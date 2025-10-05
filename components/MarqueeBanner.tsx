@@ -4,7 +4,6 @@ const MarqueeBanner = () => {
   const bannerItems = [
     { text: "Long Lasting", icon: "⏰" },
     { text: "Premium Quality", icon: "💎" },
-    { text: "Alcohol Free", icon: "🚫" },
     { text: "Skin Safe", icon: "✨" },
     { text: "Luxury Blend", icon: "🌟" },
     { text: "Cruelty Free", icon: "🐰" },
