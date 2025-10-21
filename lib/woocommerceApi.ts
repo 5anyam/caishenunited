@@ -2,14 +2,28 @@ const API_BASE = "https://cms.edaperfumes.com/wp-json/wc/v3";
 const CONSUMER_KEY = process.env.CONSUMER_KEY || "ck_b1a13e4236dd41ec9b8e6a1720a69397ddd12da6";
 const CONSUMER_SECRET = process.env.CONSUMER_SECRET || "cs_d8439cfabc73ad5b9d82d1d3facea6711f24dfd1";
 
+
+export interface WCImage {
+  id?: number;
+  src: string;
+  alt?: string;
+}
+
+export interface WCCategoryRef {
+  id: number;
+  name: string;
+  slug?: string;
+}
+
 export interface Product {
   id: number;
   name: string;
   price: string;
   description?: string;
   short_description?: string;
-  images?: { src: string }[];
+  images?: WCImage[];
   attributes?: { option: string }[];
+  categories?: WCCategoryRef[];
 }
 
 export interface Category {
@@ -19,11 +33,7 @@ export interface Category {
   parent: number;
   description: string;
   display: string;
-  image: {
-    id: number;
-    src: string;
-    alt: string;
-  } | null;
+  image: WCImage | null;
   menu_order: number;
   count: number;
   _links: {
@@ -43,7 +53,7 @@ export interface Review {
   review: string;
   rating: number;
   verified: boolean;
-  reviewer_avatar_urls: { [key: string]: string };
+  reviewer_avatar_urls: Record<string, string>;
   _links: {
     self: Array<{ href: string }>;
     collection: Array<{ href: string }>;
@@ -51,13 +61,15 @@ export interface Review {
   };
 }
 
+export type ReviewStatus = 'approved' | 'hold' | 'all' | 'spam' | 'unspam' | 'trash' | 'untrash';
+
 export interface ReviewPayload {
   product_id: number;
   review: string;
   reviewer: string;
   reviewer_email?: string;
   rating: number;
-  status?: 'approved' | 'hold' | 'spam' | 'unspam' | 'trash' | 'untrash';
+  status?: Exclude<ReviewStatus, 'all'>;
 }
 
 export interface LineItem {
@@ -67,7 +79,15 @@ export interface LineItem {
   price?: string;
 }
 
-// ✅ UPDATED OrderPayload interface with proper address and coupon support
+export type OrderStatus =
+  | 'pending'
+  | 'processing'
+  | 'completed'
+  | 'cancelled'
+  | 'on-hold'
+  | 'refunded'
+  | 'failed';
+
 export interface OrderPayload {
   lineItems: LineItem[];
   shipping_address: {
@@ -88,294 +108,348 @@ export interface OrderPayload {
     email?: string;
     phone?: string;
   };
-  customer: {
-    name: string;
-    email: string;
-  };
+  customer: { name: string; email: string };
   payment_id?: string;
   payment_method?: string;
   payment_method_title?: string;
-  status?: "pending" | "processing" | "completed" | "cancelled" | "on-hold" | "refunded" | "failed";
+  status?: OrderStatus;
   notes?: string;
-  fee_lines?: Array<{
-    name: string;
-    amount: string;
-  }>;
+  fee_lines?: Array<{ name: string; amount: string }>;
   coupon_discount?: number;
   applied_coupon?: string;
 }
 
-// ✅ FETCH ALL PRODUCTS
-export async function fetchProducts(page = 1, perPage = 12, search?: string): Promise<Product[]> {
-  let url = `${API_BASE}/products?consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}&per_page=${perPage}&page=${page}`;
-  if (search) url += `&search=${encodeURIComponent(search)}`;
+
+/* Utils */
+const qs = (params: Record<string, string | number | boolean | undefined>): string =>
+  Object.entries(params)
+    .filter(([, v]) => v !== undefined && v !== null && v !== '')
+    .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(String(v))}`)
+    .join('&');
+
+const authParams = {
+  consumer_key: CONSUMER_KEY,
+  consumer_secret: CONSUMER_SECRET,
+};
+
+const isArray = <T,>(v: unknown): v is T[] => Array.isArray(v);
+
+/* Category helpers */
+const comboMatchers = [/combo/i, /duo/i, /set/i, /bundle/i];
+
+export const looksLikeCombo = (p: Product): boolean => {
+  const cats = p.categories ?? [];
+  const catHit = cats.some((c) => comboMatchers.some((rx) => rx.test(`${c.name} ${c.slug ?? ''}`)));
+  const nameHit = comboMatchers.some((rx) => rx.test(p.name));
+  return catHit || nameHit;
+};
+
+export async function resolveCategoryBySlug(slug: string): Promise<Category | null> {
+  const url = `${API_BASE}/products/categories?${qs({
+    ...authParams,
+    slug,
+    per_page: 100,
+    hide_empty: false,
+  })}`;
   const res = await fetch(url);
-  if (!res.ok) throw new Error("Failed to fetch products");
-  return res.json();
+  if (!res.ok) return null;
+  const data: unknown = await res.json();
+  if (!isArray<Category>(data)) return null;
+  return data[0] ?? null;
 }
 
-// ✅ FETCH A SINGLE PRODUCT
-export async function fetchProduct(id: string): Promise<Product> {
-  const url = `${API_BASE}/products/${id}?consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error("Failed to fetch product");
-  return res.json();
+export async function resolveFirstComboCategoryId(): Promise<number | null> {
+  for (const candidate of ['combo', 'combos', 'combo-perfumes', 'duo', 'set', 'bundle']) {
+    // eslint-disable-next-line no-await-in-loop
+    const cat = await resolveCategoryBySlug(candidate);
+    if (cat?.id) return cat.id;
+  }
+  return null;
 }
 
-// ✅ FETCH REVIEWS FOR A PRODUCT
+/* Products */
+export async function fetchProducts(
+  page = 1,
+  perPage = 100,
+  search?: string,
+  opts?: {
+    categoryId?: number;
+    excludeCategoryId?: number;
+    order?: 'asc' | 'desc';
+    orderby?: 'date' | 'title' | 'price' | 'popularity' | 'rating';
+    status?: 'publish' | 'draft' | 'pending' | 'private';
+  }
+): Promise<Product[]> {
+  const url = `${API_BASE}/products?${qs({
+    ...authParams,
+    per_page: perPage,
+    page,
+    search,
+    order: opts?.order,
+    orderby: opts?.orderby,
+    status: opts?.status,
+    category: opts?.categoryId,
+  })}`;
+
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Failed to fetch products: ${res.status} ${res.statusText}`);
+  const data: unknown = await res.json();
+  if (!isArray<Product>(data)) return [];
+
+  const list = data;
+  if (opts?.excludeCategoryId) {
+    return list.filter(
+      (p) => !(p.categories ?? []).some((c) => c.id === opts.excludeCategoryId)
+    );
+  }
+  return list;
+}
+
+export async function fetchSignatureProducts(page = 1, perPage = 12): Promise<Product[]> {
+  const comboId = await resolveFirstComboCategoryId().catch(() => null);
+  const list = await fetchProducts(page, perPage, undefined, {
+    excludeCategoryId: comboId ?? undefined,
+    order: 'desc',
+    orderby: 'date',
+    status: 'publish',
+  });
+  return list.filter((p) => !looksLikeCombo(p));
+}
+
+export async function fetchComboProducts(page = 1, perPage = 12): Promise<Product[]> {
+  const comboId = await resolveFirstComboCategoryId().catch(() => null);
+  if (comboId) {
+    return fetchProducts(page, perPage, undefined, {
+      categoryId: comboId,
+      order: 'desc',
+      orderby: 'date',
+      status: 'publish',
+    });
+  }
+  // Fallback by name/category matching
+  const list = await fetchProducts(page, perPage, undefined, {
+    order: 'desc',
+    orderby: 'date',
+    status: 'publish',
+  });
+  return list.filter(looksLikeCombo);
+}
+
+export async function fetchProduct(id: string | number): Promise<Product> {
+  const url = `${API_BASE}/products/${id}?${qs(authParams)}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Failed to fetch product: ${res.status} ${res.statusText}`);
+  const data: unknown = await res.json();
+  return data as Product;
+}
+
+/* Reviews */
 export async function fetchProductReviews(
   productId: number,
   page = 1,
   perPage = 100,
-  status: 'approved' | 'hold' | 'all' = 'approved'
+  status: ReviewStatus = 'approved'
 ): Promise<Review[]> {
+  const url = `${API_BASE}/products/reviews?${qs({
+    ...authParams,
+    product: productId,
+    per_page: perPage,
+    page,
+    status,
+  })}`;
+
   try {
-    const url =
-      `${API_BASE}/products/reviews?product=${productId}` +
-      `&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}` +
-      `&per_page=${perPage}&page=${page}&status=${status}`;
-
-    console.log('Fetching reviews from:', url);
-
-    const res = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
-
-    if (!res.ok) {
-      console.error('Reviews fetch failed:', res.status, res.statusText);
-      return [];
-    }
-
-    const reviews = await res.json();
-    console.log(`Fetched ${Array.isArray(reviews) ? reviews.length : 0} reviews for product ${productId}`);
-    return Array.isArray(reviews) ? reviews : [];
-  } catch (error) {
-    console.error('Error fetching product reviews:', error);
+    const res = await fetch(url, { headers: { 'Content-Type': 'application/json' } });
+    if (!res.ok) return [];
+    const data: unknown = await res.json();
+    return isArray<Review>(data) ? data : [];
+  } catch {
     return [];
   }
 }
 
-// ✅ CREATE A PRODUCT REVIEW
 export async function createProductReview(payload: ReviewPayload): Promise<Review> {
-  try {
-    const url =
-      `${API_BASE}/products/reviews?consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`;
+  const url = `${API_BASE}/products/reviews?${qs(authParams)}`;
+  const body = {
+    product_id: payload.product_id,
+    review: payload.review,
+    reviewer: payload.reviewer,
+    reviewer_email: payload.reviewer_email ?? '',
+    rating: payload.rating,
+    status: payload.status ?? 'approved',
+  };
 
-    console.log('Creating review for product:', payload.product_id);
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
 
-    const reviewData = {
-      product_id: payload.product_id,
-      review: payload.review,
-      reviewer: payload.reviewer,
-      reviewer_email: payload.reviewer_email || '',
-      rating: payload.rating,
-      status: payload.status || 'approved',
-    };
-
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(reviewData),
-    });
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      console.error('Review creation failed:', err);
-      throw new Error("Review creation failed: " + (err?.message || res.statusText));
-    }
-
-    const newReview = await res.json();
-    console.log('Review created successfully:', newReview?.id);
-    return newReview;
-  } catch (error) {
-    console.error('Error creating product review:', error);
-    throw error;
+  if (!res.ok) {
+    const err = (await res.json().catch(() => null)) as { message?: string } | null;
+    throw new Error(`Review creation failed: ${err?.message ?? res.statusText}`);
   }
+  return (await res.json()) as Review;
 }
 
-// ✅ UPDATE A PRODUCT REVIEW
 export async function updateProductReview(
   _productId: number,
   reviewId: number,
   updates: Partial<ReviewPayload>
 ): Promise<Review> {
-  try {
-    const url =
-      `${API_BASE}/products/reviews/${reviewId}?consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`;
-
-    const res = await fetch(url, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updates),
-    });
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error("Review update failed: " + (err?.message || res.statusText));
-    }
-
-    return res.json();
-  } catch (error) {
-    console.error('Error updating product review:', error);
-    throw error;
+  const url = `${API_BASE}/products/reviews/${reviewId}?${qs(authParams)}`;
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updates),
+  });
+  if (!res.ok) {
+    const err = (await res.json().catch(() => null)) as { message?: string } | null;
+    throw new Error(`Review update failed: ${err?.message ?? res.statusText}`);
   }
+  return (await res.json()) as Review;
 }
 
-// ✅ DELETE A PRODUCT REVIEW
 export async function deleteProductReview(_productId: number, reviewId: number): Promise<Review> {
-  try {
-    const url =
-      `${API_BASE}/products/reviews/${reviewId}?consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}&force=true`;
-
-    const res = await fetch(url, { method: "DELETE", headers: { "Content-Type": "application/json" } });
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error("Review deletion failed: " + (err?.message || res.statusText));
-    }
-
-    return res.json();
-  } catch (error) {
-    console.error('Error deleting product review:', error);
-    throw error;
+  const url = `${API_BASE}/products/reviews/${reviewId}?${qs({
+    ...authParams,
+    force: true,
+  })}`;
+  const res = await fetch(url, { method: 'DELETE', headers: { 'Content-Type': 'application/json' } });
+  if (!res.ok) {
+    const err = (await res.json().catch(() => null)) as { message?: string } | null;
+    throw new Error(`Review deletion failed: ${err?.message ?? res.statusText}`);
   }
+  return (await res.json()) as Review;
 }
 
-// ✅ FETCH ALL REVIEWS
 export async function fetchAllReviews(
   page = 1,
   perPage = 100,
-  status: 'approved' | 'hold' | 'all' = 'approved'
+  status: ReviewStatus = 'approved'
 ): Promise<Review[]> {
-  try {
-    const url =
-      `${API_BASE}/products/reviews?consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}` +
-      `&per_page=${perPage}&page=${page}&status=${status}`;
+  const url = `${API_BASE}/products/reviews?${qs({
+    ...authParams,
+    per_page: perPage,
+    page,
+    status,
+  })}`;
 
-    const res = await fetch(url);
-    if (!res.ok) {
-      console.error('All reviews fetch failed:', res.status, res.statusText);
-      return [];
-    }
-
-    const data = await res.json();
-    return Array.isArray(data) ? data : [];
-  } catch (error) {
-    console.error('Error fetching all reviews:', error);
-    return [];
-  }
+  const res = await fetch(url);
+  if (!res.ok) return [];
+  const data: unknown = await res.json();
+  return isArray<Review>(data) ? data : [];
 }
 
-// ✅ UPDATED CREATE ORDER with proper address and coupon support
+/* Orders */
 export async function createOrder(payload: OrderPayload): Promise<unknown> {
-  const url = `${API_BASE}/orders?consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`;
+  const url = `${API_BASE}/orders?${qs(authParams)}`;
 
   const orderData = {
-    payment_method: payload.payment_method ?? "razorpay",
-    payment_method_title: payload.payment_method_title ?? "Razorpay",
+    payment_method: payload.payment_method ?? 'razorpay',
+    payment_method_title: payload.payment_method_title ?? 'Razorpay',
     set_paid: false,
-    status: payload.status ?? "pending",
-    
-    // ✅ Proper billing address for Shiprocket
+    status: payload.status ?? 'pending',
     billing: {
       first_name: payload.shipping_address.name,
       address_1: payload.shipping_address.address_1,
-      city: payload.shipping_address.city || "",
-      state: payload.shipping_address.state || "",
-      postcode: payload.shipping_address.postcode || "",
-      email: payload.shipping_address.email || payload.customer.email,
-      phone: payload.shipping_address.phone || "",
-      country: "IN", // India
+      city: payload.shipping_address.city ?? '',
+      state: payload.shipping_address.state ?? '',
+      postcode: payload.shipping_address.postcode ?? '',
+      email: payload.shipping_address.email ?? payload.customer.email,
+      phone: payload.shipping_address.phone ?? '',
+      country: 'IN',
     },
-    
-    // ✅ Proper shipping address for Shiprocket
     shipping: {
       first_name: payload.shipping_address.name,
       address_1: payload.shipping_address.address_1,
-      city: payload.shipping_address.city || "",
-      state: payload.shipping_address.state || "",
-      postcode: payload.shipping_address.postcode || "",
-      country: "IN", // India
+      city: payload.shipping_address.city ?? '',
+      state: payload.shipping_address.state ?? '',
+      postcode: payload.shipping_address.postcode ?? '',
+      country: 'IN',
     },
-    
-    line_items: payload.lineItems.map((item) => ({
-      product_id: item.product_id,
-      quantity: item.quantity,
-      name: item.name,
-      price: item.price,
+    line_items: payload.lineItems.map((li) => ({
+      product_id: li.product_id,
+      quantity: li.quantity,
+      name: li.name,
+      price: li.price,
     })),
-    
-    // ✅ Add fee lines for discounts and delivery charges
-    fee_lines: payload.fee_lines || [],
-    
+    fee_lines: payload.fee_lines ?? [],
     meta_data: [
-      ...(payload.payment_id ? [{ key: "razorpay_payment_id", value: payload.payment_id }] : []),
-      ...(payload.applied_coupon ? [
-        { key: "coupon_code", value: payload.applied_coupon },
-        { key: "coupon_discount", value: payload.coupon_discount }
-      ] : []),
-      { key: "shiprocket_address", value: payload.shipping_address.address_1 },
+      ...(payload.payment_id ? [{ key: 'razorpay_payment_id', value: payload.payment_id }] : []),
+      ...(payload.applied_coupon
+        ? [
+            { key: 'coupon_code', value: payload.applied_coupon },
+            { key: 'coupon_discount', value: payload.coupon_discount ?? 0 },
+          ]
+        : []),
+      { key: 'shiprocket_address', value: payload.shipping_address.address_1 },
     ],
-    
-    customer_note: payload.notes ?? `Order placed via Amraj Wellness frontend`,
-    customer: {
-      email: payload.customer.email,
-    },
+    customer_note: payload.notes ?? 'Order placed via site frontend',
+    customer: { email: payload.customer.email },
   };
 
   const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(orderData),
   });
 
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error("Order creation failed: " + (err?.message || res.statusText));
+    const err = (await res.json().catch(() => null)) as { message?: string } | null;
+    throw new Error(`Order creation failed: ${err?.message ?? res.statusText}`);
   }
-
-  return res.json();
+  return res.json() as Promise<unknown>;
 }
 
-// ✅ UPDATE ORDER STATUS
-export async function updateOrderStatus(
-  orderId: number,
-  status: "pending" | "processing" | "completed" | "cancelled" | "on-hold" | "refunded" | "failed"
-): Promise<unknown> {
-  const url = `${API_BASE}/orders/${orderId}?consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`;
+export async function updateOrderStatus(orderId: number, status: OrderStatus): Promise<unknown> {
+  const url = `${API_BASE}/orders/${orderId}?${qs(authParams)}`;
   const res = await fetch(url, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status }),
   });
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.message || "Failed to update order status");
+    const err = (await res.json().catch(() => null)) as { message?: string } | null;
+    throw new Error(err?.message ?? 'Failed to update order status');
   }
-  return res.json();
+  return res.json() as Promise<unknown>;
 }
 
-// ✅ FETCH ALL PRODUCT CATEGORIES
+/* Categories */
 export async function fetchProductCategories(perPage = 12, hideEmpty = true): Promise<Category[]> {
-  let url = `${API_BASE}/products/categories?consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}&per_page=${perPage}`;
-  if (hideEmpty) url += `&hide_empty=true`;
+  const url = `${API_BASE}/products/categories?${qs({
+    ...authParams,
+    per_page: perPage,
+    hide_empty: hideEmpty,
+  })}`;
   const res = await fetch(url);
-  if (!res.ok) throw new Error("Failed to fetch categories");
-  return res.json();
+  if (!res.ok) throw new Error('Failed to fetch categories');
+  const data: unknown = await res.json();
+  return isArray<Category>(data) ? data : [];
 }
 
-// ✅ FETCH SINGLE CATEGORY
 export async function fetchSingleCategory(categoryId: number): Promise<Category> {
-  const url = `${API_BASE}/products/categories/${categoryId}?consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`;
+  const url = `${API_BASE}/products/categories/${categoryId}?${qs(authParams)}`;
   const res = await fetch(url);
-  if (!res.ok) throw new Error("Failed to fetch category");
-  return res.json();
+  if (!res.ok) throw new Error('Failed to fetch category');
+  const data: unknown = await res.json();
+  return data as Category;
 }
 
-// ✅ FETCH PRODUCTS BY CATEGORY
-export async function fetchProductsByCategory(categoryId: number, page = 1, perPage = 12): Promise<Product[]> {
-  const url =
-    `${API_BASE}/products?consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}` +
-    `&category=${categoryId}&per_page=${perPage}&page=${page}`;
+export async function fetchProductsByCategory(
+  categoryId: number,
+  page = 1,
+  perPage = 12
+): Promise<Product[]> {
+  const url = `${API_BASE}/products?${qs({
+    ...authParams,
+    category: categoryId,
+    per_page: perPage,
+    page,
+  })}`;
   const res = await fetch(url);
-  if (!res.ok) throw new Error("Failed to fetch products by category");
-  return res.json();
+  if (!res.ok) throw new Error('Failed to fetch products by category');
+  const data: unknown = await res.json();
+  return isArray<Product>(data) ? data : [];
 }
