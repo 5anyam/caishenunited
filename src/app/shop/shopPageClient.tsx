@@ -3,13 +3,12 @@
 import { useState, useMemo } from 'react';
 import ProductCard from "../../../components/ProductCard";
 import { Product } from "./page";
-import { Sparkles, SlidersHorizontal, X, Search } from 'lucide-react';
+import { SlidersHorizontal, X, Search } from 'lucide-react';
 
 interface ShopPageClientProps {
   products: Product[];
 }
 
-// Extend the Product type to include slug for ProductCard
 type ProductWithSlug = Product & {
   slug: string;
   regular_price: string;
@@ -22,7 +21,7 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
   const [sortBy, setSortBy] = useState('name');
   const [showFilters, setShowFilters] = useState(false);
 
-  // Extract unique categories from products
+  // Extract unique categories
   const categories = useMemo(() => {
     const cats = new Set<string>();
     products.forEach(product => {
@@ -34,17 +33,14 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
   // Filter and sort products
   const filteredProducts = useMemo(() => {
     const filtered = products.filter(product => {
-      // Search filter
       if (searchTerm && !product.name.toLowerCase().includes(searchTerm.toLowerCase())) {
         return false;
       }
 
-      // Category filter
       if (selectedCategory && !product.categories?.some(cat => cat.name === selectedCategory)) {
         return false;
       }
 
-      // Price filter
       if (priceRange.min || priceRange.max) {
         const price = parseFloat(product.price.replace(/[^\d.]/g, ''));
         if (priceRange.min && price < parseFloat(priceRange.min)) return false;
@@ -54,7 +50,6 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
       return true;
     });
 
-    // Sort products
     filtered.sort((a, b) => {
       switch (sortBy) {
         case 'price-low':
@@ -78,94 +73,85 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-rose-50">
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-rose-500 via-pink-600 to-purple-600 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 py-20">
+    <div className="min-h-screen bg-white">
+      {/* Hero Section - Minimal */}
+      <div className="border-b border-gray-200 bg-white">
+        <div className="max-w-7xl mx-auto px-4 py-16 lg:py-20">
           <div className="text-center">
-            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium mb-4 border border-white/30">
-              <Sparkles className="w-4 h-4" />
-              <span>Luxury Fragrance Collection</span>
-            </div>
-            <h1 className="text-5xl md:text-6xl font-black mb-4">
-              Discover Your Signature Scent
+            <h1 className="text-4xl md:text-5xl font-light text-gray-900 mb-4 tracking-wide">
+              The Collection
             </h1>
-            <p className="text-xl opacity-90 max-w-2xl mx-auto">
-              Explore our curated collection of seductive, long-lasting Eau de Parfums crafted for the sophisticated
+            <div className="w-16 h-px bg-gray-300 mx-auto mb-6"></div>
+            <p className="text-base text-gray-600 max-w-2xl mx-auto font-light">
+              Discover our curated selection of luxury fragrances
             </p>
           </div>
         </div>
-        {/* Decorative bottom wave */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg className="w-full h-8 text-white" preserveAspectRatio="none" viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
-            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="currentColor"></path>
-          </svg>
-        </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Search Bar */}
-        <div className="mb-8">
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        {/* Search Bar - Minimal */}
+        <div className="mb-12">
           <div className="relative max-w-2xl mx-auto">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-rose-400" />
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             <input
               type="text"
-              placeholder="Search for your perfect fragrance..."
+              placeholder="Search fragrances..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-4 pl-12 rounded-2xl border-2 border-rose-200 focus:border-rose-500 focus:outline-none focus:ring-4 focus:ring-rose-100 transition-all bg-white shadow-lg text-gray-900 placeholder:text-gray-400"
+              className="w-full px-4 py-3 pl-12 border-b-2 border-gray-200 focus:border-black focus:outline-none transition-colors bg-white text-gray-900 placeholder:text-gray-400 font-light"
             />
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm('')}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-black transition-colors"
               >
-                <X className="h-5 w-5" />
+                <X className="h-4 w-4" />
               </button>
             )}
           </div>
         </div>
 
-        {/* Filter Toggle Button (Mobile) */}
+        {/* Filter Toggle - Mobile */}
         <div className="lg:hidden mb-6">
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="w-full bg-gradient-to-r from-rose-500 to-pink-600 text-white py-3 px-6 rounded-xl font-bold flex items-center justify-center gap-2 hover:from-rose-600 hover:to-pink-700 transition-all shadow-lg"
+            className="w-full bg-black text-white py-3 px-6 text-sm font-light tracking-widest uppercase hover:bg-gray-800 transition-colors"
           >
-            <SlidersHorizontal className="h-5 w-5" />
-            {showFilters ? 'Hide Filters' : 'Show Filters'}
+            <span className="flex items-center justify-center gap-2">
+              <SlidersHorizontal className="h-4 w-4" />
+              {showFilters ? 'Hide Filters' : 'Show Filters'}
+            </span>
           </button>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Filters Sidebar */}
+        <div className="flex flex-col lg:flex-row gap-12">
+          {/* Filters Sidebar - Minimal */}
           <div className={`lg:w-1/4 ${showFilters ? 'block' : 'hidden lg:block'}`}>
-            <div className="bg-white rounded-2xl shadow-xl p-6 sticky top-6 border-2 border-gray-200">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-black text-gray-900 flex items-center gap-2">
-                  <SlidersHorizontal className="w-5 h-5 text-rose-500" />
-                  Filters
+            <div className="bg-gray-50 p-6 sticky top-6">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-base font-light text-gray-900 tracking-wide uppercase">
+                  Refine
                 </h2>
                 <button
                   onClick={clearFilters}
-                  className="text-sm text-rose-600 hover:text-rose-800 font-bold"
+                  className="text-xs text-gray-600 hover:text-black font-light tracking-wide uppercase"
                 >
-                  Clear All
+                  Clear
                 </button>
               </div>
 
               {/* Category Filter */}
-              <div className="mb-6">
-                <label className="block text-sm font-bold text-gray-700 mb-3">
-                  Fragrance Collection
+              <div className="mb-8">
+                <label className="block text-xs font-light text-gray-600 mb-3 uppercase tracking-widest">
+                  Category
                 </label>
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-rose-100 focus:border-rose-500 text-gray-900 font-medium transition-all"
+                  className="w-full px-3 py-2.5 border border-gray-200 focus:border-black focus:outline-none text-gray-900 font-light text-sm bg-white"
                 >
-                  <option value="">All Collections</option>
+                  <option value="">All</option>
                   {categories.map(category => (
                     <option key={category} value={category}>
                       {category}
@@ -174,66 +160,66 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
                 </select>
               </div>
 
-              {/* Price Range Filter */}
-              <div className="mb-6">
-                <label className="block text-sm font-bold text-gray-700 mb-3">
+              {/* Price Range */}
+              <div className="mb-8">
+                <label className="block text-xs font-light text-gray-600 mb-3 uppercase tracking-widest">
                   Price Range
                 </label>
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                   <input
                     type="number"
                     placeholder="Min"
                     value={priceRange.min}
                     onChange={(e) => setPriceRange(prev => ({ ...prev, min: e.target.value }))}
-                    className="w-1/2 px-3 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-rose-100 focus:border-rose-500 text-gray-900 font-medium transition-all"
+                    className="w-1/2 px-3 py-2.5 border border-gray-200 focus:border-black focus:outline-none text-gray-900 font-light text-sm bg-white"
                   />
                   <input
                     type="number"
                     placeholder="Max"
                     value={priceRange.max}
                     onChange={(e) => setPriceRange(prev => ({ ...prev, max: e.target.value }))}
-                    className="w-1/2 px-3 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-rose-100 focus:border-rose-500 text-gray-900 font-medium transition-all"
+                    className="w-1/2 px-3 py-2.5 border border-gray-200 focus:border-black focus:outline-none text-gray-900 font-light text-sm bg-white"
                   />
                 </div>
               </div>
 
               {/* Sort Options */}
-              <div className="mb-6">
-                <label className="block text-sm font-bold text-gray-700 mb-3">
+              <div className="mb-8">
+                <label className="block text-xs font-light text-gray-600 mb-3 uppercase tracking-widest">
                   Sort By
                 </label>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-rose-100 focus:border-rose-500 text-gray-900 font-medium transition-all"
+                  className="w-full px-3 py-2.5 border border-gray-200 focus:border-black focus:outline-none text-gray-900 font-light text-sm bg-white"
                 >
-                  <option value="name">Name (A-Z)</option>
-                  <option value="price-low">Price (Low to High)</option>
-                  <option value="price-high">Price (High to Low)</option>
+                  <option value="name">Name</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
                 </select>
               </div>
 
               {/* Active Filters */}
               {(searchTerm || selectedCategory || priceRange.min || priceRange.max) && (
-                <div className="border-t-2 border-gray-200 pt-4">
-                  <h3 className="text-sm font-bold text-gray-700 mb-3">
-                    Active Filters:
+                <div className="border-t border-gray-200 pt-6">
+                  <h3 className="text-xs font-light text-gray-600 mb-3 uppercase tracking-widest">
+                    Active
                   </h3>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="space-y-2">
                     {searchTerm && (
-                      <span className="px-3 py-1.5 bg-rose-100 text-rose-800 rounded-full text-xs font-bold border border-rose-200">
+                      <div className="text-xs text-gray-600 font-light">
                         Search: {searchTerm}
-                      </span>
+                      </div>
                     )}
                     {selectedCategory && (
-                      <span className="px-3 py-1.5 bg-pink-100 text-pink-800 rounded-full text-xs font-bold border border-pink-200">
-                        {selectedCategory}
-                      </span>
+                      <div className="text-xs text-gray-600 font-light">
+                        Category: {selectedCategory}
+                      </div>
                     )}
                     {(priceRange.min || priceRange.max) && (
-                      <span className="px-3 py-1.5 bg-purple-100 text-purple-800 rounded-full text-xs font-bold border border-purple-200">
+                      <div className="text-xs text-gray-600 font-light">
                         Price: ₹{priceRange.min || '0'} - ₹{priceRange.max || '∞'}
-                      </span>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -244,51 +230,46 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
           {/* Products Section */}
           <div className="lg:w-3/4">
             {/* Results Header */}
-            <div className="flex items-center justify-between mb-8 bg-white rounded-2xl shadow-lg p-4 border-2 border-gray-200">
-              <h2 className="text-xl font-black text-gray-900">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-pink-600">
-                  {filteredProducts.length}
-                </span>{' '}
-                Fragrance{filteredProducts.length !== 1 ? 's' : ''} Found
+            <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-200">
+              <h2 className="text-sm font-light text-gray-900 tracking-wide">
+                {filteredProducts.length} {filteredProducts.length !== 1 ? 'Products' : 'Product'}
               </h2>
-              <div className="hidden md:flex items-center gap-2 text-sm text-gray-600 font-medium">
-                <span>Showing {filteredProducts.length} of {products.length}</span>
+              <div className="hidden md:flex items-center text-xs text-gray-500 font-light">
+                Showing {filteredProducts.length} of {products.length}
               </div>
             </div>
 
             {/* Products Grid */}
             {filteredProducts.length === 0 ? (
-              <div className="text-center py-20 bg-white rounded-2xl shadow-xl border-2 border-gray-200">
-                <div className="bg-gradient-to-r from-rose-500 to-pink-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
-                  <span className="text-4xl">🌹</span>
+              <div className="text-center py-20 bg-gray-50">
+                <div className="mb-6">
+                  <div className="w-16 h-16 border border-gray-300 rounded-full flex items-center justify-center mx-auto">
+                    <Search className="w-6 h-6 text-gray-400" />
+                  </div>
                 </div>
-                <h3 className="text-2xl font-black text-gray-900 mb-2">
-                  No Fragrances Found
+                <h3 className="text-xl font-light text-gray-900 mb-3 tracking-wide">
+                  No Results Found
                 </h3>
-                <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                  We couldn&apos;t find any fragrances matching your criteria. Try adjusting your filters or search terms.
+                <p className="text-gray-600 mb-8 max-w-md mx-auto font-light text-sm">
+                  We could not find any fragrances matching your criteria.
                 </p>
                 <button
                   onClick={clearFilters}
-                  className="bg-gradient-to-r from-rose-500 to-pink-600 text-white px-8 py-3 rounded-xl font-bold hover:from-rose-600 hover:to-pink-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                  className="inline-block px-8 py-3 text-xs text-white bg-black hover:bg-gray-800 transition-colors tracking-widest uppercase font-light"
                 >
-                  Clear All Filters
+                  Clear Filters
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                 {filteredProducts.map((product) => (
-                  <div
+                  <ProductCard 
                     key={product.id}
-                    className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden border-2 border-gray-200 hover:border-rose-200"
-                  >
-                    <ProductCard 
-                      product={{
-                        ...product,
-                        slug: product.slug || `product-${product.id}`
-                      } as ProductWithSlug} 
-                    />
-                  </div>
+                    product={{
+                      ...product,
+                      slug: product.slug || `product-${product.id}`
+                    } as ProductWithSlug} 
+                  />
                 ))}
               </div>
             )}
@@ -296,30 +277,30 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
         </div>
       </div>
 
-      {/* Bottom CTA Section */}
-      <div className="mt-16 bg-gradient-to-r from-rose-500 via-pink-600 to-purple-600 text-white py-12">
+      {/* Contact Section - Minimal */}
+      <div className="mt-20 border-t border-gray-200 bg-gray-50 py-16">
         <div className="max-w-4xl mx-auto text-center px-4">
-          <Sparkles className="w-12 h-12 mx-auto mb-4" />
-          <h2 className="text-3xl font-black mb-3">Can&apos;t Find Your Perfect Scent?</h2>
-          <p className="text-lg opacity-90 mb-6">
-            Contact our fragrance consultants for personalized recommendations
+          <h2 className="text-2xl font-light text-gray-900 mb-4 tracking-wide">
+            Need Assistance?
+          </h2>
+          <div className="w-16 h-px bg-gray-300 mx-auto mb-6"></div>
+          <p className="text-sm text-gray-600 mb-8 font-light">
+            Our fragrance consultants are here to help you find your perfect scent
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
               href="mailto:care@edaperfumes.com"
-              className="inline-flex items-center justify-center gap-2 bg-white text-rose-600 px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition-all shadow-lg"
+              className="inline-block px-8 py-3 text-xs text-black border border-gray-300 hover:bg-black hover:text-white hover:border-black transition-colors tracking-widest uppercase font-light"
             >
-              <span>📧</span>
-              <span>Email Us</span>
+              Email Us
             </a>
             <a 
               href="https://wa.me/919876543210"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-green-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-green-600 transition-all shadow-lg"
+              className="inline-block px-8 py-3 text-xs text-white bg-black hover:bg-gray-800 transition-colors tracking-widest uppercase font-light"
             >
-              <span>💬</span>
-              <span>WhatsApp</span>
+              WhatsApp
             </a>
           </div>
         </div>

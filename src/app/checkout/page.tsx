@@ -8,7 +8,7 @@ import { useFacebookPixel } from "../../../hooks/useFacebookPixel";
 import type { CartItem } from "../../../lib/facebook-pixel";
 import Script from "next/script";
 
-// ✅ PRODUCTION CONFIGURATION
+// [Keep all the same interfaces and config - no changes to functionality]
 const WOOCOMMERCE_CONFIG = {
   BASE_URL: 'https://cms.edaperfumes.com',
   CONSUMER_KEY: 'ck_b1a13e4236dd41ec9b8e6a1720a69397ddd12da6',
@@ -18,10 +18,9 @@ const WOOCOMMERCE_CONFIG = {
 const RAZORPAY_CONFIG = {
   KEY_ID: "rzp_live_ROhFH4ehWnRMKy",
   COMPANY_NAME: "EDA Perfumes",
-  THEME_COLOR: "#f43f5e"
+  THEME_COLOR: "#000000"  // Changed to black for minimal design
 };
 
-// ✅ INTERFACES
 interface FormData {
   name: string;
   email: string;
@@ -48,7 +47,6 @@ interface RazorpayHandlerResponse {
   razorpay_signature: string;
 }
 
-// ✅ FIXED: Separate interface for payment failure
 interface RazorpayFailureResponse {
   error?: {
     description?: string;
@@ -90,7 +88,7 @@ declare global {
   }
 }
 
-// ✅ WOOCOMMERCE API INTEGRATION - Fixed ESLint unused vars
+// [Keep all the API functions same - createWooCommerceOrder, updateWooCommerceOrderStatus]
 const createWooCommerceOrder = async (orderData: Record<string, unknown>): Promise<WooCommerceOrder> => {
   const apiUrl = `${WOOCOMMERCE_CONFIG.BASE_URL}/wp-json/wc/v3/orders`;
   const auth = btoa(`${WOOCOMMERCE_CONFIG.CONSUMER_KEY}:${WOOCOMMERCE_CONFIG.CONSUMER_SECRET}`);
@@ -189,7 +187,7 @@ export default function Checkout(): React.ReactElement {
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [razorpayLoaded, setRazorpayLoaded] = useState<boolean>(false);
 
-  // ✅ INITIALIZATION
+  // [Keep all useEffect, validation, coupon logic, payment handlers same]
   useEffect(() => {
     if (items.length > 0) {
       const cartItems: CartItem[] = items.map(item => ({
@@ -202,21 +200,20 @@ export default function Checkout(): React.ReactElement {
     }
   }, [items, finalTotal, trackInitiateCheckout]);
 
-  // ✅ COUPON VALIDATION
   const validateCoupon = (code: string): { valid: boolean; discount: number; message: string } => {
     const upperCode = code.toUpperCase().trim();
     if (upperCode === "FIRST30") {
       if (total >= 1000) {
-        return { valid: true, discount: Math.round(total * 0.3), message: "30% discount applied!" };
+        return { valid: true, discount: Math.round(total * 0.3), message: "30% discount applied" };
       } else {
-        return { valid: false, discount: 0, message: "Minimum order amount ₹1000 required for FIRST30" };
+        return { valid: false, discount: 0, message: "Minimum order ₹1000 required for FIRST30" };
       }
     }
     if (upperCode === "WELCOME100") {
       if (total >= 500) {
-        return { valid: true, discount: 100, message: "Welcome discount applied!" };
+        return { valid: true, discount: 100, message: "Welcome discount applied" };
       } else {
-        return { valid: false, discount: 0, message: "Minimum order amount ₹500 required for WELCOME100" };
+        return { valid: false, discount: 0, message: "Minimum order ₹500 required for WELCOME100" };
       }
     }
     return { valid: false, discount: 0, message: "Invalid coupon code" };
@@ -242,7 +239,7 @@ export default function Checkout(): React.ReactElement {
         setCouponDiscount(validation.discount);
         setCouponError("");
         toast({
-          title: "🎉 Coupon Applied!",
+          title: "Coupon Applied",
           description: `You saved ₹${validation.discount}`,
         });
       } else {
@@ -265,7 +262,6 @@ export default function Checkout(): React.ReactElement {
     });
   };
 
-  // ✅ FORM VALIDATION
   function validateForm(): boolean {
     const newErrors: Partial<FormData> = {};
 
@@ -323,7 +319,6 @@ export default function Checkout(): React.ReactElement {
     }
   }
 
-  // ✅ FIXED PAYMENT HANDLERS - No unused vars
   const handlePaymentSuccess = async (wooOrder: WooCommerceOrder, response: RazorpayHandlerResponse): Promise<void> => {
     try {
       await updateWooCommerceOrderStatus(wooOrder.id, 'processing', response);
@@ -339,17 +334,16 @@ export default function Checkout(): React.ReactElement {
       clear();
 
       toast({
-        title: "🌹 Payment Successful!",
-        description: `Order #${wooOrder.id} confirmed! You'll receive WhatsApp updates about your luxury fragrances.`,
+        title: "Payment Successful",
+        description: `Order #${wooOrder.id} confirmed. You'll receive updates via WhatsApp.`,
       });
 
       router.push(`/order-confirmation?orderId=${response.razorpay_payment_id}&wcOrderId=${wooOrder.id}`);
 
     } catch {
-      // ✅ FIXED: Removed unused 'error' parameter
       toast({
         title: "Payment Completed",
-        description: "Your payment was successful. We'll contact you soon for order confirmation.",
+        description: "Your payment was successful. We'll contact you soon.",
       });
     } finally {
       setLoading(false);
@@ -362,7 +356,7 @@ export default function Checkout(): React.ReactElement {
       try {
         await updateWooCommerceOrderStatus(wooOrder.id, 'failed');
       } catch {
-        // ✅ FIXED: Removed unused 'error' parameter - silently handle error
+        // Silently handle error
       }
     }
 
@@ -381,7 +375,7 @@ export default function Checkout(): React.ReactElement {
       try {
         await updateWooCommerceOrderStatus(wooOrder.id, 'cancelled');
       } catch {
-        // ✅ FIXED: Removed unused 'error' parameter - silently handle error
+        // Silently handle error
       }
     }
 
@@ -395,7 +389,6 @@ export default function Checkout(): React.ReactElement {
     setStep("form");
   };
 
-  // ✅ MAIN CHECKOUT HANDLER - Fixed item.id type issue
   async function handleCheckout(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
 
@@ -451,7 +444,6 @@ export default function Checkout(): React.ReactElement {
           postcode: form.pincode,
           country: 'IN',
         },
-        // ✅ FIXED: Proper handling of item.id - ensure it's treated as string then converted to number
         line_items: items.map((item) => ({
           product_id: parseInt(String(item.id), 10),
           quantity: item.quantity,
@@ -489,7 +481,7 @@ export default function Checkout(): React.ReactElement {
         amount: Math.round(finalTotal * 100),
         currency: "INR",
         name: RAZORPAY_CONFIG.COMPANY_NAME,
-        description: `Luxury Fragrance Order #${wooOrder.id}`,
+        description: `Order #${wooOrder.id}`,
         handler: (response: RazorpayHandlerResponse) => {
           handlePaymentSuccess(wooOrder!, response);
         },
@@ -522,7 +514,6 @@ export default function Checkout(): React.ReactElement {
       setLoading(false);
 
     } catch (err) {
-      // ✅ FIXED: Use err instead of error to match the parameter name
       if (wooOrder?.id) {
         try {
           await updateWooCommerceOrderStatus(wooOrder.id, 'cancelled');
@@ -544,17 +535,16 @@ export default function Checkout(): React.ReactElement {
   // Empty cart check
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-rose-50 to-pink-50">
+      <div className="min-h-screen bg-white">
         <div className="max-w-lg mx-auto text-center py-24 px-4">
-          <div className="bg-white rounded-2xl shadow-xl p-8">
-            <div className="text-6xl mb-4">🌹</div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">Your cart is empty</h2>
-            <p className="text-gray-600 mb-6">Add some seductive fragrances to get started!</p>
+          <div className="border border-gray-200 p-12">
+            <h2 className="text-2xl font-light text-gray-900 mb-3 tracking-wide">Your Cart is Empty</h2>
+            <p className="text-gray-600 text-sm mb-8 font-light">Add items to get started</p>
             <button
               onClick={() => router.push("/")}
-              className="bg-gradient-to-r from-rose-500 to-pink-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-rose-600 hover:to-pink-700 transition-all"
+              className="inline-block px-8 py-3 text-xs text-white bg-black hover:bg-gray-800 transition-colors tracking-widest uppercase font-light"
             >
-              Explore Fragrances
+              Start Shopping
             </button>
           </div>
         </div>
@@ -576,170 +566,169 @@ export default function Checkout(): React.ReactElement {
         }}
       />
 
-      <div className="min-h-screen bg-gradient-to-br from-rose-50 to-pink-50 pb-10">
-        <div className="max-w-2xl mx-auto py-10 px-4">
+      <div className="min-h-screen bg-white pb-10">
+        <div className="max-w-2xl mx-auto py-12 px-4">
 
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent mb-2">
+          {/* Header */}
+          <div className="text-center mb-12 pb-8 border-b border-gray-200">
+            <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-2 tracking-wide">
               Checkout
             </h1>
-            <p className="text-gray-600">Complete your luxury fragrance purchase securely</p>
+            <p className="text-gray-600 text-sm font-light">Complete your purchase securely</p>
           </div>
 
           {/* Order Summary */}
-          <div className="bg-white shadow-xl rounded-2xl p-6 mb-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Order Summary</h2>
-            <div className="space-y-2">
+          <div className="border border-gray-200 p-6 mb-6">
+            <h2 className="text-base font-light text-gray-900 mb-6 uppercase tracking-widest text-xs">Order Summary</h2>
+            <div className="space-y-3">
               {items.map((item) => (
                 <div key={item.id} className="flex justify-between items-center py-2 border-b border-gray-100">
                   <div>
-                    <span className="font-medium text-black">{item.name}</span>
-                    <span className="text-gray-500 ml-2">x{item.quantity}</span>
+                    <span className="font-light text-sm text-gray-900">{item.name}</span>
+                    <span className="text-gray-500 text-xs ml-2">×{item.quantity}</span>
                   </div>
-                  <span className="font-semibold text-rose-500">₹{(parseFloat(item.price) * item.quantity).toFixed(2)}</span>
+                  <span className="font-light text-sm text-gray-900">₹{(parseFloat(item.price) * item.quantity).toFixed(2)}</span>
                 </div>
               ))}
-              <div className="flex justify-between text-black items-center py-2">
-                <span>Subtotal:</span>
-                <span className="font-semibold text-rose-500">₹{total.toFixed(2)}</span>
+              <div className="flex justify-between text-sm text-gray-900 items-center py-2 font-light">
+                <span>Subtotal</span>
+                <span>₹{total.toFixed(2)}</span>
               </div>
 
               {appliedCoupon && (
-                <div className="flex justify-between text-green-600 items-center py-2">
+                <div className="flex justify-between text-sm text-gray-600 items-center py-2 font-light">
                   <div className="flex items-center gap-2">
-                    <span>Coupon ({appliedCoupon}):</span>
+                    <span>Coupon ({appliedCoupon})</span>
                     <button
                       onClick={handleRemoveCoupon}
-                      className="text-xs text-red-500 hover:text-red-700 underline"
+                      className="text-xs text-gray-500 hover:text-black underline"
                     >
                       Remove
                     </button>
                   </div>
-                  <span className="font-semibold">-₹{couponDiscount.toFixed(2)}</span>
+                  <span>-₹{couponDiscount.toFixed(2)}</span>
                 </div>
               )}
 
-              <div className="flex justify-between text-black items-center py-2">
+              <div className="flex justify-between text-sm text-gray-900 items-center py-2 font-light">
                 <div>
-                  <span>Delivery Charges:</span>
-                  {total >= 500 && <span className="text-rose-600 text-sm ml-1">(Free above ₹500)</span>}
+                  <span>Delivery</span>
+                  {total >= 500 && <span className="text-gray-600 text-xs ml-1">(Free above ₹500)</span>}
                 </div>
-                <span className={`font-semibold ${deliveryCharges === 0 ? 'text-green-600' : ''}`}>
-                  {deliveryCharges === 0 ? 'FREE' : `₹${deliveryCharges}`}
-                </span>
+                <span>{deliveryCharges === 0 ? 'Free' : `₹${deliveryCharges}`}</span>
               </div>
-              <div className="flex justify-between items-center py-3 border-t-2 border-rose-100">
-                <span className="text-lg text-black font-bold">Total:</span>
-                <span className="text-xl font-bold text-rose-600">₹{finalTotal.toFixed(2)}</span>
+              <div className="flex justify-between items-center py-3 border-t border-gray-200">
+                <span className="text-sm text-gray-900 font-light uppercase tracking-widest">Total</span>
+                <span className="text-lg font-light text-gray-900">₹{finalTotal.toFixed(2)}</span>
               </div>
             </div>
           </div>
 
           {/* Coupon Section */}
-          <div className="bg-white shadow-xl rounded-2xl p-6 mb-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Have a Coupon Code?</h2>
+          <div className="border border-gray-200 p-6 mb-6">
+            <h2 className="text-base font-light text-gray-900 mb-4 uppercase tracking-widest text-xs">Coupon Code</h2>
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="flex-1">
                 <input
                   type="text"
-                  placeholder="Enter coupon code (e.g., FIRST30, WELCOME100)"
+                  placeholder="Enter coupon code"
                   value={couponCode}
                   onChange={(e) => {
                     setCouponCode(e.target.value);
                     setCouponError("");
                   }}
-                  className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-rose-500 focus:outline-none transition-colors text-black"
+                  className="w-full p-3 border border-gray-300 focus:border-black focus:outline-none transition-colors text-sm font-light text-gray-900"
                   disabled={!!appliedCoupon}
                 />
                 {couponError && (
-                  <p className="text-red-500 text-sm mt-1">{couponError}</p>
+                  <p className="text-red-500 text-xs mt-1 font-light">{couponError}</p>
                 )}
                 {appliedCoupon && (
-                  <p className="text-green-600 text-sm mt-1 flex items-center gap-1">
-                    <span>✅</span> Coupon {appliedCoupon} applied successfully!
+                  <p className="text-gray-600 text-xs mt-1 font-light">
+                    Coupon {appliedCoupon} applied
                   </p>
                 )}
               </div>
               <button
                 onClick={appliedCoupon ? handleRemoveCoupon : handleApplyCoupon}
                 disabled={isApplyingCoupon}
-                className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+                className={`px-6 py-3 text-xs font-light tracking-widest uppercase transition-colors ${
                   appliedCoupon
-                    ? 'bg-red-500 hover:bg-red-600 text-white'
-                    : 'bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white'
+                    ? 'bg-gray-200 hover:bg-gray-300 text-gray-900'
+                    : 'bg-black hover:bg-gray-800 text-white'
                 } ${isApplyingCoupon ? 'opacity-60 cursor-not-allowed' : ''}`}
               >
-                {isApplyingCoupon ? 'Applying...' : appliedCoupon ? 'Remove' : 'Apply Coupon'}
+                {isApplyingCoupon ? 'Applying...' : appliedCoupon ? 'Remove' : 'Apply'}
               </button>
             </div>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleCheckout} className="bg-white shadow-xl rounded-2xl p-8">
-            <h2 className="text-xl font-semibold text-gray-800 mb-6">Delivery Information</h2>
+          <form onSubmit={handleCheckout} className="border border-gray-200 p-8">
+            <h2 className="text-base font-light text-gray-900 mb-8 uppercase tracking-widest text-xs">Delivery Information</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">Name *</label>
                 <input
                   name="name"
                   required
-                  className={`w-full p-3 rounded-lg border-2 text-black transition-colors focus:outline-none ${
+                  className={`w-full p-3 border text-sm font-light text-gray-900 transition-colors focus:outline-none ${
                     errors.name 
                       ? 'border-red-300 focus:border-red-500' 
-                      : 'border-gray-200 focus:border-rose-500'
+                      : 'border-gray-300 focus:border-black'
                   }`}
-                  placeholder="Enter your full name"
+                  placeholder="Full name"
                   value={form.name}
                   onChange={onChange}
                 />
-                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                {errors.name && <p className="text-red-500 text-xs mt-1 font-light">{errors.name}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">Email *</label>
                 <input
                   name="email"
                   type="email"
                   required
-                  className={`w-full p-3 rounded-lg border-2 text-black transition-colors focus:outline-none ${
+                  className={`w-full p-3 border text-sm font-light text-gray-900 transition-colors focus:outline-none ${
                     errors.email 
                       ? 'border-red-300 focus:border-red-500' 
-                      : 'border-gray-200 focus:border-rose-500'
+                      : 'border-gray-300 focus:border-black'
                   }`}
                   placeholder="your@email.com"
                   value={form.email}
                   onChange={onChange}
                 />
-                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                {errors.email && <p className="text-red-500 text-xs mt-1 font-light">{errors.email}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">Phone *</label>
                 <input
                   name="phone"
                   type="tel"
                   pattern="[0-9]{10}"
                   required
-                  className={`w-full p-3 rounded-lg border-2 text-black transition-colors focus:outline-none ${
+                  className={`w-full p-3 border text-sm font-light text-gray-900 transition-colors focus:outline-none ${
                     errors.phone 
                       ? 'border-red-300 focus:border-red-500' 
-                      : 'border-gray-200 focus:border-rose-500'
+                      : 'border-gray-300 focus:border-black'
                   }`}
-                  placeholder="10-digit mobile number"
+                  placeholder="10-digit number"
                   value={form.phone}
                   onChange={onChange}
                 />
-                {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+                {errors.phone && <p className="text-red-500 text-xs mt-1 font-light">{errors.phone}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  WhatsApp Number * 
+                <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">
+                  WhatsApp * 
                   <button
                     type="button"
                     onClick={copyPhoneToWhatsApp}
-                    className="ml-2 text-xs bg-gradient-to-r from-rose-500 to-pink-500 text-white px-2 py-1 rounded hover:from-rose-600 hover:to-pink-600 transition-all"
+                    className="ml-2 text-xs bg-black text-white px-2 py-1 hover:bg-gray-800 transition-colors font-light"
                   >
                     Same as phone
                   </button>
@@ -749,83 +738,83 @@ export default function Checkout(): React.ReactElement {
                   type="tel"
                   pattern="[0-9]{10}"
                   required
-                  className={`w-full p-3 rounded-lg border-2 text-black transition-colors focus:outline-none ${
+                  className={`w-full p-3 border text-sm font-light text-gray-900 transition-colors focus:outline-none ${
                     errors.whatsapp 
                       ? 'border-red-300 focus:border-red-500' 
-                      : 'border-gray-200 focus:border-rose-500'
+                      : 'border-gray-300 focus:border-black'
                   }`}
-                  placeholder="WhatsApp number for updates"
+                  placeholder="WhatsApp number"
                   value={form.whatsapp}
                   onChange={onChange}
                 />
-                {errors.whatsapp && <p className="text-red-500 text-sm mt-1">{errors.whatsapp}</p>}
+                {errors.whatsapp && <p className="text-red-500 text-xs mt-1 font-light">{errors.whatsapp}</p>}
               </div>
             </div>
 
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Complete Address *</label>
+              <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">Address *</label>
               <textarea
                 name="address"
                 rows={3}
                 required
-                className={`w-full p-3 rounded-lg border-2 text-black transition-colors focus:outline-none ${
+                className={`w-full p-3 border text-sm font-light text-gray-900 transition-colors focus:outline-none resize-none ${
                   errors.address 
                     ? 'border-red-300 focus:border-red-500' 
-                    : 'border-gray-200 focus:border-rose-500'
+                    : 'border-gray-300 focus:border-black'
                 }`}
-                placeholder="House/Flat No., Street, Area, Landmark"
+                placeholder="Complete address"
                 value={form.address}
                 onChange={onChange}
               />
-              {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
+              {errors.address && <p className="text-red-500 text-xs mt-1 font-light">{errors.address}</p>}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Pincode *</label>
+                <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">Pincode *</label>
                 <input
                   name="pincode"
                   type="text"
                   pattern="[0-9]{6}"
                   required
-                  className={`w-full p-3 rounded-lg border-2 text-black transition-colors focus:outline-none ${
+                  className={`w-full p-3 border text-sm font-light text-gray-900 transition-colors focus:outline-none ${
                     errors.pincode 
                       ? 'border-red-300 focus:border-red-500' 
-                      : 'border-gray-200 focus:border-rose-500'
+                      : 'border-gray-300 focus:border-black'
                   }`}
-                  placeholder="6-digit pincode"
+                  placeholder="6-digit"
                   value={form.pincode}
                   onChange={onChange}
                 />
-                {errors.pincode && <p className="text-red-500 text-sm mt-1">{errors.pincode}</p>}
+                {errors.pincode && <p className="text-red-500 text-xs mt-1 font-light">{errors.pincode}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">City *</label>
                 <input
                   name="city"
                   required
-                  className={`w-full p-3 rounded-lg border-2 text-black transition-colors focus:outline-none ${
+                  className={`w-full p-3 border text-sm font-light text-gray-900 transition-colors focus:outline-none ${
                     errors.city 
                       ? 'border-red-300 focus:border-red-500' 
-                      : 'border-gray-200 focus:border-rose-500'
+                      : 'border-gray-300 focus:border-black'
                   }`}
-                  placeholder="Your city"
+                  placeholder="City"
                   value={form.city}
                   onChange={onChange}
                 />
-                {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
+                {errors.city && <p className="text-red-500 text-xs mt-1 font-light">{errors.city}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">State *</label>
+                <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">State *</label>
                 <select
                   name="state"
                   required
-                  className={`w-full p-3 rounded-lg border-2 text-black transition-colors focus:outline-none ${
+                  className={`w-full p-3 border text-sm font-light text-gray-900 transition-colors focus:outline-none ${
                     errors.state 
                       ? 'border-red-300 focus:border-red-500' 
-                      : 'border-gray-200 focus:border-rose-500'
+                      : 'border-gray-300 focus:border-black'
                   }`}
                   value={form.state}
                   onChange={onChange}
@@ -855,31 +844,31 @@ export default function Checkout(): React.ReactElement {
                   <option value="Jammu and Kashmir">Jammu and Kashmir</option>
                   <option value="Goa">Goa</option>
                 </select>
-                {errors.state && <p className="text-red-500 text-sm mt-1">{errors.state}</p>}
+                {errors.state && <p className="text-red-500 text-xs mt-1 font-light">{errors.state}</p>}
               </div>
             </div>
 
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Order Notes (Optional)</label>
+            <div className="mb-8">
+              <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">Notes</label>
               <textarea
                 name="notes"
                 rows={2}
-                className="w-full p-3 rounded-lg border-2 text-black border-gray-200 focus:border-rose-500 focus:outline-none transition-colors"
-                placeholder="Any special instructions for delivery"
+                className="w-full p-3 border border-gray-300 focus:border-black focus:outline-none transition-colors text-sm font-light text-gray-900 resize-none"
+                placeholder="Special instructions"
                 value={form.notes}
                 onChange={onChange}
               />
             </div>
 
-            <div className="bg-gradient-to-r from-rose-50 to-pink-50 rounded-xl p-4 mb-6">
-              <div className="flex items-center justify-between text-lg font-bold">
-                <span className="text-gray-800">Final Amount:</span>
+            <div className="bg-gray-50 p-6 mb-8 border border-gray-200">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-900 font-light uppercase tracking-widest">Amount</span>
                 <div className="text-right">
-                  <span className="text-2xl bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
+                  <span className="text-xl font-light text-gray-900">
                     ₹{finalTotal.toFixed(2)}
                   </span>
                   {appliedCoupon && (
-                    <p className="text-sm text-green-600 mt-1">You saved ₹{couponDiscount} with {appliedCoupon}!</p>
+                    <p className="text-xs text-gray-600 mt-1 font-light">Saved ₹{couponDiscount}</p>
                   )}
                 </div>
               </div>
@@ -888,56 +877,42 @@ export default function Checkout(): React.ReactElement {
             {/* Payment Button */}
             <button
               type="submit"
-              className={`w-full bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white py-4 rounded-xl font-semibold text-lg transition-all transform hover:scale-105 ${
+              className={`w-full bg-black hover:bg-gray-800 text-white py-4 text-xs font-light tracking-widest uppercase transition-colors ${
                 loading || step === "processing" || !razorpayLoaded 
-                  ? "opacity-60 pointer-events-none scale-100" 
+                  ? "opacity-60 pointer-events-none" 
                   : ""
               }`}
               disabled={loading || step === "processing" || !razorpayLoaded}
             >
               {loading || step === "processing" ? (
                 <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  Creating Order & Processing Payment...
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Processing...
                 </div>
               ) : !razorpayLoaded ? (
                 <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  Loading Payment System...
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Loading...
                 </div>
               ) : (
-                <div className="flex items-center justify-center">
-                  <span className="mr-2">💳</span>
-                  Pay Securely ₹{finalTotal.toFixed(2)}
-                </div>
+                `Pay ₹${finalTotal.toFixed(2)}`
               )}
             </button>
 
             {step === "processing" && (
-              <div className="text-center text-rose-600 text-sm mt-3 animate-pulse">
-                🔄 Creating order and processing payment...
+              <div className="text-center text-gray-600 text-xs mt-3 font-light">
+                Creating order and processing payment...
               </div>
             )}
           </form>
 
+          {/* Trust Signals */}
           <div className="mt-8 text-center">
-            <div className="flex items-center justify-center space-x-4 text-gray-500 text-sm">
-              <div className="flex items-center">
-                <span className="mr-1">🔒</span>
-                <span>SSL Secured</span>
-              </div>
-              <div className="flex items-center">
-                <span className="mr-1">📱</span>
-                <span>WhatsApp Updates</span>
-              </div>
-              <div className="flex items-center">
-                <span className="mr-1">⚡</span>
-                <span>Fast Delivery</span>
-              </div>
+            <div className="flex items-center justify-center space-x-6 text-gray-500 text-xs font-light">
+              <span>• SSL Secured</span>
+              <span>• Encrypted</span>
+              <span>• Fast Delivery</span>
             </div>
-            <p className="text-gray-400 text-xs mt-2">
-              Your payment information is secure and encrypted
-            </p>
           </div>
         </div>
       </div>

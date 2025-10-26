@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
 interface FAQ {
   question: string;
@@ -93,20 +93,16 @@ const faqData: Record<string, FAQ[]> = {
   ]
 };
 
-// Default FAQs for products not specifically listed
 const defaultFAQs: FAQ[] = faqData['default'];
 
 const ProductFAQ: React.FC<ProductFAQProps> = ({ productSlug, productName }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  // Get FAQs based on product slug
   const getFAQs = (): FAQ[] => {
-    // Check for exact slug match
     if (faqData[productSlug]) {
       return faqData[productSlug];
     }
 
-    // Check for partial matches (for products with variations)
     const slugKey = Object.keys(faqData).find(key => 
       productSlug.includes(key) || key.includes(productSlug.split('-')[0])
     );
@@ -115,7 +111,6 @@ const ProductFAQ: React.FC<ProductFAQProps> = ({ productSlug, productName }) => 
       return faqData[slugKey];
     }
 
-    // Return default FAQs if no match found
     return defaultFAQs;
   };
 
@@ -126,97 +121,83 @@ const ProductFAQ: React.FC<ProductFAQProps> = ({ productSlug, productName }) => 
   };
 
   return (
-    <div className="bg-white rounded-3xl shadow-2xl border-2 border-gray-200 overflow-hidden">
+    <div className="bg-white border-t border-gray-200">
       {/* Header */}
-      <div className="bg-gradient-to-r from-rose-500 via-pink-600 to-purple-600 p-6 lg:p-8">
-        <div className="text-center">
-          <div className="inline-block mb-3">
-            <span className="text-4xl">❓</span>
-          </div>
-          <h2 className="text-2xl lg:text-3xl font-black text-white mb-2">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-white/90 text-sm lg:text-base">
-            Everything you need to know about {productName}
-          </p>
-        </div>
+      <div className="py-12 text-center">
+        <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4 tracking-wide">
+          Frequently Asked Questions
+        </h2>
+        <div className="w-16 h-px bg-gray-300 mx-auto mb-4"></div>
+        <p className="text-gray-600 text-sm font-light max-w-2xl mx-auto">
+          Everything you need to know about {productName}
+        </p>
       </div>
 
       {/* FAQ Items */}
-      <div className="divide-y divide-gray-200">
-        {faqs.map((faq, index) => (
-          <div key={index} className="group">
-            <button
-              className="w-full px-6 py-5 lg:px-8 lg:py-6 text-left hover:bg-gradient-to-r hover:from-rose-50 hover:to-pink-50 transition-all duration-300 focus:outline-none focus:bg-rose-50"
-              onClick={() => toggleFAQ(index)}
-            >
-              <div className="flex justify-between items-start gap-4">
-                <div className="flex items-start gap-3 flex-1">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center mt-1">
-                    <span className="text-rose-600 font-bold text-sm">{index + 1}</span>
-                  </div>
-                  <h3 className="font-bold text-gray-900 text-sm lg:text-base leading-relaxed flex-1">
+      <div className="max-w-4xl mx-auto">
+        <div className="space-y-px border-t border-gray-200">
+          {faqs.map((faq, index) => (
+            <div key={index} className="border-b border-gray-200">
+              <button
+                className="w-full px-6 py-6 text-left hover:bg-gray-50 transition-colors focus:outline-none group"
+                onClick={() => toggleFAQ(index)}
+              >
+                <div className="flex justify-between items-start gap-6">
+                  <h3 className="font-light text-gray-900 text-sm lg:text-base leading-relaxed flex-1 text-left pr-4">
                     {faq.question}
                   </h3>
+                  <div className="flex-shrink-0 mt-1">
+                    <ChevronDownIcon 
+                      className={`h-4 w-4 text-gray-600 transition-transform duration-300 ${
+                        openIndex === index ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </div>
                 </div>
-                <div className="flex-shrink-0">
-                  {openIndex === index ? (
-                    <div className="w-8 h-8 rounded-full bg-rose-500 flex items-center justify-center">
-                      <ChevronUpIcon className="h-5 w-5 text-white transition-transform duration-300" />
-                    </div>
-                  ) : (
-                    <div className="w-8 h-8 rounded-full bg-gray-200 group-hover:bg-rose-500 flex items-center justify-center transition-all duration-300">
-                      <ChevronDownIcon className="h-5 w-5 text-gray-600 group-hover:text-white transition-all duration-300" />
-                    </div>
-                  )}
-                </div>
-              </div>
-            </button>
-            
-            {/* Answer */}
-            <div className={`overflow-hidden transition-all duration-500 ease-in-out ${
-              openIndex === index 
-                ? 'max-h-[1000px] opacity-100' 
-                : 'max-h-0 opacity-0'
-            }`}>
-              <div className="px-6 pb-6 lg:px-8 lg:pb-8">
-                <div className="ml-11">
-                  <div className="bg-gradient-to-r from-rose-50 to-pink-50 rounded-2xl p-5 border-l-4 border-rose-500 shadow-sm">
-                    <p className="text-gray-700 text-sm lg:text-base leading-relaxed whitespace-pre-line">
+              </button>
+              
+              {/* Answer */}
+              <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                openIndex === index 
+                  ? 'max-h-[1000px] opacity-100' 
+                  : 'max-h-0 opacity-0'
+              }`}>
+                <div className="px-6 pb-6 pt-0">
+                  <div className="bg-gray-50 p-6 border-l-2 border-gray-900">
+                    <p className="text-gray-700 text-sm lg:text-base leading-relaxed whitespace-pre-line font-light">
                       {faq.answer}
                     </p>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Footer */}
-      <div className="bg-gradient-to-r from-gray-50 to-rose-50 p-6 lg:p-8 text-center border-t-2 border-gray-200">
-        <div className="max-w-2xl mx-auto">
-          <div className="text-3xl mb-3">💬</div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">Still have questions?</h3>
-          <p className="text-gray-600 text-sm mb-5">
-            Our luxury fragrance consultants are here to help you find your perfect scent
+      <div className="py-16 text-center border-t border-gray-200 mt-12 bg-gray-50">
+        <div className="max-w-2xl mx-auto px-4">
+          <h3 className="text-xl font-light text-gray-900 mb-3 tracking-wide">
+            Still Have Questions?
+          </h3>
+          <p className="text-gray-600 text-sm mb-8 font-light">
+            Our fragrance consultants are here to help you find your perfect scent
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
               href="mailto:care@edaperfumes.com"
-              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-bold px-6 py-3 rounded-xl text-sm transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
+              className="inline-block px-8 py-3 text-xs text-black border border-gray-300 hover:bg-black hover:text-white hover:border-black transition-colors tracking-widest uppercase font-light"
             >
-              <span>📧</span>
-              <span>Email Support</span>
+              Email Support
             </a>
             <a 
               href="https://wa.me/919876543210"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold px-6 py-3 rounded-xl text-sm transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
+              className="inline-block px-8 py-3 text-xs text-white bg-black hover:bg-gray-800 transition-colors tracking-widest uppercase font-light"
             >
-              <span>📱</span>
-              <span>WhatsApp Us</span>
+              WhatsApp Us
             </a>
           </div>
         </div>

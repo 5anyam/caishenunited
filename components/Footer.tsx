@@ -1,144 +1,110 @@
 import Link from "next/link";
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
-import { Heart, Mail, Phone, MapPin, Sparkles } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-br from-gray-100 via-white to-gray-50 text-gray-800 pt-16 pb-8 transition-colors">
-      <div className="max-w-7xl mx-auto px-4">
+    <footer className="bg-white text-gray-900 border-t border-gray-200">
+      <div className="max-w-7xl mx-auto px-4 py-16">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Brand Section */}
           <div className="md:col-span-1">
-            <div className="flex items-center mb-6">
-              <div className="bg-white p-3 rounded-xl shadow-lg border border-gray-200">
-                <img className="h-20" src="/eda-perfumes-logo.jpeg" alt="EDA Perfumes logo" />
-              </div>
+            <div className="mb-6">
+              <img className="h-16" src="/eda-perfumes-logo.jpeg" alt="ÉCLAT D'AMOUR" />
             </div>
             <div className="mb-6">
-              <div className="flex items-center gap-2 mb-3">
-                <Heart className="w-5 h-5 text-rose-500" />
-                <span className="font-bold text-gray-800 text-lg">EDA PERFUMES</span>
-              </div>
-              <p className="text-sm leading-relaxed text-gray-600 mb-4">
-                Dare to indulge in the forbidden. EDA Perfumes crafts intoxicating fragrances for the bold, the daring, and those who are not afraid to make a statement.
+              <h3 className="font-light text-base text-gray-900 mb-3 tracking-wide">
+                EDA Perfumes
+              </h3>
+              <p className="text-xs leading-relaxed text-gray-600 font-light mb-6">
+                Luxury fragrances crafted for those who appreciate sophistication and elegance.
               </p>
-              <div className="inline-flex items-center gap-2 bg-rose-50 px-3 py-1 rounded-full border border-rose-200">
-                <Sparkles className="w-4 h-4 text-rose-500" />
-                <span className="text-rose-600 text-xs font-medium">For those who play after dark</span>
-              </div>
             </div>
             
             {/* Social Media Icons */}
             <div className="flex gap-3">
               <Link 
-                href="https://www.facebook.com/edaperfumes" 
-                className="p-3 bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 hover:bg-rose-50 hover:border-rose-200 transition-all duration-300 group"
+                href="https://www.facebook.com/eclat.d.amour.508599/" 
+                className="p-2 border border-gray-300 hover:border-black hover:bg-black hover:text-white transition-colors"
               >
-                <FaFacebookF className="text-gray-600 group-hover:text-rose-500 transition-colors" />
+                <FaFacebookF className="text-sm" />
               </Link>
               <Link 
-                href="#" 
-                className="p-3 bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 hover:bg-rose-50 hover:border-rose-200 transition-all duration-300 group"
+                href="https://x.com/edaperfumes" 
+                className="p-2 border border-gray-300 hover:border-black hover:bg-black hover:text-white transition-colors"
               >
-                <FaTwitter className="text-gray-600 group-hover:text-rose-500 transition-colors" />
+                <FaTwitter className="text-sm" />
               </Link>
               <Link 
                 href="https://www.instagram.com/edaperfumes" 
-                className="p-3 bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 hover:bg-rose-50 hover:border-rose-200 transition-all duration-300 group"
+                className="p-2 border border-gray-300 hover:border-black hover:bg-black hover:text-white transition-colors"
               >
-                <FaInstagram className="text-gray-600 group-hover:text-rose-500 transition-colors" />
+                <FaInstagram className="text-sm" />
               </Link>
               <Link 
-                href="#" 
-                className="p-3 bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 hover:bg-rose-50 hover:border-rose-200 transition-all duration-300 group"
+                href="https://www.linkedin.com/in/eda-perfumes-199787354/" 
+                className="p-2 border border-gray-300 hover:border-black hover:bg-black hover:text-white transition-colors"
               >
-                <FaLinkedinIn className="text-gray-600 group-hover:text-rose-500 transition-colors" />
+                <FaLinkedinIn className="text-sm" />
               </Link>
               <Link 
                 href="https://www.youtube.com/@edaperfumes" 
-                className="p-3 bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 hover:bg-rose-50 hover:border-rose-200 transition-all duration-300 group"
+                className="p-2 border border-gray-300 hover:border-black hover:bg-black hover:text-white transition-colors"
               >
-                <FaYoutube className="text-gray-600 group-hover:text-rose-500 transition-colors" />
+                <FaYoutube className="text-sm" />
               </Link>
             </div>
           </div>
 
-          {/* Navigation Links Section */}
+          {/* Navigation Links */}
           <div className="md:col-span-1">
-            <h4 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
-              <div className="w-2 h-2 bg-rose-500 rounded-full"></div>
+            <h4 className="text-xs font-light text-gray-600 mb-6 uppercase tracking-widest">
               Navigation
             </h4>
             <ul className="space-y-3">
               <li>
-                <Link href="/" className="text-gray-600 hover:text-rose-500 transition-colors duration-200 text-sm font-medium flex items-center gap-2 group">
-                  <span className="w-1 h-1 bg-gray-400 rounded-full group-hover:bg-rose-500 transition-colors"></span>
+                <Link href="/" className="text-sm text-gray-600 hover:text-black transition-colors font-light">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/shop" className="text-gray-600 hover:text-rose-500 transition-colors duration-200 text-sm font-medium flex items-center gap-2 group">
-                  <span className="w-1 h-1 bg-gray-400 rounded-full group-hover:bg-rose-500 transition-colors"></span>
+                <Link href="/shop" className="text-sm text-gray-600 hover:text-black transition-colors font-light">
                   Shop
                 </Link>
               </li>
               <li>
-                <Link href="/collections" className="text-gray-600 hover:text-rose-500 transition-colors duration-200 text-sm font-medium flex items-center gap-2 group">
-                  <span className="w-1 h-1 bg-gray-400 rounded-full group-hover:bg-rose-500 transition-colors"></span>
-                  Collections
+                <Link href="/contact" className="text-sm text-gray-600 hover:text-black transition-colors font-light">
+                  Contact
                 </Link>
               </li>
               <li>
-                <Link href="/cart" className="text-gray-600 hover:text-rose-500 transition-colors duration-200 text-sm font-medium flex items-center gap-2 group">
-                  <span className="w-1 h-1 bg-gray-400 rounded-full group-hover:bg-rose-500 transition-colors"></span>
-                  Cart
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="text-gray-600 hover:text-rose-500 transition-colors duration-200 text-sm font-medium flex items-center gap-2 group">
-                  <span className="w-1 h-1 bg-gray-400 rounded-full group-hover:bg-rose-500 transition-colors"></span>
+                <Link href="/about" className="text-sm text-gray-600 hover:text-black transition-colors font-light">
                   About Us
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Legal Links Section */}
+          {/* Legal Links */}
           <div className="md:col-span-1">
-            <h4 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
-              <div className="w-2 h-2 bg-rose-500 rounded-full"></div>
+            <h4 className="text-xs font-light text-gray-600 mb-6 uppercase tracking-widest">
               Legal
             </h4>
             <ul className="space-y-3">
               <li>
-                <Link href="/privacy-policy" className="text-gray-600 hover:text-rose-500 transition-colors duration-200 text-sm font-medium flex items-center gap-2 group">
-                  <span className="w-1 h-1 bg-gray-400 rounded-full group-hover:bg-rose-500 transition-colors"></span>
+                <Link href="/privacy-policy" className="text-sm text-gray-600 hover:text-black transition-colors font-light">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms-and-conditions" className="text-gray-600 hover:text-rose-500 transition-colors duration-200 text-sm font-medium flex items-center gap-2 group">
-                  <span className="w-1 h-1 bg-gray-400 rounded-full group-hover:bg-rose-500 transition-colors"></span>
+                <Link href="/terms-and-conditions" className="text-sm text-gray-600 hover:text-black transition-colors font-light">
                   Terms & Conditions
                 </Link>
               </li>
               <li>
-                <Link href="/returns-and-refunds-policy" className="text-gray-600 hover:text-rose-500 transition-colors duration-200 text-sm font-medium flex items-center gap-2 group">
-                  <span className="w-1 h-1 bg-gray-400 rounded-full group-hover:bg-rose-500 transition-colors"></span>
-                  Return & Refund
-                </Link>
-              </li>
-              <li>
-                <Link href="/shipping" className="text-gray-600 hover:text-rose-500 transition-colors duration-200 text-sm font-medium flex items-center gap-2 group">
-                  <span className="w-1 h-1 bg-gray-400 rounded-full group-hover:bg-rose-500 transition-colors"></span>
-                  Shipping Info
-                </Link>
-              </li>
-              <li>
-                <Link href="/disclaimer" className="text-gray-600 hover:text-rose-500 transition-colors duration-200 text-sm font-medium flex items-center gap-2 group">
-                  <span className="w-1 h-1 bg-gray-400 rounded-full group-hover:bg-rose-500 transition-colors"></span>
-                  Disclaimer
+                <Link href="/returns-and-refunds-policy" className="text-sm text-gray-600 hover:text-black transition-colors font-light">
+                  Returns & Refunds
                 </Link>
               </li>
             </ul>
@@ -146,36 +112,27 @@ export default function Footer() {
 
           {/* Contact Section */}
           <div className="md:col-span-1">
-            <h4 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
-              <div className="w-2 h-2 bg-rose-500 rounded-full"></div>
-              Get in Touch
+            <h4 className="text-xs font-light text-gray-600 mb-6 uppercase tracking-widest">
+              Contact
             </h4>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
-                <div className="p-2 bg-rose-50 rounded-lg border border-rose-200 mt-0.5">
-                  <Mail className="w-4 h-4 text-rose-500" />
-                </div>
-                <div>
-                  <span className="text-gray-600 text-sm font-medium">care@edaperfumes.com</span>
-                </div>
+                <Mail className="w-4 h-4 text-gray-600 mt-0.5 flex-shrink-0" />
+                <span className="text-xs text-gray-600 font-light">
+                  care@edaperfumes.com
+                </span>
               </li>
               <li className="flex items-start gap-3">
-                <div className="p-2 bg-rose-50 rounded-lg border border-rose-200 mt-0.5">
-                  <Phone className="w-4 h-4 text-rose-500" />
-                </div>
-                <div>
-                  <span className="text-gray-600 text-sm font-medium">+91 87997 95681</span>
-                </div>
+                <Phone className="w-4 h-4 text-gray-600 mt-0.5 flex-shrink-0" />
+                <span className="text-xs text-gray-600 font-light">
+                  +91 87997 95681
+                </span>
               </li>
               <li className="flex items-start gap-3">
-                <div className="p-2 bg-rose-50 rounded-lg border border-rose-200 mt-0.5">
-                  <MapPin className="w-4 h-4 text-rose-500" />
-                </div>
-                <div>
-                  <span className="text-gray-600 text-sm font-medium leading-relaxed">
-                WZ-11B Ground Floor, Sahib Pura, Tilak Nagar, New Delhi - 110018
-                  </span>
-                </div>
+                <MapPin className="w-4 h-4 text-gray-600 mt-0.5 flex-shrink-0" />
+                <span className="text-xs text-gray-600 font-light leading-relaxed">
+                  WZ-11B Ground Floor, Sahib Pura, Tilak Nagar, New Delhi - 110018
+                </span>
               </li>
             </ul>
           </div>
@@ -183,20 +140,19 @@ export default function Footer() {
       </div>
 
       {/* Footer Bottom */}
-      <div className="bg-gradient-to-r from-rose-50 to-pink-50 flex flex-col sm:flex-row justify-between items-center border-t border-gray-200 mt-12 p-6 text-gray-600 text-center text-sm gap-4 sm:gap-0">
-        <div className="flex items-center gap-2">
-          <Heart className="w-4 h-4 text-rose-500" />
-          <span>
-            © {new Date().getFullYear()} EDA Perfumes. All rights reserved. Developed with passion by{" "}
-            <span className="text-rose-600 font-semibold">
-              <Link href="https://www.proshala.com" className="hover:text-rose-700 transition-colors">
+      <div className="border-t border-gray-200 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 py-6">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-600 font-light">
+            <div>
+              © {new Date().getFullYear()} EDA Perfumes. All rights reserved. Developed by{" "}
+              <Link href="https://www.proshala.com" className="text-black hover:underline transition-colors">
                 Proshala Tech
               </Link>
-            </span>
-          </span>
-        </div>
-        <div className="bg-white p-2 rounded-lg shadow-md border border-gray-200">
-          <img className="h-8" src="/badges.png" alt="trust badges" />
+            </div>
+            <div className="flex items-center gap-2 opacity-60">
+              <img className="h-8" src="/badges.png" alt="Payment methods" />
+            </div>
+          </div>
         </div>
       </div>
     </footer>

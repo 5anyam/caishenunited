@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
-import { Sparkles, ShoppingBag } from 'lucide-react';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 
 interface FAQ {
   question: string;
@@ -12,35 +12,34 @@ interface FAQ {
 const HomeFAQ: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  // EDA Perfumes specific FAQ data
   const faqs: FAQ[] = [
     {
-      question: "What makes EDA Perfumes different from other fragrance brands?",
-      answer: "EDA Perfumes embodies the perfect blend of seduction and sophistication. Our fragrances are crafted for those who dare to make a statement and aren't afraid to embrace their desires."
+      question: "What makes ÉCLAT D'AMOUR different from other fragrance brands?",
+      answer: "We craft sophisticated fragrances that blend luxury with accessibility. Our collection features premium EDP concentrations designed for those who appreciate quality and elegance."
     },
     {
-      question: "How long do EDA Perfumes fragrances last?",
-      answer: "Our premium EDP concentration ensures your signature scent lingers beautifully from dusk till dawn. With proper application, you can expect 8-12 hours of captivating fragrance."
+      question: "How long do the fragrances last?",
+      answer: "Our premium EDP concentration ensures your signature scent lasts 8-12 hours on skin. With proper application, you can expect all-day fragrance presence."
     },
     {
-      question: "Are EDA Perfumes suitable for both men and women?",
-      answer: "Absolutely! Our collection features expertly balanced unisex fragrances that captivate regardless of gender. True luxury knows no boundaries."
+      question: "Are the fragrances suitable for both men and women?",
+      answer: "Yes. Our collection features expertly balanced unisex fragrances that transcend traditional gender boundaries. Each scent is designed to complement individual style."
     },
     {
-      question: "What fragrance notes can I expect in EDA Perfumes?",
-      answer: "Our signature collection features intoxicating blends of citrus, spicy, woody, and floral notes. Each fragrance is a carefully crafted symphony of desire."
+      question: "What fragrance notes can I expect?",
+      answer: "Our signature collection features carefully crafted blends of citrus, spicy, woody, and floral notes. Each fragrance is a unique composition designed for sophistication."
     },
     {
-      question: "How should I apply EDA Perfumes for best results?",
-      answer: "Apply to pulse points like wrists, neck, and behind ears for maximum impact. A little goes a long way with our premium concentration."
+      question: "How should I apply the perfume for best results?",
+      answer: "Apply to pulse points including wrists, neck, and behind ears. A little goes a long way with our premium concentration. Allow the fragrance to dry naturally."
     },
     {
-      question: "Which EDA Perfume should I choose for different occasions?",
-      answer: "Bite Me - Perfect for romantic dates\nDark Knight - Ideal for sophisticated evenings\nMidnight Desire - Best for special occasions\nLusty Nights - Great for passionate moments"
+      question: "Which fragrance should I choose for different occasions?",
+      answer: "Each fragrance in our collection is versatile enough for multiple occasions. Consider your personal style and the mood you wish to create when selecting."
     },
     {
       question: "Do you ship across India?",
-      answer: "Yes! We deliver across India with premium packaging and secure shipping. Most orders arrive within 3-5 working days."
+      answer: "Yes. We deliver across India with secure packaging. Most orders arrive within 3-5 working days. Free shipping is available on orders above ₹999."
     }
   ];
 
@@ -49,41 +48,38 @@ const HomeFAQ: React.FC = () => {
   };
 
   return (
-    <section className="py-16 px-4 bg-gray-50">
+    <section className="py-20 px-4 bg-gray-50">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+        <div className="bg-white border border-gray-200">
           {/* Header */}
-          <div className="bg-rose-500 px-8 py-8 text-center">
-            <div className="inline-flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full mb-4">
-              <Sparkles className="w-4 h-4 text-white" />
-              <span className="text-white text-sm font-medium">Your questions answered</span>
-            </div>
-            <h2 className="text-2xl lg:text-3xl font-bold text-white mb-2">
+          <div className="px-8 py-12 text-center border-b border-gray-200">
+            <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4 tracking-wide">
               Frequently Asked Questions
             </h2>
-            <p className="text-white/90">
-              Everything you need to know about EDA Perfumes
+            <div className="w-16 h-px bg-gray-300 mx-auto mb-4"></div>
+            <p className="text-gray-600 text-sm font-light">
+              Common questions about our fragrances
             </p>
           </div>
 
           {/* FAQ Items */}
           <div className="divide-y divide-gray-200">
             {faqs.map((faq, index) => (
-              <div key={index} className="group">
+              <div key={index}>
                 <button
-                  className="w-full px-6 lg:px-8 py-5 text-left hover:bg-rose-50 transition-all duration-200 focus:outline-none focus:bg-rose-50"
+                  className="w-full px-6 lg:px-8 py-6 text-left hover:bg-gray-50 transition-colors focus:outline-none"
                   onClick={() => toggleFAQ(index)}
                 >
                   <div className="flex justify-between items-center">
-                    <h3 className="font-semibold text-gray-800 text-sm lg:text-base pr-4 group-hover:text-rose-600 transition-colors">
+                    <h3 className="font-light text-gray-900 text-sm lg:text-base pr-4">
                       {faq.question}
                     </h3>
                     <div className="flex-shrink-0">
-                      {openIndex === index ? (
-                        <ChevronUpIcon className="h-5 w-5 text-rose-500" />
-                      ) : (
-                        <ChevronDownIcon className="h-5 w-5 text-gray-400 group-hover:text-rose-500 transition-colors" />
-                      )}
+                      <ChevronDownIcon 
+                        className={`h-4 w-4 text-gray-600 transition-transform duration-300 ${
+                          openIndex === index ? 'rotate-180' : ''
+                        }`}
+                      />
                     </div>
                   </div>
                 </button>
@@ -94,9 +90,9 @@ const HomeFAQ: React.FC = () => {
                     ? 'max-h-96 opacity-100' 
                     : 'max-h-0 opacity-0'
                 }`}>
-                  <div className="px-6 lg:px-8 pb-5">
-                    <div className="bg-rose-50 rounded-lg p-4 border-l-4 border-rose-500">
-                      <p className="text-gray-700 text-sm lg:text-base leading-relaxed whitespace-pre-line">
+                  <div className="px-6 lg:px-8 pb-6">
+                    <div className="bg-gray-50 p-6 border-l-2 border-gray-900">
+                      <p className="text-gray-700 text-sm lg:text-base leading-relaxed whitespace-pre-line font-light">
                         {faq.answer}
                       </p>
                     </div>
@@ -106,19 +102,21 @@ const HomeFAQ: React.FC = () => {
             ))}
           </div>
 
-          {/* Footer CTA */}
-          <div className="bg-gray-50 px-8 py-6 text-center border-t border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">
-              Ready to find your signature scent?
+          {/* Footer */}
+          <div className="px-8 py-8 text-center border-t border-gray-200 bg-gray-50">
+            <h3 className="text-lg font-light text-gray-900 mb-3 tracking-wide">
+              Still Have Questions?
             </h3>
-            <p className="text-gray-600 text-sm mb-4">
-              Explore our collection of seductive fragrances
+            <p className="text-gray-600 text-sm mb-6 font-light">
+              Contact us for more information
             </p>
             
-            <button className="inline-flex items-center gap-2 bg-rose-500 hover:bg-rose-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200">
-              <ShoppingBag className="w-4 h-4" />
+            <Link 
+              href="/shop"
+              className="inline-block px-8 py-3 text-xs text-white bg-black hover:bg-gray-800 transition-colors tracking-widest uppercase font-light"
+            >
               Explore Collection
-            </button>
+            </Link>
           </div>
         </div>
       </div>

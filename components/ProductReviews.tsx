@@ -21,7 +21,6 @@ interface ProductReviewsProps {
   productName: string;
 }
 
-/** WooCommerce reviews API shape (subset we use) */
 interface ApiMetaItem {
   key: string;
   value: unknown;
@@ -168,7 +167,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ productId, productName 
         throw new Error(errTxt || 'Failed to submit review');
       }
 
-      toast({ title: 'Thank you!', description: 'Review submitted successfully.' });
+      toast({ title: 'Thank you', description: 'Review submitted successfully' });
       setFormData({ reviewer: '', reviewer_email: '', review: '', rating: 0 });
       setShowForm(false);
       await loadReviews();
@@ -198,14 +197,14 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ productId, productName 
           key={star}
           type="button"
           onClick={() => interactive && onChange?.(star)}
-          className={`${interactive ? 'cursor-pointer hover:scale-110 active:scale-95' : 'cursor-default'} transition-transform`}
+          className={`${interactive ? 'cursor-pointer hover:opacity-70' : 'cursor-default'} transition-opacity`}
           aria-label={`Rate ${star}`}
           disabled={!interactive}
         >
           {star <= rating ? (
-            <StarIcon className="h-5 w-5 text-amber-400" />
+            <StarIcon className="h-4 w-4 text-gray-900" />
           ) : (
-            <StarOutlineIcon className="h-5 w-5 text-gray-300" />
+            <StarOutlineIcon className="h-4 w-4 text-gray-300" />
           )}
         </button>
       ))}
@@ -218,44 +217,43 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ productId, productName 
       : 0;
 
   return (
-    <section className="bg-white rounded-2xl shadow-lg border border-gray-200">
+    <section className="bg-white border-t border-gray-200">
       {/* Header */}
-      <div className="p-5 sm:p-6 bg-gradient-to-r from-rose-500 via-pink-600 to-purple-600">
-        <div className="flex items-center justify-between">
-          <h2 className="text-white font-black text-xl sm:text-2xl flex items-center gap-2">
-            ⭐ Customer Reviews
-          </h2>
-          <span className="text-white/90 text-xs sm:text-sm font-semibold bg-white/20 px-3 py-1 rounded-full">
-            {reviews.length} review{reviews.length !== 1 ? 's' : ''}
-          </span>
-        </div>
-        <div className="mt-3 flex items-center gap-3">
+      <div className="py-12 text-center">
+        <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4 tracking-wide">
+          Customer Reviews
+        </h2>
+        <div className="w-16 h-px bg-gray-300 mx-auto mb-6"></div>
+        <div className="flex items-center justify-center gap-4 mb-2">
           <StarRating rating={Math.round(averageRating)} />
-          <span className="text-white font-bold text-lg sm:text-xl">
-            {averageRating > 0 ? averageRating.toFixed(1) : '0.0'}
+          <span className="text-sm font-light text-gray-900">
+            {averageRating > 0 ? averageRating.toFixed(1) : '0.0'} out of 5
           </span>
-          <span className="text-white/80 text-sm">out of 5</span>
         </div>
+        <p className="text-xs text-gray-500 font-light">
+          Based on {reviews.length} review{reviews.length !== 1 ? 's' : ''}
+        </p>
       </div>
 
-      <div className="p-5 sm:p-6">
-        {/* Toggle */}
-        <div className="mb-6">
+      <div className="max-w-4xl mx-auto px-4">
+        {/* Toggle Button */}
+        <div className="mb-8 text-center">
           <button
             onClick={() => setShowForm((s) => !s)}
-            className="w-full sm:w-auto px-6 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            className="inline-block px-8 py-3 text-xs text-white bg-black hover:bg-gray-800 transition-colors tracking-widest uppercase font-light"
           >
-            {showForm ? '✖ Cancel' : '✍️ Write Your Review'}
+            {showForm ? 'Cancel' : 'Write a Review'}
           </button>
         </div>
 
         {/* Form */}
         {showForm && (
-          <form onSubmit={submitReview} className="mb-8 p-6 rounded-xl bg-gradient-to-r from-rose-50 to-pink-50 border border-rose-200 space-y-4">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Share Your Experience</h3>
+          <form onSubmit={submitReview} className="mb-12 p-8 border border-gray-200 space-y-6 bg-gray-50">
+            <h3 className="text-lg font-light text-gray-900 tracking-wide">Share Your Experience</h3>
+            
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">Name *</label>
+                <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">Name *</label>
                 <input
                   type="text"
                   required
@@ -263,26 +261,26 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ productId, productName 
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setFormData((s) => ({ ...s, reviewer: e.target.value }))
                   }
-                  className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-rose-500 focus:ring-2 focus:ring-rose-200 outline-none text-sm transition-all"
+                  className="w-full px-4 py-3 border border-gray-300 focus:border-black focus:outline-none text-sm font-light transition-colors"
                   placeholder="Your name"
                 />
               </div>
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">Email (optional)</label>
+                <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">Email</label>
                 <input
                   type="email"
                   value={formData.reviewer_email}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setFormData((s) => ({ ...s, reviewer_email: e.target.value }))
                   }
-                  className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-rose-500 focus:ring-2 focus:ring-rose-200 outline-none text-sm transition-all"
+                  className="w-full px-4 py-3 border border-gray-300 focus:border-black focus:outline-none text-sm font-light transition-colors"
                   placeholder="your.email@example.com"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Your Rating *</label>
+              <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">Rating *</label>
               <StarRating
                 rating={formData.rating}
                 onChange={(v: number) => setFormData((s) => ({ ...s, rating: v }))}
@@ -291,91 +289,86 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ productId, productName 
             </div>
 
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Your Review *</label>
+              <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">Your Review *</label>
               <textarea
                 required
                 value={formData.review}
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                   setFormData((s) => ({ ...s, review: e.target.value }))
                 }
-                rows={4}
-                className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-rose-500 focus:ring-2 focus:ring-rose-200 outline-none text-sm resize-none transition-all"
-                placeholder="Tell us about your experience with this fragrance..."
+                rows={5}
+                className="w-full px-4 py-3 border border-gray-300 focus:border-black focus:outline-none text-sm resize-none font-light transition-colors"
+                placeholder="Tell us about your experience..."
               />
             </div>
 
             <button
               type="submit"
               disabled={submitting}
-              className={`w-full sm:w-auto px-6 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 transition-all shadow-lg ${
-                submitting ? 'opacity-60 cursor-not-allowed' : ''
+              className={`w-full px-8 py-3 text-xs text-white bg-black hover:bg-gray-800 transition-colors tracking-widest uppercase font-light ${
+                submitting ? 'opacity-50 cursor-not-allowed' : ''
               }`}
             >
-              {submitting ? 'Submitting…' : '✨ Submit Review'}
+              {submitting ? 'Submitting...' : 'Submit Review'}
             </button>
           </form>
         )}
 
         {/* Reviews */}
         {loading ? (
-          <div className="py-12 text-center">
-            <div className="animate-spin rounded-full h-10 w-10 border-4 border-rose-500 border-t-transparent mx-auto"></div>
-            <p className="text-gray-600 text-sm mt-3 font-medium">Loading reviews…</p>
+          <div className="py-16 text-center">
+            <div className="animate-spin rounded-full h-10 w-10 border-2 border-gray-900 border-t-transparent mx-auto"></div>
+            <p className="text-gray-600 text-sm mt-4 font-light">Loading reviews...</p>
           </div>
         ) : reviews.length === 0 ? (
-          <div className="py-12 text-center">
-            <div className="text-6xl mb-3">🌹</div>
-            <p className="text-gray-900 text-lg font-bold mb-1">No reviews yet</p>
-            <p className="text-gray-600 text-sm">Be the first to review {productName}!</p>
+          <div className="py-16 text-center border border-gray-200 mb-12">
+            <p className="text-gray-900 text-lg font-light mb-2">No Reviews Yet</p>
+            <p className="text-gray-600 text-sm font-light">Be the first to review {productName}</p>
           </div>
         ) : (
-          <ul className="space-y-4">
+          <div className="space-y-px border-t border-gray-200 mb-12">
             {reviews.map((r) => (
-              <li
+              <div
                 key={r.id}
-                className="p-5 sm:p-6 rounded-xl border-2 border-gray-200 bg-white hover:border-rose-200 hover:shadow-lg transition-all duration-300"
+                className="p-6 sm:p-8 border-b border-gray-200 bg-white hover:bg-gray-50 transition-colors"
               >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center border-2 border-rose-200">
-                      <span className="text-rose-600 font-bold text-lg">
-                        {(r.reviewer || 'A')[0].toUpperCase()}
-                      </span>
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+                    <span className="text-gray-600 font-light text-sm">
+                      {(r.reviewer || 'A')[0].toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <p className="font-light text-gray-900 text-sm">
+                        {r.reviewer || 'Anonymous'}
+                      </p>
+                      <CheckBadgeIcon className="h-4 w-4 text-gray-600" title="Verified" />
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <p className="font-bold text-gray-900 text-sm sm:text-base">
-                          {r.reviewer || 'Anonymous'}
-                        </p>
-                        <CheckBadgeIcon className="h-5 w-5 text-rose-500" title="Verified Purchase" />
-                      </div>
-                      <div className="flex items-center gap-2 mt-1">
-                        <StarRating rating={r.rating || 0} />
-                      </div>
-                    </div>
+                    <StarRating rating={r.rating || 0} />
                   </div>
                 </div>
 
-                <p className="mt-3 text-gray-700 text-sm sm:text-base leading-relaxed whitespace-pre-wrap">
+                <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap font-light">
                   {stripHtml(r.review || '')}
                 </p>
 
                 {Array.isArray(r.images) && r.images.length > 0 && (
-                  <div className="mt-4 grid grid-cols-3 sm:grid-cols-4 gap-2">
+                  <div className="mt-6 grid grid-cols-3 sm:grid-cols-4 gap-2">
                     {r.images.map((src, i) => (
                       <img
                         key={`${r.id}-${i}`}
                         src={src}
-                        alt="Review photo"
-                        className="w-full h-24 sm:h-28 object-cover rounded-lg border-2 border-gray-200 hover:border-rose-300 transition-all cursor-pointer hover:scale-105"
+                        alt="Review"
+                        className="w-full h-24 sm:h-28 object-cover border border-gray-200 hover:border-gray-400 transition-colors cursor-pointer"
                         loading="lazy"
                       />
                     ))}
                   </div>
                 )}
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </div>
     </section>

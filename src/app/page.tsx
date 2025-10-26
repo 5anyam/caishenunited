@@ -5,10 +5,11 @@ import { fetchProducts } from "../../lib/woocommerceApi";
 import ProductCard from "../../components/ProductCard";
 import HeroCarousel from "../../components/HeroCarousel";
 import MarqueeBanner from "../../components/MarqueeBanner";
-import AnimatedBackground from "../../components/AnimatedBackground";
 import AboutUsSection from "../../components/AboutUs";
 import HomeFAQ from "../../components/HomeFaq";
 import Link from "next/link";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useRef } from 'react';
 
 export interface Product {
   id: number;
@@ -23,7 +24,7 @@ export interface Product {
   attributes?: { option: string }[];
 }
 
-// Robust combo detector (category OR name hints)
+// Helper functions
 const isCombo = (p: Product): boolean => {
   const cats = p.categories || [];
   const inComboCategory = cats.some((c) =>
@@ -33,74 +34,107 @@ const isCombo = (p: Product): boolean => {
   return inComboCategory || nameLooksCombo;
 };
 
+const is10ml = (p: Product): boolean => {
+  return /10\s*ml|10ml/i.test(p.name || "");
+};
+
+// Loading Skeleton Component
+const ProductSkeleton = () => (
+  <div className="bg-white rounded-lg overflow-hidden border border-gray-100">
+    <div className="aspect-square bg-gray-100 animate-pulse" />
+    <div className="p-4 space-y-2">
+      <div className="h-4 bg-gray-200 rounded animate-pulse" />
+      <div className="h-3 bg-gray-100 rounded w-2/3 animate-pulse" />
+    </div>
+  </div>
+);
+
 export default function Homepage() {
-  const { data, isLoading, error } = useQuery<Product[]>({
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  // Fixed React Query configuration
+  const { data, isLoading, isError } = useQuery<Product[]>({
     queryKey: ["homepage-products"],
     queryFn: async () => {
-      // One fetch; split client-side to prevent empty sections if API lacks filters.
-      // If your fetchProducts supports filters, you can switch to two queries later.
+      console.log('Fetching products...'); // Debug log
       const result = await fetchProducts();
+      console.log('Products fetched:', result?.length); // Debug log
       return (result || []) as Product[];
     },
+    staleTime: 10 * 60 * 1000, // 10 minutes - data stays fresh
+    gcTime: 30 * 60 * 1000, // 30 minutes - cache time (was cacheTime in v4)
+    refetchOnWindowFocus: false, // Don't refetch on window focus
+    refetchOnMount: false, // Don't refetch on component mount if data exists
+    retry: 3, // Retry 3 times on failure
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
   });
 
   const all = Array.isArray(data) ? data : [];
 
-  // Split collections with defensive checks
-  const signature = all.filter((p) => !isCombo(p));
+  // Split collections
+  const signature = all.filter((p) => !isCombo(p) && !is10ml(p));
   const combos = all.filter((p) => isCombo(p));
+  const tenMl = all.filter((p) => is10ml(p));
 
-  // Always cap at 6 for the homepage
   const signatureTop6 = signature.slice(0, 6);
   const comboTop6 = combos.slice(0, 6);
 
+  // Slider functions
+  const scroll = (direction: 'left' | 'right') => {
+    if (sliderRef.current) {
+      const scrollAmount = 300;
+      sliderRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Debug: Log current state
+  console.log('Query state:', { isLoading, isError, dataLength: all.length });
+
   return (
-    <div className="min-h-screen bg-white pb-24 overflow-x-hidden transition-colors">
+    <div className="min-h-screen bg-white pb-16 overflow-x-hidden">
       <HeroCarousel />
       <MarqueeBanner />
 
-      {/* Signature Section */}
-      <section className="relative mx-auto py-14 px-4">
-        <AnimatedBackground />
-        <div className="absolute inset-0 z-0 bg-gradient-to-br from-slate-900/20 via-gray-900/10 to-black/5 pointer-events-none" />
-        {/* floating orbs (kept as-is) */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-rose-500/30 to-pink-500/20 rounded-full blur-3xl opacity-15 animate-pulse" style={{ animationDuration: "6s" }} />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-r from-purple-500/20 to-violet-500/15 rounded-full blur-3xl opacity-12 animate-pulse" style={{ animationDuration: "8s", animationDelay: "2s" }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-slate-600/25 to-gray-700/20 rounded-full blur-3xl opacity-10 animate-pulse" style={{ animationDuration: "7s", animationDelay: "4s" }} />
-        <div className="absolute top-40 right-1/4 w-48 h-48 bg-gradient-to-r from-amber-500/20 to-orange-500/15 rounded-full blur-3xl opacity-8 animate-pulse" style={{ animationDuration: "9s", animationDelay: "1s" }} />
-        <div className="absolute bottom-40 left-1/4 w-56 h-56 bg-gradient-to-r from-rose-400/25 to-pink-600/20 rounded-full blur-3xl opacity-14 animate-pulse" style={{ animationDuration: "10s", animationDelay: "3s" }} />
-        <div className="absolute top-10 right-20 w-40 h-40 bg-gradient-to-r from-indigo-500/15 to-purple-600/10 rounded-full blur-2xl opacity-12 animate-pulse" style={{ animationDuration: "5s", animationDelay: "6s" }} />
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Signature Collection */}
+      <section className="py-16 px-4">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-rose-400 via-pink-500 to-purple-500 bg-clip-text text-transparent mb-4">
+            <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-3 tracking-wide">
               Signature Collection
             </h2>
-            <p className="text-center text-gray-600 text-lg mb-2 max-w-2xl mx-auto">
-              Discover our most coveted fragrances that capture desire and sophistication.
-            </p>
-            <p className="text-center text-gray-500 text-sm max-w-xl mx-auto italic">
-              For those who dare to make an unforgettable impression.
+            <div className="w-16 h-px bg-gray-300 mx-auto mb-4"></div>
+            <p className="text-gray-600 text-base max-w-2xl mx-auto font-light">
+              Discover our most coveted fragrances that capture desire and sophistication
             </p>
           </div>
 
           {isLoading ? (
-            <div className="text-center text-rose-500 animate-pulse flex items-center justify-center gap-2">
-              <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              Curating your perfect scents...
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {[...Array(6)].map((_, i) => (
+                <ProductSkeleton key={i} />
+              ))}
             </div>
-          ) : error ? (
-            <div className="text-center text-red-400 bg-red-900/20 border border-red-700/30 rounded-lg p-4 backdrop-blur-sm">
-              Unable to load our signature collection.
+          ) : isError ? (
+            <div className="text-center py-12">
+              <div className="bg-gray-50 rounded-lg p-8 max-w-md mx-auto">
+                <p className="text-gray-600 mb-4">Unable to load products</p>
+                <button 
+                  onClick={() => window.location.reload()}
+                  className="px-6 py-2 bg-black text-white text-sm hover:bg-gray-800 transition-colors rounded-sm"
+                >
+                  Refresh Page
+                </button>
+              </div>
             </div>
           ) : signatureTop6.length === 0 ? (
-            <div className="text-center text-gray-500">
-              Signature fragrances will be live shortly.
+            <div className="text-center py-12 text-gray-500">
+              <p>Products will be available soon.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {signatureTop6.map((prod) => (
                 <ProductCard key={prod.id} product={prod} />
               ))}
@@ -109,49 +143,99 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* Combo Perfumes Section */}
-      <section className="relative mx-auto py-14 px-4">
-        <div className="absolute inset-0 z-0 bg-gradient-to-br from-slate-900/10 via-gray-900/5 to-black/0 pointer-events-none" />
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-rose-400 via-pink-500 to-purple-500 bg-clip-text text-transparent mb-4">
-              Combo Perfumes
-            </h2>
-            <p className="text-center text-gray-600 text-lg mb-2 max-w-2xl mx-auto">
-              Hand‑picked fragrance duos for day‑to‑night versatility and great value.
-            </p>
-          </div>
+      {/* 10ml Pack Section - Slider */}
+      {!isLoading && tenMl.length > 0 && (
+        <section className="py-16 px-4 bg-gray-50">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-3 tracking-wide">
+                Travel Size Collection
+              </h2>
+              <div className="w-16 h-px bg-gray-300 mx-auto mb-4"></div>
+              <p className="text-gray-600 text-base max-w-2xl mx-auto font-light">
+                Perfect for on-the-go luxury. Try before you commit.
+              </p>
+            </div>
 
-          {isLoading ? (
-            <div className="text-center text-rose-500 animate-pulse">Loading combos…</div>
-          ) : comboTop6.length === 0 ? (
-            <div className="text-center text-gray-500">Combos will be available soon.</div>
-          ) : (
-            <>
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {comboTop6.map((prod) => (
-                  <ProductCard key={prod.id} product={prod} />
+            <div className="relative group">
+              <button
+                onClick={() => scroll('left')}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden lg:block"
+                aria-label="Scroll left"
+              >
+                <ChevronLeft className="w-5 h-5 text-gray-700" />
+              </button>
+
+              <div
+                ref={sliderRef}
+                className="flex gap-4 overflow-x-auto scroll-smooth pb-4 scrollbar-hide"
+              >
+                {tenMl.map((prod) => (
+                  <div key={prod.id} className="flex-shrink-0 w-64">
+                    <ProductCard product={prod} />
+                  </div>
                 ))}
               </div>
 
-              {combos.length > 6 && (
-                <div className="mt-8 flex justify-center">
-                  <Link
-                    href="/combos"
-                    className="inline-flex items-center gap-2 rounded-xl px-6 py-3 font-semibold text-white bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 shadow-lg transition-all"
-                  >
-                    Show More Combos →
-                  </Link>
-                </div>
-              )}
-            </>
-          )}
-        </div>
-      </section>
+              <button
+                onClick={() => scroll('right')}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden lg:block"
+                aria-label="Scroll right"
+              >
+                <ChevronRight className="w-5 h-5 text-gray-700" />
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Combo Section */}
+      {!isLoading && comboTop6.length > 0 && (
+        <section className="py-16 px-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-3 tracking-wide">
+                Curated Duos
+              </h2>
+              <div className="w-16 h-px bg-gray-300 mx-auto mb-4"></div>
+              <p className="text-gray-600 text-base max-w-2xl mx-auto font-light">
+                Hand-picked fragrance combinations for day-to-night versatility
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {comboTop6.map((prod) => (
+                <ProductCard key={prod.id} product={prod} />
+              ))}
+            </div>
+
+            {combos.length > 6 && (
+              <div className="mt-10 flex justify-center">
+                <Link
+                  href="/combos"
+                  className="inline-flex items-center gap-2 px-8 py-3 text-sm font-light tracking-wide text-white bg-black hover:bg-gray-800 transition-colors duration-300 rounded-sm"
+                >
+                  View All Duos
+                </Link>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       <AboutUsSection />
       <Testimonials />
       <HomeFAQ />
+
+      <style jsx global>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </div>
   );
 }
