@@ -7,6 +7,7 @@ import FacebookPixel from '../../components/FacebookPixel';
 import Script from 'next/script';
 import AnnouncementBar from '../../components/anouncement';
 import { Suspense } from 'react';
+import Whatsapp from '../../components/Whatsapp';
 
 export const metadata = {
   title: 'EDA Perfumes - Where Desire Meets Sophisticated Fragrance',
@@ -66,7 +67,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const fbPixelId = '821676445858360';
-  const gtagId = 'AW-17423083060';
+  const gtagId = 'AW-17423060';
 
   return (
     <html lang="en">
@@ -240,6 +241,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               {children}
             </main>
             <Footer />
+            <Whatsapp/>
             
             {/* Facebook Pixel Route Tracking */}
             <Suspense fallback={null}>

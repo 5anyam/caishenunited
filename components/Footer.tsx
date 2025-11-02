@@ -25,30 +25,35 @@ export default function Footer() {
             {/* Social Media Icons */}
             <div className="flex gap-3">
               <Link 
+              target="_blank"
                 href="https://www.facebook.com/eclat.d.amour.508599/" 
                 className="p-2 border border-gray-300 hover:border-black hover:bg-black hover:text-white transition-colors"
               >
                 <FaFacebookF className="text-sm" />
               </Link>
               <Link 
+              target="_blank"
                 href="https://x.com/edaperfumes" 
                 className="p-2 border border-gray-300 hover:border-black hover:bg-black hover:text-white transition-colors"
               >
                 <FaTwitter className="text-sm" />
               </Link>
               <Link 
+              target="_blank"
                 href="https://www.instagram.com/edaperfumes" 
                 className="p-2 border border-gray-300 hover:border-black hover:bg-black hover:text-white transition-colors"
               >
                 <FaInstagram className="text-sm" />
               </Link>
               <Link 
+              target="_blank"
                 href="https://www.linkedin.com/in/eda-perfumes-199787354/" 
                 className="p-2 border border-gray-300 hover:border-black hover:bg-black hover:text-white transition-colors"
               >
                 <FaLinkedinIn className="text-sm" />
               </Link>
               <Link 
+              target="_blank"
                 href="https://www.youtube.com/@edaperfumes" 
                 className="p-2 border border-gray-300 hover:border-black hover:bg-black hover:text-white transition-colors"
               >
