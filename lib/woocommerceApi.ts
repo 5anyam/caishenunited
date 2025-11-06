@@ -1,6 +1,6 @@
-const API_BASE = "https://cms.edaperfumes.com/wp-json/wc/v3";
-const CONSUMER_KEY = process.env.CONSUMER_KEY || "ck_b1a13e4236dd41ec9b8e6a1720a69397ddd12da6";
-const CONSUMER_SECRET = process.env.CONSUMER_SECRET || "cs_d8439cfabc73ad5b9d82d1d3facea6711f24dfd1";
+const API_BASE = "https://cms.caishenunited.com/wp-json/wc/v3";
+const CONSUMER_KEY = process.env.CONSUMER_KEY || "ck_9a1fbb9afa025bbe8591eb4322c3e1c68e1b1002";
+const CONSUMER_SECRET = process.env.CONSUMER_SECRET || "cs_42d947c7a1acb0c0ca89ca17b35629a530097e44";
 
 
 export interface WCImage {

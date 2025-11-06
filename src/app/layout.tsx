@@ -3,27 +3,26 @@ import ReactQueryProvider from '../../components/ReactQueryProvider';
 import { CartProvider } from '../../lib/cart';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import FacebookPixel from '../../components/FacebookPixel';
+
 import Script from 'next/script';
 import AnnouncementBar from '../../components/anouncement';
-import { Suspense } from 'react';
 import Whatsapp from '../../components/Whatsapp';
 
 export const metadata = {
-  title: 'EDA Perfumes - Where Desire Meets Sophisticated Fragrance',
-  description: 'Dare to indulge in the forbidden. EDA Perfumes crafts seductive fragrances for the bold, the daring, and those who aren\'t afraid to make a statement. Our collection embodies the perfect balance of sophistication and temptation.',
-  keywords: 'luxury perfumes, seductive fragrances, EDP, unisex perfumes, long lasting perfumes, premium fragrances, after dark collection, signature scents, luxury perfumes India',
+  title: 'Caishen United - Premium Phone Cases & Accessories | Military-Grade Protection',
+  description: 'Discover Caishen United\'s collection of premium phone cases and accessories. Military-grade protection meets timeless design. Shop iPhone, Samsung, OnePlus cases and more with lifetime warranty.',
+  keywords: 'premium phone cases, luxury phone covers, iPhone cases India, Samsung cases, military grade phone protection, designer phone cases, phone accessories, premium mobile covers, shock proof cases, wireless chargers, screen protectors, Caishen United',
   openGraph: {
-    title: 'EDA Perfumes - Where Desire Meets Sophisticated Fragrance',
-    description: 'Crafting seductive fragrances for those who dare to make a statement. Premium EDP collection for the bold and sophisticated.',
-    url: 'https://edaperfumes.com',
-    siteName: 'EDA Perfumes',
+    title: 'Caishen United - Premium Phone Cases & Accessories',
+    description: 'Military-grade protection meets timeless design. Premium phone cases and accessories for iPhone, Samsung, OnePlus, and more.',
+    url: 'https://caishenunited.com',
+    siteName: 'Caishen United',
     images: [
       {
-        url: '/eda-perfumes-logo.jpeg',
+        url: '/logo.png',
         width: 1200,
         height: 630,
-        alt: 'EDA Perfumes - Seductive Luxury Fragrances',
+        alt: 'Caishen United - Premium Phone Protection',
       },
     ],
     locale: 'en_IN',
@@ -31,10 +30,10 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'EDA Perfumes - Where Desire Meets Sophisticated Fragrance',
-    description: 'Crafting seductive fragrances for those who dare to make a statement.',
-    images: ['/eda-perfumes-logo.jpeg'],
-    creator: '@edaperfumes',
+    title: 'Caishen United - Premium Phone Cases & Accessories',
+    description: 'Military-grade protection meets timeless design. Premium phone protection for discerning users.',
+    images: ['/logo.png'],
+    creator: '@caishenunited',
   },
   robots: {
     index: true,
@@ -51,13 +50,13 @@ export const metadata = {
     google: 'your-google-verification-code',
   },
   alternates: {
-    canonical: 'https://edaperfumes.com',
+    canonical: 'https://caishenunited.com',
   },
-  category: 'luxury perfumes',
-  classification: 'Beauty & Personal Care',
-  authors: [{ name: 'EDA Perfumes Team' }],
-  creator: 'EDA Perfumes',
-  publisher: 'EDA Perfumes',
+  category: 'phone accessories',
+  classification: 'Electronics & Mobile Accessories',
+  authors: [{ name: 'Caishen United' }],
+  creator: 'Caishen United',
+  publisher: 'Caishen United',
   formatDetection: {
     email: false,
     address: false,
@@ -66,8 +65,8 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const fbPixelId = '821676445858360';
-  const gtagId = 'AW-17423060';
+  const fbPixelId = 'YOUR_FB_PIXEL_ID';
+  const gtagId = 'AW-XXXXXXXXX';
 
   return (
     <html lang="en">
@@ -78,11 +77,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
-        <meta name="theme-color" content="#f43f5e" />
-        <meta name="msapplication-TileColor" content="#f43f5e" />
+        <meta name="theme-color" content="#000000" />
+        <meta name="msapplication-TileColor" content="#000000" />
         
         {/* Preload Critical Assets */}
-        <link rel="preload" href="/eda-perfumes-logo.jpeg" as="image" type="image/jpeg" />
+        <link rel="preload" href="/logo.png" as="image" type="image/png" />
         
         {/* Additional SEO Meta Tags */}
         <meta name="language" content="English" />
@@ -95,56 +94,150 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="audience" content="all" />
         <meta name="coverage" content="Worldwide" />
         
-        {/* Structured Data for Luxury Brand */}
+        {/* Structured Data for Premium Phone Accessories Brand */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              "name": "EDA Perfumes",
-              "description": "Luxury perfume brand crafting seductive fragrances for the bold and sophisticated",
-              "url": "https://edaperfumes.com",
-              "logo": "https://edaperfumes.com/eda-perfumes-logo.jpeg",
-              "foundingDate": "2023",
+              "name": "Caishen United",
+              "description": "Premium phone cases and accessories brand offering military-grade protection with timeless design",
+              "url": "https://caishenunited.com",
+              "logo": "https://caishenunited.com/logo.png",
+              "foundingDate": "2024",
               "founders": [
                 {
                   "@type": "Person",
-                  "name": "EDA Perfumes Founder"
+                  "name": "Caishen United Founder"
                 }
               ],
               "address": {
                 "@type": "PostalAddress",
-                "streetAddress": "D5/204, Chintpurni House, Central Market",
-                "addressLocality": "Prashant Vihar",
-                "addressRegion": "New Delhi",
-                "postalCode": "110085",
+                "addressLocality": "Your City",
+                "addressRegion": "Your State",
+                "postalCode": "XXXXXX",
                 "addressCountry": "IN"
               },
               "contactPoint": {
                 "@type": "ContactPoint",
-                "telephone": "+91-92116-19009",
+                "telephone": "+91-XXXXXXXXXX",
                 "contactType": "customer service",
-                "email": "care@edaperfumes.com"
+                "email": "support@caishenunited.com",
+                "availableLanguage": ["English", "Hindi"]
               },
               "sameAs": [
-                "https://www.facebook.com/edaperfumes",
-                "https://www.instagram.com/edaperfumes",
-                "https://www.youtube.com/@edaperfumes"
+                "https://www.facebook.com/caishenunited",
+                "https://www.instagram.com/caishenunited",
+                "https://www.youtube.com/@caishenunited"
               ],
               "brand": {
                 "@type": "Brand",
-                "name": "EDA Perfumes"
+                "name": "Caishen United",
+                "logo": "https://caishenunited.com/logo.png",
+                "slogan": "Premium Protection. Timeless Design."
               },
               "makesOffer": {
                 "@type": "Offer",
-                "itemOffered": {
-                  "@type": "Product",
-                  "name": "Luxury Perfumes",
-                  "category": "Beauty & Personal Care",
-                  "brand": "EDA Perfumes"
-                }
+                "itemOffered": [
+                  {
+                    "@type": "Product",
+                    "name": "Premium Phone Cases",
+                    "category": "Mobile Phone Accessories",
+                    "brand": "Caishen United"
+                  },
+                  {
+                    "@type": "Product",
+                    "name": "Phone Accessories",
+                    "category": "Mobile Phone Accessories",
+                    "brand": "Caishen United"
+                  }
+                ]
+              },
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.8",
+                "reviewCount": "150",
+                "bestRating": "5",
+                "worstRating": "1"
               }
+            })
+          }}
+        />
+
+        {/* Product Schema for Phone Cases */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ItemList",
+              "itemListElement": [
+                {
+                  "@type": "Product",
+                  "position": 1,
+                  "name": "Premium iPhone Cases",
+                  "description": "Military-grade protection for iPhone with sophisticated design",
+                  "brand": {
+                    "@type": "Brand",
+                    "name": "Caishen United"
+                  },
+                  "category": "Phone Cases"
+                },
+                {
+                  "@type": "Product",
+                  "position": 2,
+                  "name": "Premium Samsung Cases",
+                  "description": "Luxury phone protection for Samsung devices",
+                  "brand": {
+                    "@type": "Brand",
+                    "name": "Caishen United"
+                  },
+                  "category": "Phone Cases"
+                },
+                {
+                  "@type": "Product",
+                  "position": 3,
+                  "name": "Phone Accessories",
+                  "description": "Premium chargers, cables, and screen protectors",
+                  "brand": {
+                    "@type": "Brand",
+                    "name": "Caishen United"
+                  },
+                  "category": "Mobile Accessories"
+                }
+              ]
+            })
+          }}
+        />
+
+        {/* BreadcrumbList Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://caishenunited.com"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Phone Covers",
+                  "item": "https://caishenunited.com/shop/covers"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": "Accessories",
+                  "item": "https://caishenunited.com/shop/accessories"
+                }
+              ]
             })
           }}
         />
@@ -163,10 +256,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             fbq('init', '${fbPixelId}');
             fbq('track', 'PageView');
             
-            // Track luxury brand specific events
-            fbq('trackCustom', 'ViewLuxuryBrand', {
-              brand: 'EDA Perfumes',
-              category: 'Luxury Perfumes'
+            // Track premium brand specific events
+            fbq('trackCustom', 'ViewPremiumBrand', {
+              brand: 'Caishen United',
+              category: 'Premium Phone Accessories'
             });
           `}
         </Script>
@@ -182,13 +275,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${gtagId}', {
-              page_title: 'EDA Perfumes',
+              page_title: 'Caishen United',
               page_location: window.location.href,
-              content_group1: 'Luxury Perfumes',
-              content_group2: 'Beauty & Personal Care',
+              content_group1: 'Premium Phone Accessories',
+              content_group2: 'Electronics & Mobile',
               custom_map: {
-                'dimension1': 'luxury_brand',
-                'dimension2': 'perfume_category'
+                'dimension1': 'premium_brand',
+                'dimension2': 'phone_accessories'
               }
             });
             
@@ -197,10 +290,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               'custom_map': {'custom_parameter': 'dimension1'},
               'enhanced_ecommerce': true
             });
+            
+            // Track product views
+            gtag('event', 'view_item_list', {
+              'items': [{
+                'item_name': 'Premium Phone Cases',
+                'item_category': 'Phone Accessories',
+                'item_brand': 'Caishen United'
+              }]
+            });
           `}
         </Script>
 
-        {/* Google Tag Manager (Optional) */}
+        {/* Google Tag Manager */}
         <Script id="google-tag-manager" strategy="afterInteractive">
           {`
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -222,7 +324,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           />
         </noscript>
       </head>
-      <body className="overflow-x-hidden overflow-y-scroll antialiased">
+      <body className="overflow-x-hidden overflow-y-scroll antialiased bg-white">
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe 
@@ -237,25 +339,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <CartProvider>
             <AnnouncementBar />
             <Header />
-            <main role="main">
+            <main role="main" className="min-h-screen">
               {children}
             </main>
             <Footer />
             <Whatsapp/>
             
-            {/* Facebook Pixel Route Tracking */}
-            <Suspense fallback={null}>
-              <FacebookPixel pixelId={1648859765778662} />
-            </Suspense>
+         
           </CartProvider>
         </ReactQueryProvider>
 
-        {/* Customer Chat Plugin (Optional) */}
+        {/* Customer Chat Plugin */}
         <Script id="facebook-chat" strategy="lazyOnload">
           {`
             var chatbox = document.getElementById('fb-customer-chat');
-            chatbox.setAttribute("page_id", "YOUR_PAGE_ID");
-            chatbox.setAttribute("attribution", "biz_inbox");
+            if(chatbox) {
+              chatbox.setAttribute("page_id", "YOUR_PAGE_ID");
+              chatbox.setAttribute("attribution", "biz_inbox");
+            }
             
             window.fbAsyncInit = function() {
               FB.init({
