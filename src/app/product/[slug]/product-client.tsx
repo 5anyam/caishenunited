@@ -12,7 +12,7 @@ import { Tab } from '@headlessui/react'
 import ProductFAQ from '../../../../components/ProductFaq'
 import RelatedProducts from '../../../../components/RelatedProducts'
 import ProductReviews from '../../../../components/ProductReviews'
-import { Heart, Star, Shield, Truck, Award, CreditCard, Plus, Minus } from 'lucide-react'
+import { Heart, Star, Shield, Truck, Award, CreditCard, Plus, Minus, Crown, Sparkles, Check } from 'lucide-react'
 
 export interface ImageData { src: string }
 export interface Attribute { option: string }
@@ -72,8 +72,11 @@ export default function ProductClient({
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-2 border-gray-900 border-t-transparent mx-auto mb-3"></div>
-          <p className="text-gray-600 text-sm font-light">Loading...</p>
+          <div className="relative w-16 h-16 mx-auto mb-4">
+            <div className="absolute inset-0 rounded-full border-2 border-[#D4AF37] border-t-transparent animate-spin" />
+            <Crown className="absolute inset-0 m-auto w-6 h-6 text-[#D4AF37]" />
+          </div>
+          <p className="text-gray-600 text-sm font-light">Loading premium experience...</p>
         </div>
       </div>
     )
@@ -81,15 +84,16 @@ export default function ProductClient({
 
   if (error || (!products && !product) || !product) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50">
         <div className="text-center max-w-md p-8">
-          <h2 className="text-xl font-light text-gray-900 mb-3">Product Not Found</h2>
-          <p className="text-sm text-gray-600 font-light mb-6">The product you are looking for does not exist.</p>
+          <Crown className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+          <h2 className="text-2xl font-light text-gray-900 mb-3">Product Not Found</h2>
+          <p className="text-sm text-gray-600 font-light mb-8">The premium product you are looking for does not exist.</p>
           <button 
             onClick={() => router.push('/shop')}
-            className="px-8 py-3 text-xs text-white bg-black hover:bg-gray-800 transition-colors tracking-widest uppercase font-light"
+            className="px-10 py-4 text-xs text-white bg-gradient-to-r from-[#D4AF37] to-[#C5A028] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all duration-500 tracking-widest uppercase font-medium"
           >
-            Back to Shop
+            Explore Collection
           </button>
         </div>
       </div>
@@ -120,8 +124,8 @@ export default function ProductClient({
       }
       trackAddToCart({ id: product.id, name: product.name, price: salePrice }, quantity)
       toast({
-        title: 'Added to Cart',
-        description: `${quantity} x ${product.name} added to your cart.`,
+        title: '✨ Added to Cart',
+        description: `${quantity} x ${product.name} added successfully.`,
       })
     } catch (error) {
       console.error('Add to cart failed:', error)
@@ -159,55 +163,75 @@ export default function ProductClient({
 
   return (
     <div className="min-h-screen bg-white pb-20 lg:pb-8">
-      {/* Breadcrumb - Minimal */}
-      <div className="border-b border-gray-200">
+      {/* Premium Breadcrumb with gold accent */}
+      <div className="border-b border-gray-100 bg-gradient-to-r from-white via-[#F5E6D3]/5 to-white">
         <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center space-x-2 text-xs text-gray-500 font-light">
-            <button onClick={() => router.push('/shop')} className="hover:text-black transition-colors">
+          <div className="flex items-center space-x-3 text-xs text-gray-500 font-light">
+            <button onClick={() => router.push('/shop')} className="hover:text-[#D4AF37] transition-colors">
               Shop
             </button>
-            <span>›</span>
+            <span className="text-[#D4AF37]">›</span>
             <span className="text-black truncate">{product.name}</span>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto mt-8 px-4 flex flex-col lg:flex-row gap-12">
-        {/* Image Section */}
+      <div className="max-w-7xl mx-auto mt-12 px-4 flex flex-col lg:flex-row gap-16">
+        {/* Image Section with gold accent */}
         <div className="lg:w-1/2">
-          <div className="sticky top-8">
+          <div className="sticky top-8 relative">
+            <div className="absolute -inset-px bg-gradient-to-br from-[#D4AF37]/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
             <ImageGallery images={product.images || []} />
+            {hasSale && (
+              <div className="absolute top-4 left-4 bg-gradient-to-r from-[#D4AF37] to-[#C5A028] text-black px-4 py-2 text-xs font-bold tracking-wider shadow-[0_4px_15px_rgba(212,175,55,0.4)] flex items-center gap-2">
+                <Sparkles className="w-3 h-3" />
+                {Math.round(((regularPrice - salePrice) / regularPrice) * 100)}% OFF
+              </div>
+            )}
           </div>
         </div>
 
         {/* Details Section */}
         <div className="lg:w-1/2">
-          <div className="space-y-6">
-            {/* Category */}
+          <div className="space-y-8">
+            {/* Category with gold accent */}
             {product.attributes?.length && (
-              <div className="text-xs text-gray-500 uppercase tracking-widest font-light">
-                {product.attributes[0]?.option || 'Collection'}
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-px bg-gradient-to-r from-[#D4AF37] to-transparent" />
+                <div className="text-[10px] text-[#D4AF37] uppercase tracking-[0.25em] font-medium flex items-center gap-2">
+                  <Crown className="w-3 h-3" />
+                  {product.attributes[0]?.option || 'Premium Collection'}
+                </div>
               </div>
             )}
 
-            {/* Product Name */}
-            <h1 className="text-3xl lg:text-4xl font-light text-gray-900 tracking-wide">
+            {/* Product Name with animation */}
+            <h1 className="text-4xl lg:text-5xl font-light text-gray-900 tracking-tight leading-tight animate-fade-in">
               {product.name}
             </h1>
 
-            {/* Rating */}
-            <div className="flex items-center gap-4 pb-6 border-b border-gray-200">
+            {/* Rating with gold stars */}
+            <div className="flex items-center gap-4 pb-8 border-b border-gray-100">
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 text-gray-900 fill-gray-900" />
+                  <Star 
+                    key={i} 
+                    className="w-4 h-4 text-[#D4AF37] fill-[#D4AF37] drop-shadow-[0_0_4px_rgba(212,175,55,0.3)]" 
+                  />
                 ))}
               </div>
               <span className="text-xs text-gray-600 font-light">4.8 (247 reviews)</span>
               <button
                 onClick={() => setIsWishlisted(!isWishlisted)}
-                className="ml-auto"
+                className="ml-auto group"
               >
-                <Heart className={`w-5 h-5 transition-colors ${isWishlisted ? 'fill-black text-black' : 'text-gray-400'}`} />
+                <Heart 
+                  className={`w-5 h-5 transition-all duration-300 ${
+                    isWishlisted 
+                      ? 'fill-[#D4AF37] text-[#D4AF37] drop-shadow-[0_0_8px_rgba(212,175,55,0.4)]' 
+                      : 'text-gray-400 group-hover:text-[#D4AF37]'
+                  }`} 
+                />
               </button>
             </div>
 
@@ -219,89 +243,138 @@ export default function ProductClient({
               />
             )}
 
-            {/* Price Section - Minimal */}
-            <div className="py-6 border-y border-gray-200">
-              <div className="flex items-baseline gap-3">
-                <span className="text-2xl font-light text-gray-900">
+            {/* Premium Price Section */}
+            <div className="py-8 border-y border-gray-100 bg-gradient-to-r from-[#F5E6D3]/10 to-transparent -mx-6 px-6">
+              <div className="flex items-baseline gap-4">
+                <span className="text-3xl font-light text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#C5A028]">
                   ₹{totalPrice.toLocaleString()}
                 </span>
                 {hasSale && (
                   <>
-                    <span className="line-through text-gray-400 font-light">
+                    <span className="line-through text-gray-400 font-light text-lg">
                       ₹{totalRegularPrice.toLocaleString()}
                     </span>
-                    <span className="text-xs text-gray-600 font-light">
+                    <span className="text-sm text-[#D4AF37] font-medium flex items-center gap-1">
+                      <Sparkles className="w-3 h-3" />
                       Save ₹{totalSaving.toLocaleString()}
                     </span>
                   </>
                 )}
               </div>
               {quantity > 1 && (
-                <div className="text-xs text-gray-500 mt-2 font-light">
-                  ₹{salePrice.toLocaleString()} per bottle
+                <div className="text-xs text-gray-500 mt-3 font-light flex items-center gap-2">
+                  <div className="w-4 h-px bg-[#D4AF37]/30" />
+                  ₹{salePrice.toLocaleString()} per unit
                 </div>
               )}
             </div>
 
-            {/* Quantity Selector - Minimal */}
+            {/* Premium Quantity Selector */}
             <div>
-              <label className="block text-xs font-light text-gray-600 mb-3 uppercase tracking-widest">
+              <label className="block text-xs font-medium text-gray-600 mb-4 uppercase tracking-[0.2em]">
                 Quantity
               </label>
               <div className="flex items-center gap-4">
-                <div className="flex items-center border border-gray-300">
+                <div className="flex items-center border-2 border-gray-200 hover:border-[#D4AF37]/50 transition-colors duration-300">
                   <button
                     onClick={() => handleQuantityChange(-1)}
-                    className="p-3 hover:bg-gray-50 transition-colors"
+                    className="p-4 hover:bg-[#F5E6D3]/20 transition-colors disabled:opacity-50"
                     disabled={quantity <= 1}
                   >
-                    <Minus className="w-3.5 h-3.5 text-gray-600" />
+                    <Minus className="w-4 h-4 text-gray-600" />
                   </button>
-                  <span className="px-6 py-3 font-light text-gray-900 text-sm">
+                  <span className="px-8 py-4 font-light text-gray-900 text-base border-x-2 border-gray-200">
                     {quantity}
                   </span>
                   <button
                     onClick={() => handleQuantityChange(1)}
-                    className="p-3 hover:bg-gray-50 transition-colors"
+                    className="p-4 hover:bg-[#F5E6D3]/20 transition-colors"
                   >
-                    <Plus className="w-3.5 h-3.5 text-gray-600" />
+                    <Plus className="w-4 h-4 text-gray-600" />
                   </button>
                 </div>
               </div>
             </div>
 
-            {/* Action Buttons - Minimal */}
-            <div className="hidden lg:flex flex-col gap-3 pt-6">
+            {/* Premium Action Buttons */}
+            <div className="hidden lg:flex flex-col gap-4 pt-8">
               <button
-                className={`w-full bg-black text-white font-light px-8 py-4 text-xs tracking-widest uppercase hover:bg-gray-800 transition-colors ${isAddingToCart ? 'opacity-50' : ''}`}
+                className={`group relative w-full bg-gradient-to-r from-[#D4AF37] to-[#C5A028] text-black font-bold px-8 py-5 text-sm tracking-widest uppercase overflow-hidden transition-all duration-500 hover:shadow-[0_0_40px_rgba(212,175,55,0.5)] ${
+                  isAddingToCart ? 'opacity-75' : ''
+                }`}
                 onClick={handleAddToCart}
                 disabled={isAddingToCart}
               >
-                {isAddingToCart ? 'Added' : 'Add to Cart'}
+                <span className="relative z-10 flex items-center justify-center gap-2">
+                  {isAddingToCart ? (
+                    <>
+                      <Check className="w-4 h-4" />
+                      Added to Cart
+                    </>
+                  ) : (
+                    <>
+                      <Crown className="w-4 h-4" />
+                      Add to Cart
+                    </>
+                  )}
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#F5E6D3] to-[#D4AF37] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
               </button>
               <button
-                className={`w-full border border-gray-300 text-black font-light px-8 py-4 text-xs tracking-widest uppercase hover:bg-gray-50 transition-colors ${isBuyingNow ? 'opacity-50' : ''}`}
+                className={`relative w-full border-2 border-black text-black font-medium px-8 py-5 text-sm tracking-widest uppercase hover:bg-black hover:text-white transition-all duration-500 overflow-hidden group ${
+                  isBuyingNow ? 'opacity-75' : ''
+                }`}
                 onClick={handleBuyNow}
                 disabled={isBuyingNow}
               >
-                {isBuyingNow ? 'Processing...' : 'Buy Now'}
+                <span className="relative z-10">
+                  {isBuyingNow ? 'Processing...' : 'Buy Now'}
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               </button>
             </div>
 
-            {/* Trust Badges - Minimal */}
-            <div className="grid grid-cols-2 gap-4 pt-6 border-t border-gray-200">
+            {/* Premium Trust Badges */}
+            <div className="grid grid-cols-2 gap-4 pt-8 border-t border-gray-100">
               {[
-                { icon: <Truck className="w-4 h-4" />, label: 'Free Shipping', subtitle: 'Orders above ₹999' },
-                { icon: <Shield className="w-4 h-4" />, label: 'Authentic', subtitle: 'Guaranteed original' },
-                { icon: <Award className="w-4 h-4" />, label: 'Premium Quality', subtitle: 'Long-lasting EDP' },
-                { icon: <CreditCard className="w-4 h-4" />, label: 'Secure Payment', subtitle: 'Protected checkout' },
+                { 
+                  icon: <Truck className="w-5 h-5" />, 
+                  label: 'Free Shipping', 
+                  subtitle: 'Orders above ₹999',
+                  gradient: 'from-[#D4AF37]/10 to-transparent'
+                },
+                { 
+                  icon: <Shield className="w-5 h-5" />, 
+                  label: 'Authentic', 
+                  subtitle: 'Guaranteed original',
+                  gradient: 'from-[#C5A028]/10 to-transparent'
+                },
+                { 
+                  icon: <Award className="w-5 h-5" />, 
+                  label: 'Premium Quality', 
+                  subtitle: 'Military-grade',
+                  gradient: 'from-[#D4AF37]/10 to-transparent'
+                },
+                { 
+                  icon: <CreditCard className="w-5 h-5" />, 
+                  label: 'Secure Payment', 
+                  subtitle: 'Protected checkout',
+                  gradient: 'from-[#C5A028]/10 to-transparent'
+                },
               ].map((item, idx) => (
-                <div key={idx} className="text-center p-4 border border-gray-100">
-                  <div className="text-gray-600 mb-2 flex justify-center">
-                    {item.icon}
+                <div 
+                  key={idx} 
+                  className="group text-center p-6 border border-gray-100 hover:border-[#D4AF37]/30 transition-all duration-500 relative overflow-hidden"
+                >
+                  <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                  <div className="relative z-10">
+                    <div className="text-gray-600 group-hover:text-[#D4AF37] mb-3 flex justify-center transition-colors duration-300">
+                      {item.icon}
+                    </div>
+                    <div className="font-medium text-xs text-gray-900 mb-1 uppercase tracking-wider">{item.label}</div>
+                    <div className="text-xs text-gray-500 font-light">{item.subtitle}</div>
                   </div>
-                  <div className="font-light text-xs text-gray-900 mb-1">{item.label}</div>
-                  <div className="text-xs text-gray-500 font-light">{item.subtitle}</div>
                 </div>
               ))}
             </div>
@@ -309,14 +382,14 @@ export default function ProductClient({
         </div>
       </div>
 
-      {/* Mobile Fixed Bottom - Minimal */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 p-4">
+      {/* Mobile Fixed Bottom with gold accents */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 z-50 p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
         <div className="max-w-md mx-auto">
           <div className="flex items-center gap-3 mb-4">
             <div className="flex-1">
-              <div className="text-xs text-gray-500 mb-1 font-light">Total</div>
+              <div className="text-xs text-gray-500 mb-1 font-light uppercase tracking-wider">Total</div>
               <div className="flex items-center gap-2">
-                <span className="text-xl font-light text-gray-900">
+                <span className="text-xl font-light text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#C5A028]">
                   ₹{totalPrice.toLocaleString()}
                 </span>
                 {hasSale && (
@@ -326,18 +399,18 @@ export default function ProductClient({
                 )}
               </div>
             </div>
-            <div className="flex items-center border border-gray-300">
+            <div className="flex items-center border-2 border-gray-200">
               <button
                 onClick={() => handleQuantityChange(-1)}
-                className="p-2 hover:bg-gray-50"
+                className="p-2.5 hover:bg-[#F5E6D3]/20"
                 disabled={quantity <= 1}
               >
                 <Minus className="w-3 h-3" />
               </button>
-              <span className="px-4 py-2 text-sm font-light">{quantity}</span>
+              <span className="px-4 py-2.5 text-sm font-light border-x-2 border-gray-200">{quantity}</span>
               <button
                 onClick={() => handleQuantityChange(1)}
-                className="p-2 hover:bg-gray-50"
+                className="p-2.5 hover:bg-[#F5E6D3]/20"
               >
                 <Plus className="w-3 h-3" />
               </button>
@@ -345,14 +418,14 @@ export default function ProductClient({
           </div>
           <div className="flex gap-3">
             <button
-              className="flex-1 bg-black text-white font-light px-4 py-3 text-xs tracking-widest uppercase hover:bg-gray-800"
+              className="flex-1 bg-gradient-to-r from-[#D4AF37] to-[#C5A028] text-black font-bold px-4 py-3.5 text-xs tracking-widest uppercase"
               onClick={handleAddToCart}
               disabled={isAddingToCart}
             >
               {isAddingToCart ? 'Added' : 'Add to Cart'}
             </button>
             <button
-              className="flex-1 border border-gray-300 text-black font-light px-4 py-3 text-xs tracking-widest uppercase hover:bg-gray-50"
+              className="flex-1 border-2 border-black text-black font-medium px-4 py-3.5 text-xs tracking-widest uppercase hover:bg-black hover:text-white transition-colors"
               onClick={handleBuyNow}
               disabled={isBuyingNow}
             >
@@ -362,54 +435,83 @@ export default function ProductClient({
         </div>
       </div>
 
-      {/* Tabs - Minimal */}
-      <div className="max-w-7xl mx-auto mt-16 px-4">
-        <div className="border-t border-gray-200">
+      {/* Premium Tabs */}
+      <div className="max-w-7xl mx-auto mt-20 px-4">
+        <div className="border-t border-gray-100">
           <Tab.Group>
-            <Tab.List className="flex border-b border-gray-200">
-              {['Description', 'Fragrance Notes', 'How to Use'].map((label, idx) => (
+            <Tab.List className="flex border-b border-gray-100">
+              {['Description', 'Specifications', 'Care Instructions'].map((label, idx) => (
                 <Tab key={idx} className={({ selected }) =>
-                  `flex-1 py-4 px-6 text-xs font-light outline-none transition-all uppercase tracking-widest ${
+                  `flex-1 py-5 px-6 text-xs font-medium outline-none transition-all uppercase tracking-[0.2em] relative ${
                     selected 
-                      ? 'text-black border-b-2 border-black' 
-                      : 'text-gray-500 hover:text-black'
+                      ? 'text-black' 
+                      : 'text-gray-500 hover:text-gray-700'
                   }`
                 }>
-                  {label}
+                  {({ selected }) => (
+                    <>
+                      {label}
+                      {selected && (
+                        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#D4AF37] to-[#C5A028] shadow-[0_2px_10px_rgba(212,175,55,0.5)]" />
+                      )}
+                    </>
+                  )}
                 </Tab>
               ))}
             </Tab.List>
-            <Tab.Panels className="py-8">
+            <Tab.Panels className="py-12">
               <Tab.Panel>
                 <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed font-light" 
                      dangerouslySetInnerHTML={{ __html: product.description || '' }} />
               </Tab.Panel>
               <Tab.Panel>
-                <div className="space-y-6">
-                  <h3 className="text-lg font-light text-gray-900 tracking-wide">Fragrance Profile</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-8">
+                  <div className="flex items-center gap-3 mb-8">
+                    <Crown className="w-5 h-5 text-[#D4AF37]" />
+                    <h3 className="text-xl font-light text-gray-900 tracking-wide">Product Specifications</h3>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {[
-                      { title: 'Top Notes', notes: 'Bergamot, Pink Pepper, Fresh Mint' },
-                      { title: 'Heart Notes', notes: 'Jasmine, Rose, Spicy Cardamom' },
-                      { title: 'Base Notes', notes: 'Sandalwood, Musk, Vanilla' },
+                      { title: 'Material', detail: 'Aerospace-grade polymer' },
+                      { title: 'Protection', detail: 'Military-grade drop tested' },
+                      { title: 'Compatibility', detail: 'Perfect fit guaranteed' },
                     ].map((item, idx) => (
-                      <div key={idx} className="border border-gray-200 p-6">
-                        <h4 className="font-light text-sm text-gray-900 mb-3 uppercase tracking-wide">{item.title}</h4>
-                        <p className="text-sm text-gray-600 font-light">{item.notes}</p>
+                      <div 
+                        key={idx} 
+                        className="border border-gray-100 p-6 hover:border-[#D4AF37]/30 transition-colors duration-500 group relative overflow-hidden"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#F5E6D3]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <h4 className="relative font-medium text-sm text-gray-900 mb-3 uppercase tracking-wider">{item.title}</h4>
+                        <p className="relative text-sm text-gray-600 font-light">{item.detail}</p>
                       </div>
                     ))}
                   </div>
                 </div>
               </Tab.Panel>
               <Tab.Panel>
-                <div className="space-y-6">
-                  <h3 className="text-lg font-light text-gray-900 tracking-wide">Application Tips</h3>
-                  <div className="border border-gray-200 p-6">
-                    <ul className="space-y-3 text-gray-700 font-light text-sm">
-                      <li>Apply to pulse points: wrists, neck, and behind ears</li>
-                      <li>For best longevity, apply to well-moisturized skin</li>
-                      <li>Allow the fragrance to dry naturally - do not rub</li>
-                      <li>For evening occasions, lightly spray on clothing or hair</li>
+                <div className="space-y-8">
+                  <div className="flex items-center gap-3 mb-8">
+                    <Sparkles className="w-5 h-5 text-[#D4AF37]" />
+                    <h3 className="text-xl font-light text-gray-900 tracking-wide">Care Instructions</h3>
+                  </div>
+                  <div className="border border-gray-100 p-8 bg-gradient-to-br from-[#F5E6D3]/5 to-transparent">
+                    <ul className="space-y-4 text-gray-700 font-light text-sm">
+                      <li className="flex items-start gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] mt-2 flex-shrink-0" />
+                        <span>Clean with soft, dry cloth to maintain pristine condition</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] mt-2 flex-shrink-0" />
+                        <span>Avoid exposure to extreme temperatures</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] mt-2 flex-shrink-0" />
+                        <span>Remove case before wireless charging for optimal performance</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] mt-2 flex-shrink-0" />
+                        <span>Store in provided dust bag when not in use</span>
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -419,13 +521,24 @@ export default function ProductClient({
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto mt-16 px-4">
+      <div className="max-w-7xl mx-auto mt-20 px-4">
         <ProductFAQ productSlug={slug} productName={product.name} />
       </div>
-      <div className="max-w-7xl mx-auto mt-16 px-4">
+      <div className="max-w-7xl mx-auto mt-20 px-4">
         <ProductReviews productId={product.id} productName={product.name} />
       </div>
       <RelatedProducts currentProduct={product} allProducts={products || []} />
+
+      <style jsx>{`
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+          animation: fade-in 0.8s ease-out;
+        }
+      `}</style>
     </div>
   )
 }

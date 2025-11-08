@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { Crown, Sparkles, MessageCircle } from 'lucide-react';
 
 interface FAQ {
   question: string;
@@ -13,82 +14,82 @@ interface ProductFAQProps {
   productName: string;
 }
 
-// FAQ Data for different EDA Perfumes products
+// FAQ Data for Caishen United phone accessories
 const faqData: Record<string, FAQ[]> = {
-  'oudh-shukran': [
+  'iphone-case': [
     {
-      question: "What is ECLAT D'AMOUR Oudh Shukran?",
-      answer: "A sophisticated 100ml Eau de Parfum that embodies luxury and elegance. This premium unisex fragrance combines traditional Arabic attar-inspired notes with contemporary sophistication, featuring exquisite Oudh, Amber, Musk, and Rose accords."
+      question: "What makes Caishen United phone cases premium?",
+      answer: "Our cases are crafted with aerospace-grade materials and military-grade protection technology. Each case undergoes rigorous drop testing from 10 feet and features raised bezels to protect your screen and camera. The combination of sophisticated design and uncompromising protection sets us apart."
     },
     {
-      question: "How long does the fragrance last?",
-      answer: "As an Eau de Parfum concentration with premium quality ingredients, Oudh Shukran offers exceptional longevity of 8-12 hours on skin and even longer on clothing. The rich Oudh and Amber base notes ensure lasting presence throughout your day and night."
+      question: "Will this case work with wireless charging?",
+      answer: "Absolutely! All Caishen United cases are designed with wireless charging compatibility. They work seamlessly with MagSafe and standard Qi wireless chargers, allowing you to charge your device without removing the case."
     },
     {
-      question: "Is this fragrance suitable for both men and women?",
-      answer: "Absolutely! Oudh Shukran is expertly crafted as a unisex fragrance. The sophisticated blend of Oudh, spices, and florals creates a perfect balance that complements any gender, making it ideal for those who appreciate boundary-breaking, sophisticated scents."
+      question: "How long does the lifetime warranty last?",
+      answer: "Our lifetime warranty covers manufacturing defects and normal wear for as long as you own the product. If your case develops any issues related to materials or craftsmanship, we'll replace it at no cost. This warranty demonstrates our commitment to lasting quality."
     },
     {
-      question: "What occasions is this fragrance best suited for?",
-      answer: "This versatile luxury fragrance works beautifully for:\n• Formal events and evening occasions\n• Special romantic dates\n• Professional settings where you want to make an impression\n• Cultural celebrations and gatherings\n• Everyday luxury for fragrance connoisseurs"
+      question: "Does the case protect against drops?",
+      answer: "Yes! Each Caishen United case features:\n• Military-grade drop protection (tested from 10+ feet)\n• Reinforced corner technology for shock absorption\n• Raised bezels to protect screen and camera lenses\n• Air-cushion technology that disperses impact force\n• Anti-slip grip for secure handling"
     },
     {
-      question: "What are the main fragrance notes?",
-      answer: "Top Notes: Saffron, Bergamot, Rose\nHeart Notes: Indian Oudh, Amber, Patchouli\nBase Notes: Musk, Sandalwood, Vanilla, Leather\n\nThis carefully orchestrated composition creates a warm, mysterious, and sensual experience that evolves beautifully throughout the day."
+      question: "Will the case yellow over time?",
+      answer: "No. We use advanced anti-yellowing technology in all our clear and light-colored cases. Our materials are UV-resistant and maintain their pristine appearance even after extended use. This is part of our commitment to timeless design."
     },
     {
-      question: "How should I apply this perfume for best results?",
-      answer: "For optimal performance:\n• Apply to pulse points (wrists, neck, behind ears)\n• Spray on freshly moisturized skin for better longevity\n• Don't rub wrists together - let it dry naturally\n• Layer with unscented lotion for extended wear\n• 2-3 sprays are sufficient for all-day presence"
+      question: "How precise is the fit?",
+      answer: "Each case is custom-designed for specific device models with precision engineering:\n• Perfect cutouts for all ports, buttons, and cameras\n• Tactile button covers that maintain original responsiveness\n• Exact dimensions for secure fit without bulk\n• Easy installation and removal without scratching your device"
     },
     {
-      question: "Is this an authentic Oudh fragrance?",
-      answer: "Yes! Oudh Shukran features high-quality Oudh essence blended with complementary notes. While it's inspired by traditional Arabic attar, it's created as a modern Eau de Parfum for easy application and sophisticated wear."
+      question: "Is the case compatible with screen protectors?",
+      answer: "Yes! Our raised bezels are designed to work with most screen protectors without causing lifting or bubbles. The precise engineering ensures compatibility with both glass and film protectors."
     },
     {
-      question: "Can I wear this fragrance daily?",
-      answer: "Absolutely! While rich and luxurious, the balanced composition makes it suitable for daily wear. Many customers make it their signature scent for both professional and personal occasions."
+      question: "What is your return policy?",
+      answer: "We offer a 30-day hassle-free return policy. If you're not completely satisfied with your purchase, you can return the product in its original condition for a full refund. Your satisfaction is our priority."
     },
     {
-      question: "How should I store my perfume?",
-      answer: "To maintain fragrance quality:\n• Store in a cool, dry place away from direct sunlight\n• Keep the cap tightly closed when not in use\n• Avoid bathroom storage (humidity affects longevity)\n• Keep away from heat sources\n• Original box provides ideal protection"
+      question: "How should I clean my case?",
+      answer: "To maintain your case's premium appearance:\n• Use a soft, lint-free cloth with mild soap and water\n• Avoid harsh chemicals or abrasive cleaners\n• Dry thoroughly before reinstalling\n• For stubborn marks, use isopropyl alcohol on a cloth\n• Clean regularly to prevent dirt buildup"
     },
     {
-      question: "Is this fragrance suitable for sensitive skin?",
-      answer: "Our fragrances are crafted with quality ingredients. However, we recommend performing a patch test if you have sensitive skin. Apply a small amount to your inner wrist and wait 24 hours to check for any reaction."
+      question: "Are the materials eco-friendly?",
+      answer: "We're committed to sustainability. Our cases use recyclable materials where possible, and we're continuously working to reduce environmental impact while maintaining our premium quality standards."
     }
   ],
   'default': [
     {
-      question: "What makes EDA Perfumes different from other brands?",
-      answer: "EDA Perfumes specializes in seductive, luxury fragrances that blend Arabic attar-inspired traditions with contemporary sophistication. Our Eau de Parfum concentrations ensure long-lasting wear and exceptional quality at accessible luxury pricing."
+      question: "What makes Caishen United different from other brands?",
+      answer: "Caishen United combines military-grade protection with timeless design. Inspired by the ancient deity of prosperity, we believe your devices deserve premium protection that doesn't compromise on aesthetics. Every product undergoes rigorous testing and comes with a lifetime warranty."
     },
     {
-      question: "How long do EDA Perfumes last?",
-      answer: "Our Eau de Parfum formulations typically last 8-12 hours on skin and even longer on clothing, depending on skin type, climate, and application method. The premium concentration ensures lasting presence throughout your day."
+      question: "What is your warranty policy?",
+      answer: "All Caishen United products come with a lifetime warranty against manufacturing defects. We stand behind our craftsmanship, and if any issues arise from normal use, we'll replace your product at no cost. This demonstrates our commitment to lasting quality."
     },
     {
-      question: "Are EDA Perfumes suitable for all genders?",
-      answer: "Most of our collection features sophisticated unisex fragrances designed for anyone who appreciates luxury scents. We believe great fragrances transcend gender boundaries."
+      question: "Do you offer international shipping?",
+      answer: "Currently, we ship within India with free delivery on orders above ₹999. We're working on expanding to international markets. Subscribe to our newsletter to be notified when we start shipping to your region."
     },
     {
-      question: "What is your return policy?",
-      answer: "Due to the personal nature of fragrances and hygiene considerations, we cannot accept returns on opened products. Unopened products can be returned within 7 days of delivery if the packaging is undamaged. Please refer to our Returns & Refunds Policy for complete details."
+      question: "How long does delivery take?",
+      answer: "Orders are typically processed within 24 hours and delivered within:\n• Metro cities: 2-3 business days\n• Tier 2 cities: 3-5 business days\n• Remote areas: 5-7 business days\n\nYou'll receive tracking information once your order ships."
     },
     {
-      question: "How should I choose the right fragrance?",
-      answer: "Consider:\n• The occasion (daily wear, evening events, formal settings)\n• Your personal style and preferences\n• Season (lighter for summer, richer for winter)\n• Our product descriptions provide detailed scent profiles\n• Read customer reviews for real experiences\n• Contact our customer care for personalized recommendations"
+      question: "Can I exchange my product for a different model?",
+      answer: "Yes! Within 30 days of delivery, you can exchange your product for a different model or color (subject to availability). The product must be in original condition with all packaging intact. Contact our support team to initiate an exchange."
     },
     {
-      question: "Do you offer fragrance samples?",
-      answer: "Currently, we sell full-size 100ml Eau de Parfum bottles. Our detailed product descriptions, scent profiles, and customer reviews help you make informed decisions about your fragrance selection."
+      question: "Are your products authentic?",
+      answer: "100% authentic! All Caishen United products are:\n• Manufactured to our exact specifications\n• Quality tested before shipping\n• Come with authenticity certificates\n• Protected by our lifetime warranty\n• Shipped directly from our warehouse"
     },
     {
-      question: "How do I apply perfume correctly?",
-      answer: "For best results:\n• Apply to pulse points (wrists, neck, behind ears, inner elbows)\n• Spray on clean, moisturized skin\n• Don't rub - let it dry naturally\n• 2-4 sprays are typically sufficient\n• Layer with unscented products for extended wear"
+      question: "Do you offer bulk orders or corporate gifting?",
+      answer: "Yes! We offer special pricing for bulk orders (10+ units) and customization options for corporate gifting. Contact our business team at business@caishenunited.com for personalized quotes and branding opportunities."
     },
     {
-      question: "Are EDA Perfumes authentic and high quality?",
-      answer: "Yes! All EDA Perfumes are:\n• Crafted with premium quality ingredients\n• Manufactured to international standards\n• 100% authentic luxury fragrances\n• Properly packaged for protection and elegance\n• Backed by our quality commitment"
+      question: "How do I track my order?",
+      answer: "Once your order ships, you'll receive an email with tracking information. You can also track your order by logging into your account or using the tracking link provided in your shipping confirmation email."
     }
   ]
 };
@@ -121,49 +122,78 @@ const ProductFAQ: React.FC<ProductFAQProps> = ({ productSlug, productName }) => 
   };
 
   return (
-    <div className="bg-white border-t border-gray-200">
-      {/* Header */}
-      <div className="py-12 text-center">
-        <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4 tracking-wide">
-          Frequently Asked Questions
-        </h2>
-        <div className="w-16 h-px bg-gray-300 mx-auto mb-4"></div>
-        <p className="text-gray-600 text-sm font-light max-w-2xl mx-auto">
-          Everything you need to know about {productName}
-        </p>
+    <div className="bg-gradient-to-b from-white to-gray-50 border-t border-gray-100">
+      {/* Premium Header with gold accents */}
+      <div className="py-16 text-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-[#F5E6D3]/10 via-transparent to-transparent" />
+        
+        <div className="relative z-10">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="w-8 h-px bg-gradient-to-r from-transparent to-[#D4AF37]" />
+            <Sparkles className="w-5 h-5 text-[#D4AF37]" />
+            <div className="w-8 h-px bg-gradient-to-l from-transparent to-[#D4AF37]" />
+          </div>
+          
+          <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4 tracking-tight">
+            Frequently Asked Questions
+          </h2>
+          
+          <div className="relative w-20 h-px mx-auto mb-6">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent" />
+          </div>
+          
+          <p className="text-gray-600 text-sm font-light max-w-2xl mx-auto">
+            Everything you need to know about <span className="text-[#D4AF37] font-medium">{productName}</span>
+          </p>
+        </div>
       </div>
 
-      {/* FAQ Items */}
-      <div className="max-w-4xl mx-auto">
-        <div className="space-y-px border-t border-gray-200">
+      {/* Premium FAQ Items */}
+      <div className="max-w-4xl mx-auto px-4">
+        <div className="space-y-4">
           {faqs.map((faq, index) => (
-            <div key={index} className="border-b border-gray-200">
+            <div 
+              key={index} 
+              className="group bg-white border border-gray-100 hover:border-[#D4AF37]/30 transition-all duration-500 overflow-hidden relative"
+            >
+              {/* Gold gradient overlay on hover */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#F5E6D3]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
               <button
-                className="w-full px-6 py-6 text-left hover:bg-gray-50 transition-colors focus:outline-none group"
+                className="relative w-full px-6 lg:px-8 py-6 text-left focus:outline-none"
                 onClick={() => toggleFAQ(index)}
               >
                 <div className="flex justify-between items-start gap-6">
-                  <h3 className="font-light text-gray-900 text-sm lg:text-base leading-relaxed flex-1 text-left pr-4">
-                    {faq.question}
-                  </h3>
+                  <div className="flex items-start gap-3 flex-1">
+                    <div className={`flex-shrink-0 mt-1 transition-colors duration-300 ${
+                      openIndex === index ? 'text-[#D4AF37]' : 'text-gray-400 group-hover:text-[#D4AF37]'
+                    }`}>
+                      <Crown className="w-4 h-4" />
+                    </div>
+                    <h3 className={`font-light text-sm lg:text-base leading-relaxed flex-1 text-left transition-colors duration-300 ${
+                      openIndex === index ? 'text-black font-medium' : 'text-gray-900'
+                    }`}>
+                      {faq.question}
+                    </h3>
+                  </div>
                   <div className="flex-shrink-0 mt-1">
-                    <ChevronDownIcon 
-                      className={`h-4 w-4 text-gray-600 transition-transform duration-300 ${
-                        openIndex === index ? 'rotate-180' : ''
-                      }`}
-                    />
+                    <div className={`transition-all duration-500 ${
+                      openIndex === index ? 'text-[#D4AF37] rotate-180' : 'text-gray-400 group-hover:text-gray-600'
+                    }`}>
+                      <ChevronDownIcon className="h-5 w-5" />
+                    </div>
                   </div>
                 </div>
               </button>
               
-              {/* Answer */}
-              <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
+              {/* Premium Answer with animation */}
+              <div className={`overflow-hidden transition-all duration-500 ease-in-out ${
                 openIndex === index 
-                  ? 'max-h-[1000px] opacity-100' 
+                  ? 'max-h-[1200px] opacity-100' 
                   : 'max-h-0 opacity-0'
               }`}>
-                <div className="px-6 pb-6 pt-0">
-                  <div className="bg-gray-50 p-6 border-l-2 border-gray-900">
+                <div className="px-6 lg:px-8 pb-8 pt-2">
+                  <div className="ml-7 pl-6 border-l-2 border-[#D4AF37] bg-gradient-to-r from-[#F5E6D3]/10 to-transparent p-6">
                     <p className="text-gray-700 text-sm lg:text-base leading-relaxed whitespace-pre-line font-light">
                       {faq.answer}
                     </p>
@@ -175,30 +205,67 @@ const ProductFAQ: React.FC<ProductFAQProps> = ({ productSlug, productName }) => 
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="py-16 text-center border-t border-gray-200 mt-12 bg-gray-50">
-        <div className="max-w-2xl mx-auto px-4">
-          <h3 className="text-xl font-light text-gray-900 mb-3 tracking-wide">
+      {/* Premium Footer with gold accents */}
+      <div className="py-20 text-center border-t border-gray-100 mt-16 bg-gradient-to-b from-white to-[#F5E6D3]/10 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_var(--tw-gradient-stops))] from-[#D4AF37]/5 via-transparent to-transparent" />
+        
+        <div className="relative z-10 max-w-2xl mx-auto px-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 border-2 border-[#D4AF37]/30 mb-6 group hover:border-[#D4AF37] transition-colors duration-500">
+            <MessageCircle className="w-7 h-7 text-[#D4AF37] group-hover:scale-110 transition-transform duration-500" />
+          </div>
+          
+          <h3 className="text-2xl lg:text-3xl font-light text-gray-900 mb-4 tracking-tight">
             Still Have Questions?
           </h3>
-          <p className="text-gray-600 text-sm mb-8 font-light">
-            Our fragrance consultants are here to help you find your perfect scent
+          
+          <p className="text-gray-600 text-sm mb-10 font-light leading-relaxed">
+            Our premium support team is here to assist you with any inquiries about 
+            <span className="text-[#D4AF37]"> Caishen United products</span>
           </p>
+          
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
-              href="mailto:care@edaperfumes.com"
-              className="inline-block px-8 py-3 text-xs text-black border border-gray-300 hover:bg-black hover:text-white hover:border-black transition-colors tracking-widest uppercase font-light"
+              href="mailto:support@caishenunited.com"
+              className="group relative inline-block px-10 py-4 text-xs text-black border-2 border-gray-200 hover:border-[#D4AF37] transition-all duration-500 tracking-widest uppercase font-medium overflow-hidden"
             >
-              Email Support
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                <Sparkles className="w-3 h-3" />
+                Email Support
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-[#F5E6D3]/20 to-transparent translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500" />
             </a>
+            
             <a 
-              href="https://wa.me/919876543210"
+              href="https://wa.me/919XXXXXXXXX"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-8 py-3 text-xs text-white bg-black hover:bg-gray-800 transition-colors tracking-widest uppercase font-light"
+              className="group relative inline-block px-10 py-4 text-xs text-black bg-gradient-to-r from-[#D4AF37] to-[#C5A028] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all duration-500 tracking-widest uppercase font-bold overflow-hidden"
             >
-              WhatsApp Us
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                <Crown className="w-3 h-3" />
+                WhatsApp Us
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-[#F5E6D3] to-[#D4AF37] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
             </a>
+          </div>
+          
+          {/* Trust badges */}
+          <div className="mt-12 pt-8 border-t border-gray-100">
+            <div className="flex items-center justify-center gap-8 text-xs text-gray-500 font-light">
+              <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
+                <span>24/7 Support</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
+                <span>Expert Assistance</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
+                <span>Quick Response</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
