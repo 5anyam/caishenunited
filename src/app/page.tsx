@@ -19,13 +19,13 @@ export interface Product {
   attributes?: { option: string }[];
 }
 
-// Enhanced Product Skeleton with gold shimmer
+// Enhanced Product Skeleton - Pure Black theme
 const ProductSkeleton = () => (
-  <div className="bg-white overflow-hidden border border-gray-100 hover:border-[#D4AF37] transition-all duration-500 relative group">
-    <div className="aspect-square bg-gradient-to-r from-gray-50 via-[#F5E6D3]/20 to-gray-50 animate-shimmer bg-[length:200%_100%]" />
+  <div className="bg-white dark:bg-black overflow-hidden border border-gray-100 dark:border-[#D4AF37]/20 hover:border-[#D4AF37] dark:hover:border-[#D4AF37] transition-all duration-500 relative group">
+    <div className="aspect-square bg-gradient-to-r from-gray-50 via-[#F5E6D3]/20 to-gray-50 dark:from-black dark:via-[#D4AF37]/10 dark:to-black animate-shimmer bg-[length:200%_100%]" />
     <div className="p-5 space-y-3">
-      <div className="h-4 bg-gradient-to-r from-gray-100 via-[#F5E6D3]/30 to-gray-100 animate-shimmer bg-[length:200%_100%]" />
-      <div className="h-3 bg-gradient-to-r from-gray-50 via-[#F5E6D3]/20 to-gray-50 w-2/3 animate-shimmer bg-[length:200%_100%]" />
+      <div className="h-4 bg-gradient-to-r from-gray-100 via-[#F5E6D3]/30 to-gray-100 dark:from-black dark:via-[#D4AF37]/20 dark:to-black animate-shimmer bg-[length:200%_100%]" />
+      <div className="h-3 bg-gradient-to-r from-gray-50 via-[#F5E6D3]/20 to-gray-50 dark:from-black dark:via-[#D4AF37]/10 dark:to-black w-2/3 animate-shimmer bg-[length:200%_100%]" />
     </div>
     <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/0 to-[#D4AF37]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
   </div>
@@ -90,8 +90,8 @@ export default function Homepage() {
                           accessories.slice(0, 8);
 
   return (
-    <div className="min-h-screen bg-white overflow-hidden">
-      {/* Hero Section with Gold Accents & Parallax */}
+    <div className="min-h-screen bg-white dark:bg-black overflow-hidden transition-colors duration-300">
+      {/* Hero Section - Always dark with gold accents */}
       <section 
         ref={heroRef}
         className="relative h-screen flex items-center justify-center bg-gradient-to-b from-[#0A0A0A] via-[#1A1A1A] to-black overflow-hidden"
@@ -191,8 +191,8 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* Trust Banner with gold accents */}
-      <section className="py-8 border-y border-[#D4AF37]/20 bg-gradient-to-r from-black via-[#1A1A1A] to-black sticky top-0 z-40 backdrop-blur-md">
+      {/* Trust Banner - Pure Black */}
+      <section className="py-8 border-y border-[#D4AF37]/20 bg-black dark:bg-black sticky top-0 z-40 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
@@ -219,8 +219,8 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* Featured Products Section */}
-      <section className="py-24 px-4 bg-white">
+      {/* Featured Products Section - Pure Black in dark mode */}
+      <section className="py-24 px-4 bg-white dark:bg-black transition-colors duration-300">
         <div className="max-w-7xl mx-auto">
           {/* Section Header with gold accent */}
           <div className="text-center mb-16 animate-fade-in">
@@ -231,7 +231,7 @@ export default function Homepage() {
               </p>
               <div className="w-8 h-px bg-gradient-to-l from-transparent to-[#D4AF37]" />
             </div>
-            <h2 className="text-4xl md:text-5xl font-light text-gray-900 mb-6 tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-light text-gray-900 dark:text-white mb-6 tracking-tight transition-colors duration-300">
               Featured Collection
             </h2>
             <div className="relative w-20 h-px mx-auto mb-8">
@@ -252,8 +252,8 @@ export default function Homepage() {
                 onClick={() => setActiveCategory(category.key as typeof activeCategory)}
                 className={`text-sm uppercase tracking-widest pb-2 transition-all duration-500 relative group ${
                   activeCategory === category.key
-                    ? 'text-black font-medium'
-                    : 'text-gray-400 hover:text-gray-600'
+                    ? 'text-black dark:text-white font-medium'
+                    : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
                 }`}
               >
                 {category.label}
@@ -278,8 +278,8 @@ export default function Homepage() {
             </div>
           ) : isError ? (
             <div className="text-center py-20 animate-fade-in">
-              <div className="bg-gradient-to-br from-gray-50 to-[#F5E6D3]/10 p-12 max-w-md mx-auto border border-[#D4AF37]/20">
-                <p className="text-gray-600 mb-6 font-light">Unable to load products</p>
+              <div className="bg-gradient-to-br from-gray-50 to-[#F5E6D3]/10 dark:from-black dark:to-[#D4AF37]/5 p-12 max-w-md mx-auto border border-[#D4AF37]/20 transition-colors duration-300">
+                <p className="text-gray-600 dark:text-gray-400 mb-6 font-light">Unable to load products</p>
                 <button 
                   onClick={() => window.location.reload()}
                   className="px-8 py-3 bg-gradient-to-r from-[#D4AF37] to-[#C5A028] text-black text-sm uppercase tracking-wider hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-105 transform font-medium"
@@ -289,7 +289,7 @@ export default function Homepage() {
               </div>
             </div>
           ) : displayProducts.length === 0 ? (
-            <div className="text-center py-20 text-gray-400 animate-fade-in">
+            <div className="text-center py-20 text-gray-400 dark:text-gray-600 animate-fade-in">
               <p className="font-light">New collection arriving soon.</p>
             </div>
           ) : (
@@ -314,7 +314,7 @@ export default function Homepage() {
             <div className="mt-16 flex justify-center animate-fade-in animation-delay-800">
               <Link
                 href="/products"
-                className="group relative inline-flex items-center gap-3 px-10 py-4 text-sm uppercase tracking-widest text-black border-2 border-black hover:border-[#D4AF37] hover:text-[#D4AF37] transition-all duration-500 hover:scale-105 transform overflow-hidden"
+                className="group relative inline-flex items-center gap-3 px-10 py-4 text-sm uppercase tracking-widest text-black dark:text-white border-2 border-black dark:border-white hover:border-[#D4AF37] hover:text-[#D4AF37] transition-all duration-500 hover:scale-105 transform overflow-hidden"
               >
                 <span className="relative z-10">View Full Collection</span>
                 <ChevronRight className="relative z-10 w-4 h-4 transition-transform duration-500 group-hover:translate-x-2" />
@@ -325,10 +325,10 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* Stats Section with gold elements */}
+      {/* Stats Section - Always pure black */}
       <section 
         ref={statsRef}
-        className="py-20 px-4 bg-gradient-to-br from-black via-[#1A1A1A] to-black border-y border-[#D4AF37]/20 relative overflow-hidden"
+        className="py-20 px-4 bg-black border-y border-[#D4AF37]/20 relative overflow-hidden"
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#D4AF37]/5 via-transparent to-transparent" />
         
@@ -361,10 +361,10 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* Brand Story Section with gold parallax */}
-      <section className="py-24 px-4 bg-white relative overflow-hidden">
+      {/* Brand Story Section - Pure Black in dark mode */}
+      <section className="py-24 px-4 bg-white dark:bg-black relative overflow-hidden transition-colors duration-300">
         <div 
-          className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#F5E6D3]/20 via-transparent to-transparent opacity-50"
+          className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#F5E6D3]/20 dark:from-[#D4AF37]/10 via-transparent to-transparent opacity-50"
           style={{ transform: `translateY(${scrollY * 0.1}px)` }}
         />
         
@@ -387,21 +387,21 @@ export default function Homepage() {
                   The Caishen Legacy
                 </p>
               </div>
-              <h2 className="text-4xl md:text-5xl font-light text-gray-900 tracking-tight leading-tight">
+              <h2 className="text-4xl md:text-5xl font-light text-gray-900 dark:text-white tracking-tight leading-tight transition-colors duration-300">
                 Crafted for Those Who <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#C5A028]">Demand Excellence</span>
               </h2>
               <div className="w-16 h-px bg-gradient-to-r from-[#D4AF37] to-transparent" />
-              <p className="text-gray-600 leading-relaxed font-light text-base">
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed font-light text-base transition-colors duration-300">
                 Inspired by Caishen, the ancient deity of prosperity and fortune, we believe your devices deserve the same level of protection and prestige. Each product is meticulously designed to blend timeless elegance with modern durability.
               </p>
-              <div className="bg-gradient-to-r from-[#F5E6D3]/20 to-transparent p-6 border-l-2 border-[#D4AF37]">
-                <p className="text-gray-700 leading-relaxed font-light text-base italic">
+              <div className="bg-gradient-to-r from-[#F5E6D3]/20 dark:from-[#D4AF37]/10 to-transparent p-6 border-l-2 border-[#D4AF37]">
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed font-light text-base italic transition-colors duration-300">
                   From premium materials to precision engineering, Caishen United represents a commitment to quality that transcends the ordinary.
                 </p>
               </div>
               <Link
                 href="/about"
-                className="inline-flex items-center gap-2 text-sm uppercase tracking-widest text-black hover:text-[#D4AF37] hover:gap-4 transition-all duration-500 font-medium mt-4 group relative"
+                className="inline-flex items-center gap-2 text-sm uppercase tracking-widest text-black dark:text-white hover:text-[#D4AF37] hover:gap-4 transition-all duration-500 font-medium mt-4 group relative"
               >
                 <span>Discover Our Journey</span>
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
@@ -412,8 +412,8 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* Why Choose Us with gold hover effects */}
-      <section className="py-24 px-4 bg-gradient-to-b from-white to-gray-50">
+      {/* Why Choose Us - Pure Black in dark mode */}
+      <section className="py-24 px-4 bg-gradient-to-b from-white to-gray-50 dark:from-black dark:to-black transition-colors duration-300">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 animate-fade-in">
             <div className="flex items-center justify-center gap-3 mb-4">
@@ -423,7 +423,7 @@ export default function Homepage() {
               </p>
               <Crown className="w-5 h-5 text-[#D4AF37]" />
             </div>
-            <h2 className="text-4xl md:text-5xl font-light text-gray-900 tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-light text-gray-900 dark:text-white tracking-tight transition-colors duration-300">
               Uncompromising Quality
             </h2>
           </div>
@@ -455,14 +455,14 @@ export default function Homepage() {
                 style={{ animationDelay: feature.delay }}
               >
                 <div className="absolute -inset-px bg-gradient-to-b from-[#D4AF37]/0 via-[#D4AF37]/10 to-[#D4AF37]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
-                <div className="relative inline-flex items-center justify-center w-20 h-20 border-2 border-gray-200 mb-4 group-hover:border-[#D4AF37] transition-all duration-500 overflow-hidden">
+                <div className="relative inline-flex items-center justify-center w-20 h-20 border-2 border-gray-200 dark:border-[#D4AF37]/30 mb-4 group-hover:border-[#D4AF37] transition-all duration-500 overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37] to-[#C5A028] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                  <feature.icon className="relative w-7 h-7 text-gray-900 group-hover:text-black transition-colors duration-500 z-10" />
+                  <feature.icon className="relative w-7 h-7 text-gray-900 dark:text-white group-hover:text-black transition-colors duration-500 z-10" />
                 </div>
-                <h3 className="text-lg font-medium text-gray-900 tracking-wide group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[#D4AF37] group-hover:to-[#C5A028] transition-all duration-300">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white tracking-wide group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[#D4AF37] group-hover:to-[#C5A028] transition-all duration-300">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed font-light text-sm group-hover:text-gray-700 transition-colors">
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed font-light text-sm group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">
                   {feature.desc}
                 </p>
               </div>
@@ -471,7 +471,7 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* Final CTA Section with premium gold styling */}
+      {/* Final CTA Section - Always pure black */}
       <section className="py-32 px-4 bg-black text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#D4AF37]/20 via-transparent to-transparent animate-pulse-slow"></div>
         

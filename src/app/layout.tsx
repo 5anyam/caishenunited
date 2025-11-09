@@ -7,6 +7,7 @@ import Footer from '../../components/Footer';
 import Script from 'next/script';
 import AnnouncementBar from '../../components/anouncement';
 import Whatsapp from '../../components/Whatsapp';
+import { ThemeProvider } from '../../components/ThemeProvider';
 
 export const metadata = {
   title: 'Caishen United - Premium Phone Cases & Accessories | Military-Grade Protection',
@@ -69,7 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const gtagId = 'AW-XXXXXXXXX';
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* Favicon and App Icons */}
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -82,6 +83,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         
         {/* Preload Critical Assets */}
         <link rel="preload" href="/logo.png" as="image" type="image/png" />
+        <link rel="preload" href="/logo-video.mp4" as="video" type="video/mp4" />
         
         {/* Additional SEO Meta Tags */}
         <meta name="language" content="English" />
@@ -324,7 +326,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           />
         </noscript>
       </head>
-      <body className="overflow-x-hidden overflow-y-scroll antialiased bg-white">
+      <body className="overflow-x-hidden overflow-y-scroll antialiased bg-white dark:bg-black transition-colors duration-300">
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe 
@@ -335,19 +337,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           ></iframe>
         </noscript>
 
-        <ReactQueryProvider>
-          <CartProvider>
-            <AnnouncementBar />
-            <Header />
-            <main role="main" className="min-h-screen">
-              {children}
-            </main>
-            <Footer />
-            <Whatsapp/>
-            
-         
-          </CartProvider>
-        </ReactQueryProvider>
+        {/* Wrap everything in ThemeProvider */}
+        <ThemeProvider>
+          <ReactQueryProvider>
+            <CartProvider>
+              <AnnouncementBar />
+              <Header />
+              <main role="main" className="min-h-screen">
+                {children}
+              </main>
+              <Footer />
+              <Whatsapp/>
+            </CartProvider>
+          </ReactQueryProvider>
+        </ThemeProvider>
 
         {/* Customer Chat Plugin */}
         <Script id="facebook-chat" strategy="lazyOnload">

@@ -30,12 +30,12 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <Link href={productUrl}>
-      <div className="group relative overflow-hidden bg-white transition-all duration-500 hover:shadow-[0_8px_30px_rgba(212,175,55,0.15)] border border-gray-100 hover:border-[#D4AF37]/30">
+      <div className="group relative overflow-hidden bg-white dark:bg-black transition-all duration-500 hover:shadow-[0_8px_30px_rgba(212,175,55,0.15)] border border-gray-100 dark:border-[#D4AF37]/20 hover:border-[#D4AF37]/30 dark:hover:border-[#D4AF37]">
         {/* Gold gradient overlay on hover */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/0 via-[#D4AF37]/5 to-[#D4AF37]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10" />
         
         {/* Image Container */}
-        <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 dark:from-black dark:to-black">
           <img
             src={product.images?.[0]?.src || "/placeholder.png"}
             alt={product.name}
@@ -57,7 +57,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
           {/* New Badge - Premium Style */}
           {product.badge === 'New' && (
-            <div className="absolute top-3 right-3 bg-black text-[#D4AF37] border border-[#D4AF37] text-xs font-medium px-4 py-1.5 tracking-wider backdrop-blur-sm">
+            <div className="absolute top-3 right-3 bg-black dark:bg-white text-[#D4AF37] dark:text-black border border-[#D4AF37] text-xs font-medium px-4 py-1.5 tracking-wider backdrop-blur-sm">
               <span className="flex items-center gap-1">
                 <Crown className="w-3 h-3" />
                 NEW
@@ -66,7 +66,7 @@ export default function ProductCard({ product }: { product: Product }) {
           )}
 
           {/* Quick View Overlay */}
-          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/60 dark:bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
             <div className="text-white text-xs uppercase tracking-widest font-medium transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 flex items-center gap-2">
               <span className="w-8 h-px bg-[#D4AF37]" />
               Quick View
@@ -81,14 +81,14 @@ export default function ProductCard({ product }: { product: Product }) {
           {product.category && (
             <div className="flex items-center gap-2">
               <div className="w-3 h-px bg-[#D4AF37]" />
-              <div className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-medium">
+              <div className="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em] font-medium">
                 {product.category}
               </div>
             </div>
           )}
 
           {/* Product Name */}
-          <h3 className="text-sm font-light text-gray-900 line-clamp-2 leading-relaxed tracking-wide min-h-[2.5rem] group-hover:text-black transition-colors">
+          <h3 className="text-sm font-light text-gray-900 dark:text-white line-clamp-2 leading-relaxed tracking-wide min-h-[2.5rem] group-hover:text-black dark:group-hover:text-[#D4AF37] transition-colors">
             {product.name}
           </h3>
 
@@ -102,7 +102,7 @@ export default function ProductCard({ product }: { product: Product }) {
                     className={`w-3.5 h-3.5 transition-colors duration-300 ${
                       i < Math.round(rating) 
                         ? "text-[#D4AF37] drop-shadow-[0_0_4px_rgba(212,175,55,0.4)]" 
-                        : "text-gray-200"
+                        : "text-gray-200 dark:text-gray-700"
                     }`}
                     fill="currentColor"
                     viewBox="0 0 20 20"
@@ -111,11 +111,11 @@ export default function ProductCard({ product }: { product: Product }) {
                   </svg>
                 ))}
               </div>
-              <span className="text-xs text-gray-600 font-light">
+              <span className="text-xs text-gray-600 dark:text-gray-400 font-light">
                 {rating.toFixed(1)}
               </span>
               {product.rating_count && product.rating_count > 0 && (
-                <span className="text-xs text-gray-400 font-light">
+                <span className="text-xs text-gray-400 dark:text-gray-500 font-light">
                   ({product.rating_count})
                 </span>
               )}
@@ -123,13 +123,13 @@ export default function ProductCard({ product }: { product: Product }) {
           )}
 
           {/* Price Section with Gold Accent */}
-          <div className="pt-3 border-t border-gray-100 group-hover:border-[#D4AF37]/30 transition-colors duration-500">
+          <div className="pt-3 border-t border-gray-100 dark:border-[#D4AF37]/20 group-hover:border-[#D4AF37]/30 dark:group-hover:border-[#D4AF37] transition-colors duration-500">
             <div className="flex items-baseline gap-2">
-              <span className="text-lg font-medium text-gray-900 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[#D4AF37] group-hover:to-[#C5A028] transition-all duration-500">
+              <span className="text-lg font-medium text-gray-900 dark:text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[#D4AF37] group-hover:to-[#C5A028] transition-all duration-500">
                 ₹{salePrice.toLocaleString()}
               </span>
               {isOnSale && (
-                <span className="text-sm text-gray-400 line-through font-light">
+                <span className="text-sm text-gray-400 dark:text-gray-500 line-through font-light">
                   ₹{originalPrice.toLocaleString()}
                 </span>
               )}
@@ -146,7 +146,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
           {/* Premium CTA Button */}
           <div className="pt-3">
-            <button className="relative w-full py-3 text-xs text-gray-900 border-2 border-gray-200 tracking-widest uppercase font-medium overflow-hidden group/btn transition-all duration-500 hover:border-[#D4AF37]">
+            <button className="relative w-full py-3 text-xs text-gray-900 dark:text-white border-2 border-gray-200 dark:border-[#D4AF37]/30 tracking-widest uppercase font-medium overflow-hidden group/btn transition-all duration-500 hover:border-[#D4AF37]">
               {/* Gold gradient background on hover */}
               <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37] to-[#C5A028] translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500" />
               

@@ -7,6 +7,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 import { BiChevronDown } from "react-icons/bi";
+import { Moon, Sun, Crown } from "lucide-react";
+import { useTheme } from "./ThemeProvider"; // Your existing theme provider
 
 const navItems = [
   { name: "Home", to: "/" },
@@ -38,6 +40,7 @@ const navItems = [
 export default function Header() {
   const location = usePathname();
   const isMobile = useIsMobile();
+  const { theme, toggleTheme } = useTheme(); // Using your existing theme provider
   const [search, setSearch] = useState("");
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -46,6 +49,25 @@ export default function Header() {
   const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+
+  // Video autoplay with 3 second delay
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.play().catch((error) => {
+          console.log('Video autoplay prevented:', error);
+        });
+      }
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleVideoLoaded = () => {
+    setVideoLoaded(true);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -99,30 +121,59 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
+      {/* Premium Black Header with Gold Accents */}
+      <header className="sticky top-0 z-50 bg-black dark:bg-black border-b border-[#D4AF37]/20 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-20 lg:h-24">
-            {/* Logo + Brand - Now visible on mobile */}
+            {/* Animated Video Logo + Brand */}
             <div className="flex items-center flex-shrink-0">
               <Link href="/" className="flex items-center gap-2 sm:gap-3 group">
-                <img 
-                  className="h-10 sm:h-12 md:h-14 lg:h-16 transition-transform duration-300 group-hover:scale-105" 
-                  src="/logo.png" 
-                  alt='Caishen United' 
-                />
-                {/* Brand name visible on all screens */}
-                <div className="border-l border-gray-200 pl-2 sm:pl-3 ml-1">
-                  <span className="block text-black font-light text-xs sm:text-sm lg:text-lg tracking-[0.12em] sm:tracking-[0.15em] leading-none">
+                {/* Video Logo Container */}
+                <div className="relative h-10 sm:h-12 md:h-14 lg:h-16 w-10 sm:w-12 md:w-14 lg:w-16 overflow-hidden">
+                  {!videoLoaded && (
+                    <img 
+                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500" 
+                      src="/logo.png" 
+                      alt='Caishen United'
+                    />
+                  )}
+                  
+                  <video
+                    ref={videoRef}
+                    className={`w-full h-full object-contain transition-opacity duration-500 ${
+                      videoLoaded ? 'opacity-100' : 'opacity-0'
+                    }`}
+                    muted
+                    loop
+                    playsInline
+                    preload="auto"
+                    onLoadedData={handleVideoLoaded}
+                  >
+                    <source src="/logo-video.mp4" type="video/mp4" />
+                    <img 
+                      className="w-full h-full object-contain" 
+                      src="/logo.png" 
+                      alt='Caishen United' 
+                    />
+                  </video>
+                  
+                  {/* Gold glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/0 via-[#D4AF37]/20 to-[#D4AF37]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none blur-lg" />
+                </div>
+                
+                {/* Brand name with gold gradient */}
+                <div className="border-l border-[#D4AF37]/30 pl-2 sm:pl-3 ml-1">
+                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#F5E6D3] font-light text-xs sm:text-sm lg:text-lg tracking-[0.12em] sm:tracking-[0.15em] leading-none">
                     CAISHEN UNITED
                   </span>
-                  <span className="block text-gray-400 text-[7px] sm:text-[8px] lg:text-[9px] tracking-[0.2em] sm:tracking-[0.25em] uppercase mt-0.5 sm:mt-1">
+                  <span className="block text-[#D4AF37]/60 text-[7px] sm:text-[8px] lg:text-[9px] tracking-[0.2em] sm:tracking-[0.25em] uppercase mt-0.5 sm:mt-1">
                     Premium Protection
                   </span>
                 </div>
               </Link>
             </div>
 
-            {/* Desktop Nav - Smaller font */}
+            {/* Desktop Nav with Gold Theme */}
             <nav className="hidden lg:flex items-center space-x-8 flex-1 justify-center" ref={menuRef}>
               {navItems.map((item) => (
                 <div key={item.name} className="relative">
@@ -135,16 +186,16 @@ export default function Header() {
                       <button
                         className={`text-xs uppercase tracking-[0.12em] font-medium transition-all duration-300 py-2 flex items-center gap-1 ${
                           location.startsWith(item.to) 
-                            ? "text-black" 
-                            : "text-gray-500 hover:text-black"
+                            ? "text-[#D4AF37]" 
+                            : "text-gray-400 hover:text-[#D4AF37]"
                         }`}
                       >
                         {item.name}
                         <BiChevronDown className={`text-sm transition-transform duration-300 ${activeSubmenu === item.name ? 'rotate-180' : ''}`} />
                       </button>
                       
-                      {/* Minimal Premium Dropdown */}
-                      <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-6 bg-white border border-gray-100 min-w-[220px] transition-all duration-300 ${
+                      {/* Premium Dropdown with Gold Accents */}
+                      <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-6 bg-black border border-[#D4AF37]/30 min-w-[220px] backdrop-blur-md transition-all duration-300 shadow-[0_8px_30px_rgba(212,175,55,0.2)] ${
                         activeSubmenu === item.name ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
                       }`}>
                         <div className="py-2">
@@ -154,8 +205,8 @@ export default function Header() {
                               href={subItem.to}
                               className={`block px-5 py-2.5 text-xs transition-all duration-200 ${
                                 location === subItem.to 
-                                  ? 'text-black bg-gray-50 font-medium' 
-                                  : 'text-gray-600 hover:text-black hover:bg-gray-50 font-light'
+                                  ? 'text-[#D4AF37] bg-[#D4AF37]/10 font-medium border-l-2 border-[#D4AF37]' 
+                                  : 'text-gray-400 hover:text-[#D4AF37] hover:bg-[#D4AF37]/5 font-light'
                               }`}
                             >
                               <span className="tracking-wide">{subItem.name}</span>
@@ -167,34 +218,37 @@ export default function Header() {
                   ) : (
                     <Link
                       href={item.to}
-                      className={`text-xs uppercase tracking-[0.12em] font-medium transition-all duration-300 py-2 ${
+                      className={`text-xs uppercase tracking-[0.12em] font-medium transition-all duration-300 py-2 relative group ${
                         location === item.to 
-                          ? "text-black" 
-                          : "text-gray-500 hover:text-black"
+                          ? "text-[#D4AF37]" 
+                          : "text-gray-400 hover:text-[#D4AF37]"
                       }`}
                     >
                       {item.name}
+                      {location === item.to && (
+                        <span className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent" />
+                      )}
                     </Link>
                   )}
                 </div>
               ))}
             </nav>
 
-            {/* Right Actions */}
+            {/* Right Actions with Theme Toggle */}
             <div className="flex items-center gap-3 lg:gap-6 justify-end">
               {/* Desktop Search */}
               {!isMobile && (
                 <form className="hidden lg:flex items-center group relative" onSubmit={handleSearch}>
                   <input
                     type="text"
-                    className="w-48 xl:w-56 px-4 py-2 text-xs text-black bg-gray-50 border border-gray-200 focus:border-black focus:bg-white focus:outline-none transition-all duration-300 font-light placeholder:text-gray-400"
+                    className="w-48 xl:w-56 px-4 py-2 text-xs text-white bg-white/5 border border-[#D4AF37]/20 focus:border-[#D4AF37] focus:bg-white/10 focus:outline-none transition-all duration-300 font-light placeholder:text-gray-500"
                     placeholder="Search products..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />
                   <button
                     type="submit"
-                    className="absolute right-3 text-gray-400 hover:text-black transition-colors duration-300"
+                    className="absolute right-3 text-gray-500 hover:text-[#D4AF37] transition-colors duration-300"
                   >
                     <FiSearch className="text-base" />
                   </button>
@@ -204,7 +258,7 @@ export default function Header() {
               {/* Mobile Search */}
               {isMobile && !showMobileSearch && (
                 <button
-                  className="text-gray-500 hover:text-black transition-colors p-1.5"
+                  className="text-gray-400 hover:text-[#D4AF37] transition-colors p-1.5"
                   onClick={() => setShowMobileSearch(true)}
                 >
                   <FiSearch className="text-lg sm:text-xl" />
@@ -215,7 +269,7 @@ export default function Header() {
                 <form className="flex items-center relative" onSubmit={handleSearch}>
                   <input
                     type="text"
-                    className="w-32 sm:w-40 px-3 py-1.5 text-xs text-black bg-gray-50 border border-gray-200 focus:border-black focus:outline-none placeholder:text-gray-400 font-light"
+                    className="w-32 sm:w-40 px-3 py-1.5 text-xs text-white bg-white/5 border border-[#D4AF37]/20 focus:border-[#D4AF37] focus:outline-none placeholder:text-gray-500 font-light"
                     placeholder="Search..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
@@ -223,13 +277,41 @@ export default function Header() {
                   />
                   <button
                     type="button"
-                    className="absolute right-2 text-gray-400"
+                    className="absolute right-2 text-gray-500"
                     onClick={() => setShowMobileSearch(false)}
                   >
                     <HiOutlineX className="text-base" />
                   </button>
                 </form>
               )}
+
+              {/* Premium Theme Toggle Button */}
+              <button
+                onClick={toggleTheme}
+                className="relative p-2 text-gray-400 hover:text-[#D4AF37] transition-all duration-500 group"
+                aria-label="Toggle theme"
+              >
+                <div className="relative w-5 h-5">
+                  {/* Sun Icon (Light Mode) */}
+                  <Sun 
+                    className={`absolute inset-0 w-5 h-5 transition-all duration-500 ${
+                      theme === 'light' 
+                        ? 'rotate-0 scale-100 opacity-100' 
+                        : 'rotate-90 scale-0 opacity-0'
+                    }`}
+                  />
+                  {/* Moon Icon (Dark Mode) */}
+                  <Moon 
+                    className={`absolute inset-0 w-5 h-5 transition-all duration-500 ${
+                      theme === 'dark' 
+                        ? 'rotate-0 scale-100 opacity-100' 
+                        : '-rotate-90 scale-0 opacity-0'
+                    }`}
+                  />
+                </div>
+                {/* Gold glow on hover */}
+                <div className="absolute inset-0 bg-[#D4AF37] opacity-0 group-hover:opacity-20 blur-lg transition-opacity duration-300 rounded-full" />
+              </button>
 
               {/* Cart */}
               <div className="flex items-center">
@@ -239,7 +321,7 @@ export default function Header() {
               {/* Mobile Menu Toggle */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden text-gray-500 hover:text-black transition-colors p-1.5"
+                className="lg:hidden text-gray-400 hover:text-[#D4AF37] transition-colors p-1.5"
               >
                 {mobileMenuOpen ? <HiOutlineX className="text-xl sm:text-2xl" /> : <HiOutlineMenuAlt3 className="text-xl sm:text-2xl" />}
               </button>
@@ -251,38 +333,54 @@ export default function Header() {
       {/* Mobile Overlay */}
       {mobileMenuOpen && (
         <div 
-          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
           onClick={() => setMobileMenuOpen(false)}
         />
       )}
 
-      {/* Mobile Menu - Premium Slide-in */}
-      <div className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white z-50 transition-transform duration-300 lg:hidden ${
+      {/* Mobile Menu - Premium Black Theme */}
+      <div className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-black dark:bg-black border-l border-[#D4AF37]/20 z-50 transition-transform duration-300 lg:hidden ${
         mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
-        {/* Header */}
-        <div className="flex items-center justify-between px-5 sm:px-6 py-5 sm:py-6 border-b border-gray-100">
+        {/* Header with Animated Video Logo */}
+        <div className="flex items-center justify-between px-5 sm:px-6 py-5 sm:py-6 border-b border-[#D4AF37]/20">
           <div className="flex items-center gap-2 sm:gap-3">
-            <img className="h-9 sm:h-10" src="/logo.png" alt='Caishen United' />
+            <div className="relative h-9 sm:h-10 w-9 sm:w-10 overflow-hidden">
+              <video
+                className="w-full h-full object-contain"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+              >
+                <source src="/logo-video.mp4" type="video/mp4" />
+                <img 
+                  className="w-full h-full object-contain" 
+                  src="/logo.png" 
+                  alt='Caishen United' 
+                />
+              </video>
+            </div>
             <div>
-              <span className="block text-black font-light text-xs sm:text-sm tracking-[0.12em]">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#F5E6D3] font-light text-xs sm:text-sm tracking-[0.12em]">
                 CAISHEN UNITED
               </span>
-              <span className="block text-gray-400 text-[7px] sm:text-[8px] tracking-[0.2em] uppercase mt-0.5">
+              <span className="block text-[#D4AF37]/60 text-[7px] sm:text-[8px] tracking-[0.2em] uppercase mt-0.5">
                 Premium Protection
               </span>
             </div>
           </div>
           <button
             onClick={() => setMobileMenuOpen(false)}
-            className="text-gray-500 hover:text-black transition-colors p-1"
+            className="text-gray-400 hover:text-[#D4AF37] transition-colors p-1"
           >
             <HiOutlineX className="text-xl sm:text-2xl" />
           </button>
         </div>
 
-        {/* Nav - Smaller font sizes */}
-        <nav className="flex flex-col px-3 sm:px-4 py-4 sm:py-6 space-y-0.5 h-full overflow-y-auto pb-24">
+        {/* Nav with Gold Theme */}
+        <nav className="flex flex-col px-3 sm:px-4 py-4 sm:py-6 space-y-0.5 h-full overflow-y-auto pb-32">
           {navItems.map((item) => (
             <div key={item.name}>
               {item.submenu ? (
@@ -290,8 +388,8 @@ export default function Header() {
                   <button
                     className={`w-full text-left px-3 sm:px-4 py-2.5 sm:py-3 text-[11px] sm:text-xs uppercase tracking-[0.1em] font-medium transition-colors flex items-center justify-between ${
                       location.startsWith(item.to) 
-                        ? "text-black" 
-                        : "text-gray-600 hover:text-black"
+                        ? "text-[#D4AF37]" 
+                        : "text-gray-400 hover:text-[#D4AF37]"
                     }`}
                     onClick={() => setMobileActiveSubmenu(mobileActiveSubmenu === item.name ? null : item.name)}
                   >
@@ -308,8 +406,8 @@ export default function Header() {
                         href={subItem.to}
                         className={`block px-3 sm:px-4 py-2 sm:py-2.5 text-[10px] sm:text-xs transition-colors border-l-2 ${
                           location === subItem.to 
-                            ? 'text-black border-black font-medium' 
-                            : 'text-gray-500 border-gray-200 hover:text-black hover:border-gray-400 font-light'
+                            ? 'text-[#D4AF37] border-[#D4AF37] font-medium bg-[#D4AF37]/5' 
+                            : 'text-gray-500 border-gray-800 hover:text-[#D4AF37] hover:border-[#D4AF37]/50 font-light'
                         }`}
                         onClick={() => {
                           setMobileMenuOpen(false);
@@ -326,8 +424,8 @@ export default function Header() {
                   href={item.to}
                   className={`block px-3 sm:px-4 py-2.5 sm:py-3 text-[11px] sm:text-xs uppercase tracking-[0.1em] font-medium transition-colors ${
                     location === item.to 
-                      ? "text-black" 
-                      : "text-gray-600 hover:text-black"
+                      ? "text-[#D4AF37]" 
+                      : "text-gray-400 hover:text-[#D4AF37]"
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -337,10 +435,40 @@ export default function Header() {
             </div>
           ))}
 
+          {/* Premium Theme Toggle in Mobile Menu */}
+          <div className="px-3 sm:px-4 py-6 border-t border-[#D4AF37]/20 mt-4">
+            <button
+              onClick={toggleTheme}
+              className="w-full flex items-center justify-between px-4 py-3 bg-white/5 border border-[#D4AF37]/20 hover:border-[#D4AF37] transition-all duration-300 group"
+            >
+              <span className="text-xs uppercase tracking-wider text-gray-400 group-hover:text-[#D4AF37] font-medium">
+                Theme: {theme === 'dark' ? 'Dark' : 'Light'}
+              </span>
+              <div className="relative w-5 h-5">
+                <Sun 
+                  className={`absolute inset-0 w-5 h-5 text-gray-400 group-hover:text-[#D4AF37] transition-all duration-500 ${
+                    theme === 'light' ? 'rotate-0 scale-100 opacity-100' : 'rotate-90 scale-0 opacity-0'
+                  }`}
+                />
+                <Moon 
+                  className={`absolute inset-0 w-5 h-5 text-gray-400 group-hover:text-[#D4AF37] transition-all duration-500 ${
+                    theme === 'dark' ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'
+                  }`}
+                />
+              </div>
+            </button>
+          </div>
+
           {/* Mobile Menu Footer */}
-          <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 border-t border-gray-100 bg-white">
-            <p className="text-[9px] sm:text-[10px] text-gray-400 text-center tracking-wider">
-              Premium Protection. Timeless Design.
+          <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 border-t border-[#D4AF37]/20 bg-black">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Crown className="w-3 h-3 text-[#D4AF37]" />
+              <p className="text-[9px] sm:text-[10px] text-[#D4AF37]/80 text-center tracking-wider uppercase font-medium">
+                Premium Protection
+              </p>
+            </div>
+            <p className="text-[8px] text-gray-600 text-center tracking-wider">
+              Timeless Design. Military-Grade Quality.
             </p>
           </div>
         </nav>

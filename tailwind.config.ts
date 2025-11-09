@@ -5,6 +5,7 @@ module.exports = {
       './src/**/*.{js,ts,jsx,tsx}', // For /src folder
     ],
     theme: {
+      darkMode: 'class',
       extend: {
         backgroundImage: {
           'product': "url('/product-bg.jpg')", // 👈 replace with your actual image path
