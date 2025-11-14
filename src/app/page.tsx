@@ -138,50 +138,54 @@ export default function Homepage() {
             opacity: 1 - scrollY / 600
           }}
         >
-          {/* Logo with gold glow effect */}
-          <div className="mb-10 flex justify-center animate-fade-in-up">
-            <div className="relative group">
-              <div className="absolute inset-0 blur-2xl bg-gradient-to-r from-[#D4AF37]/20 to-[#F5E6D3]/20 animate-pulse-slow" />
-              <img 
-                src="/logo.png" 
-                alt="Caishen United" 
-                className="relative h-28 md:h-40 w-auto filter drop-shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:drop-shadow-[0_0_50px_rgba(212,175,55,0.6)] hover:scale-105 transition-all duration-700"
-              />
-            </div>
-          </div>
+        {/* Logo with gold glow effect */}
+        <div className="mb-10 flex justify-center animate-fade-in-up">
+  <div className="relative group">
+    <div className="absolute inset-0 blur-2xl bg-gradient-to-r from-[#D4AF37]/20 to-[#F5E6D3]/20 animate-pulse-slow" />
+    <video
+      src="/logo-video.mp4"
+      autoPlay
+      loop
+      muted
+      playsInline
+      className="relative h-28 md:h-40 w-auto filter drop-shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:drop-shadow-[0_0_50px_rgba(212,175,55,0.6)] hover:scale-105 transition-all duration-700 object-contain"
+    />
+  </div>
+</div>
 
-          {/* Hero Text with gold gradient */}
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-light text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#F5E6D3] to-[#D4AF37] mb-6 tracking-tight animate-fade-in-up animation-delay-200 animate-shimmer-text bg-[length:200%_100%]">
-            Armor Your Device
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-4 font-light tracking-wide max-w-3xl mx-auto animate-fade-in-up animation-delay-400">
-            Premium protection meets sophisticated design.
-          </p>
-          <p className="text-base md:text-lg text-[#D4AF37] mb-12 font-light tracking-widest max-w-2xl mx-auto animate-fade-in-up animation-delay-500 flex items-center justify-center gap-2">
-            <Crown className="w-5 h-5" />
-            Where luxury embraces functionality
-            <Crown className="w-5 h-5" />
-          </p>
+{/* Hero Text with gold gradient */}
+<h1 className="text-5xl md:text-7xl lg:text-8xl font-light text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#F5E6D3] to-[#D4AF37] mb-6 tracking-tight animate-fade-in-up animation-delay-200 animate-shimmer-text bg-[length:200%_100%]">
+  Armor Your Device
+</h1>
+<p className="text-xl md:text-2xl text-gray-300 mb-4 font-light tracking-wide max-w-3xl mx-auto animate-fade-in-up animation-delay-400">
+  Premium protection meets sophisticated design.
+</p>
+<p className="text-base md:text-lg text-[#D4AF37] mb-12 font-light tracking-widest max-w-2xl mx-auto animate-fade-in-up animation-delay-500 flex items-center justify-center gap-2">
+  <Crown className="w-5 h-5" />
+  Where luxury embraces functionality
+  <Crown className="w-5 h-5" />
+</p>
 
-          {/* CTA Buttons with gold accents */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up animation-delay-600">
-            <Link
-              href="/products"
-              className="group relative px-10 py-4 bg-gradient-to-r from-[#D4AF37] to-[#C5A028] text-black text-sm font-bold tracking-widest uppercase overflow-hidden transition-all duration-500 flex items-center gap-2 hover:gap-4 hover:shadow-[0_0_40px_rgba(212,175,55,0.5)] hover:scale-105 transform"
-            >
-              <span className="relative z-10">Explore Collection</span>
-              <ChevronRight className="relative z-10 w-4 h-4 transition-transform duration-500 group-hover:translate-x-2" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#F5E6D3] to-[#D4AF37] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            </Link>
-            <Link
-              href="/about"
-              className="px-10 py-4 border-2 border-[#D4AF37] text-[#D4AF37] text-sm font-medium tracking-widest uppercase hover:bg-[#D4AF37] hover:text-black transition-all duration-500 hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:scale-105 transform relative overflow-hidden group"
-            >
-              <span className="relative z-10">Our Story</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#F5E6D3]/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-            </Link>
-          </div>
-        </div>
+{/* CTA Buttons with gold accents */}
+<div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up animation-delay-600">
+  <Link
+    href="/products"
+    className="group relative px-10 py-4 bg-gradient-to-r from-[#D4AF37] to-[#C5A028] text-black text-sm font-bold tracking-widest uppercase overflow-hidden transition-all duration-500 flex items-center gap-2 hover:gap-4 hover:shadow-[0_0_40px_rgba(212,175,55,0.5)] hover:scale-105 transform"
+  >
+    <span className="relative z-10">Explore Collection</span>
+    <ChevronRight className="relative z-10 w-4 h-4 transition-transform duration-500 group-hover:translate-x-2" />
+    <div className="absolute inset-0 bg-gradient-to-r from-[#F5E6D3] to-[#D4AF37] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+  </Link>
+  <Link
+    href="/about"
+    className="px-10 py-4 border-2 border-[#D4AF37] text-[#D4AF37] text-sm font-medium tracking-widest uppercase hover:bg-[#D4AF37] hover:text-black transition-all duration-500 hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:scale-105 transform relative overflow-hidden group"
+  >
+    <span className="relative z-10">Our Story</span>
+    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#F5E6D3]/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+  </Link>
+</div>
+</div>
+
 
         {/* Enhanced Scroll Indicator with gold */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce-slow">
