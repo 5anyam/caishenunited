@@ -439,10 +439,10 @@ export default function ProductClient({
       <div className="max-w-7xl mx-auto mt-20 px-4">
         <div className="border-t border-gray-100 dark:border-[#9e734d]/20">
           <Tab.Group>
-            <Tab.List className="flex border-b border-gray-100 dark:border-[#9e734d]/20">
+            <Tab.List className="flex border-b border-gray-100 dark:border-[#9e734d]/20 overflow-x-auto pb-2 -mb-px">
               {['Description', 'Specifications', 'Care Instructions'].map((label, idx) => (
                 <Tab key={idx} className={({ selected }) =>
-                  `flex-1 py-5 px-6 text-xs font-medium outline-none transition-all uppercase tracking-[0.2em] relative ${
+                  `flex-shrink-0 px-3 py-5 text-xs font-medium outline-none transition-all uppercase tracking-[0.2em] whitespace-nowrap relative ${
                     selected 
                       ? 'text-black dark:text-white' 
                       : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
@@ -452,7 +452,7 @@ export default function ProductClient({
                     <>
                       {label}
                       {selected && (
-                        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#9e734d] to-[#8a6342] shadow-[0_2px_10px_rgba(158,115,77,0.5)]" />
+                        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#9e734d] to-[#8a6342] shadow-[0_2px_10px_rgba(158,115,77,0.5)] rounded-full" />
                       )}
                     </>
                   )}
@@ -488,32 +488,30 @@ export default function ProductClient({
                   </div>
                 </div>
               </Tab.Panel>
-              <Tab.Panel>
-                <div className="space-y-8">
-                  <div className="flex items-center gap-3 mb-8">
-                    <Sparkles className="w-5 h-5 text-[#9e734d]" />
-                    <h3 className="text-xl font-light text-gray-900 dark:text-white tracking-wide">Care Instructions</h3>
-                  </div>
-                  <div className="border border-gray-100 dark:border-[#9e734d]/20 p-8 bg-gradient-to-br from-[#F5E6D3]/5 to-transparent dark:from-[#9e734d]/5 dark:to-transparent">
-                    <ul className="space-y-4 text-gray-700 dark:text-gray-300 font-light text-sm">
-                      <li className="flex items-start gap-3">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#9e734d] mt-2 flex-shrink-0" />
-                        <span>Clean with soft, dry cloth to maintain pristine condition</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#9e734d] mt-2 flex-shrink-0" />
-                        <span>Avoid exposure to extreme temperatures</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#9e734d] mt-2 flex-shrink-0" />
-                        <span>Remove case before wireless charging for optimal performance</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#9e734d] mt-2 flex-shrink-0" />
-                        <span>Store in provided dust bag when not in use</span>
-                      </li>
-                    </ul>
-                  </div>
+              <Tab.Panel className="space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
+                  <Sparkles className="w-5 h-5 text-[#9e734d] flex-shrink-0" />
+                  <h3 className="text-xl font-light text-gray-900 dark:text-white tracking-wide">Care Instructions</h3>
+                </div>
+                <div className="border border-gray-100 dark:border-[#9e734d]/20 p-4 sm:p-8 bg-gradient-to-br from-[#F5E6D3]/5 to-transparent dark:from-[#9e734d]/5 dark:to-transparent rounded-lg overflow-auto max-h-[60vh]">
+                  <ul className="space-y-3 text-gray-700 dark:text-gray-300 font-light text-sm">
+                    <li className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#9e734d] mt-1.5 flex-shrink-0" />
+                      <span>Clean with soft, dry cloth to maintain pristine condition</span>
+                    </li>
+                    <li className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#9e734d] mt-1.5 flex-shrink-0" />
+                      <span>Avoid exposure to extreme temperatures</span>
+                    </li>
+                    <li className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#9e734d] mt-1.5 flex-shrink-0" />
+                      <span>Remove case before wireless charging for optimal performance</span>
+                    </li>
+                    <li className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#9e734d] mt-1.5 flex-shrink-0" />
+                      <span>Store in provided dust bag when not in use</span>
+                    </li>
+                  </ul>
                 </div>
               </Tab.Panel>
             </Tab.Panels>
