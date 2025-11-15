@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { 
-  Shield, Smartphone, Award, Zap, RefreshCw, Sparkles
+  Shield, Award, Zap, RefreshCw, Headphones, Cable, Star, CheckCircle
 } from 'lucide-react';
 
 type Feature = {
@@ -49,36 +49,56 @@ export default function AboutUsSection() {
   const features: Feature[] = [
     {
       icon: <Shield className="text-gray-700 w-6 h-6" />,
-      title: 'Military-Grade Protection',
-      desc: 'Advanced shock-absorption technology and reinforced corners protect your device from drops up to 10 feet.',
+      title: 'Stylish Mobile Covers',
+      desc: 'Protect your device in style with cases that match your mood—sleek, rugged, quirky, or classic.',
     },
     {
-      icon: <Smartphone className="text-gray-700 w-6 h-6" />,
-      title: 'Precision Engineering',
-      desc: 'Custom-fit designs for each device model with perfect cutouts for all ports, buttons, and cameras.',
+      icon: <Zap className="text-gray-700 w-6 h-6" />,
+      title: 'Fast Chargers & Cables',
+      desc: 'Whether you\'re always on the move or need a speedy charge at home, we\'ve got you covered.',
     },
     {
-      icon: <Sparkles className="text-gray-700 w-6 h-6" />,
-      title: 'Premium Materials',
-      desc: 'Crafted from aerospace-grade materials that resist scratches, yellowing, and daily wear.',
+      icon: <Cable className="text-gray-700 w-6 h-6" />,
+      title: 'Innovative Charger Covers',
+      desc: 'Spruce up your space and keep your chargers safe with our fun, functional charger covers.',
+    },
+    {
+      icon: <Headphones className="text-gray-700 w-6 h-6" />,
+      title: 'Crisp Sound Headphones',
+      desc: 'Music, calls, gaming—we bring immersive audio right to your ears.',
     }
   ];
 
   const values: Feature[] = [
     {
+      icon: <Star className="text-gray-700 w-6 h-6" />,
+      title: 'Latest Arrivals',
+      desc: 'We track tech trends so you always get the freshest styles and best innovations.',
+    },
+    {
       icon: <Award className="text-gray-700 w-6 h-6" />,
-      title: 'Lifetime Warranty',
-      desc: 'We stand behind our craftsmanship with a comprehensive lifetime warranty on all products.',
+      title: 'Customer First',
+      desc: 'Got a question or a special request? Our friendly team is always listening.',
     },
     {
       icon: <Zap className="text-gray-700 w-6 h-6" />,
-      title: 'Wireless Charging',
-      desc: 'All cases support wireless charging and work seamlessly with magnetic accessories.',
+      title: 'Fast & Secure Delivery',
+      desc: 'Wherever you are, your accessories reach you quickly—safe, sealed, and ready to use.',
+    },
+    {
+      icon: <CheckCircle className="text-gray-700 w-6 h-6" />,
+      title: 'Easy Shopping Experience',
+      desc: 'Browse, compare, pick. Shopping with us is as smooth as your new screen protector!',
+    },
+    {
+      icon: <Shield className="text-gray-700 w-6 h-6" />,
+      title: 'Premium Quality Only',
+      desc: 'Every product meets rigorous standards for quality and reliability—accessories that protect, enhance, and last.',
     },
     {
       icon: <RefreshCw className="text-gray-700 w-6 h-6" />,
-      title: 'Easy Returns',
-      desc: '30-day hassle-free returns if you\'re not completely satisfied with your purchase.',
+      title: 'Honest, Transparent Service',
+      desc: 'What you see is what you get, with accurate product descriptions, real customer reviews, and no hidden surprises.',
     }
   ];
 
@@ -88,34 +108,38 @@ export default function AboutUsSection() {
         {/* Main Heading */}
         <div className="text-center mb-16">
           <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-4 font-medium">
-            The Caishen Difference
+            Your One-Stop Mobile Destination
           </p>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-gray-900 mb-6 tracking-tight">
-            Engineering Excellence
+            Everything Mobile, Simplified
           </h2>
           
           <div className="w-20 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent mx-auto mb-8"></div>
           
           <p className="text-sm lg:text-base text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
-            Inspired by Caishen, the ancient deity of prosperity and fortune, we believe your devices 
-            deserve the same level of protection and prestige. Every product represents our unwavering 
-            commitment to quality, durability, and timeless design.
+            Welcome to Caishen United, your one-stop destination for everything mobile! We are passionate tech 
+            enthusiasts, curators of style, and everyday problem-solvers who make it easy for you to accessorize 
+            your digital life. Your gadget deserves the best.
           </p>
         </div>
 
-        {/* Philosophy Section */}
+        {/* Products Section */}
         <div className="mb-20 lg:mb-28">
           <div className="text-center mb-12">
             <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-3 font-medium">
-              Why Choose Us
+              What We Offer
             </p>
             <h3 className="text-2xl sm:text-3xl lg:text-4xl font-light text-gray-900 mb-4 tracking-tight">
-              Built to Last
+              Carefully Curated Selection
             </h3>
-            <div className="w-16 h-px bg-gray-300 mx-auto"></div>
+            <div className="w-16 h-px bg-gray-300 mx-auto mb-6"></div>
+            <p className="text-sm text-gray-600 max-w-2xl mx-auto font-light leading-relaxed">
+              We stock a carefully chosen selection of accessories that combine durability, 
+              practicality, and great design—because every smartphone owner is unique.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {features.map((item, index) => (
               <FeatureCard 
                 key={index}
@@ -132,15 +156,15 @@ export default function AboutUsSection() {
         <div className="mb-16">
           <div className="text-center mb-12">
             <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-3 font-medium">
-              Our Promise
+              Why Choose Us
             </p>
             <h3 className="text-2xl sm:text-3xl lg:text-4xl font-light text-gray-900 mb-4 tracking-tight">
-              Uncompromising Quality
+              Your Satisfaction Is Our Promise
             </h3>
             <div className="w-16 h-px bg-gray-300 mx-auto mb-6"></div>
             <p className="text-sm text-gray-600 max-w-2xl mx-auto font-light leading-relaxed">
-              We do not just protect your device, we elevate your everyday experience with 
-              products that combine functionality with sophisticated design.
+              We believe quality should not break the bank. Every product here is tried and tested 
+              for performance, with options to suit every taste and budget.
             </p>
           </div>
 
@@ -179,22 +203,51 @@ export default function AboutUsSection() {
           </div>
         </div>
 
+        {/* Community Section */}
+        <div className="text-center mb-16 py-12 bg-gray-50 rounded-sm">
+          <div className="max-w-3xl mx-auto px-6">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-4 font-medium">
+              Join Our Community
+            </p>
+            <h4 className="text-2xl lg:text-3xl font-light text-gray-900 mb-4 tracking-tight">
+              Let us Stay Connected
+            </h4>
+            <div className="w-16 h-px bg-gray-300 mx-auto mb-6"></div>
+            <p className="text-sm text-gray-600 mb-6 font-light leading-relaxed">
+              We are more than a website; we are a community. Follow us on social media for exclusive deals, 
+              quick hacks, and gadget inspiration. Have a suggestion? Want to see a new product? We thrive 
+              on your feedback!
+            </p>
+            <p className="text-base text-gray-900 font-light italic">
+              At Caishen United, we do not just accessorize phones—we accessorize your life.
+            </p>
+          </div>
+        </div>
+
         {/* CTA Section */}
         <div className="text-center mt-20">
           <div className="max-w-2xl mx-auto">
             <h4 className="text-2xl lg:text-3xl font-light text-gray-900 mb-6 tracking-tight">
-              Elevate Your Device Protection
+              Discover the Difference Today
             </h4>
             <p className="text-sm text-gray-600 mb-8 font-light leading-relaxed">
-              Experience the perfect fusion of military-grade protection and timeless design. 
-              Your device deserves the best.
+              Experience the perfect blend of style, innovation, and compatibility. Shop confidently 
+              with secure payments, easy returns, and transparent warranty coverage.
             </p>
-            <Link 
-              href="/products"
-              className="inline-flex items-center gap-2 px-10 py-4 text-xs uppercase tracking-widest text-white bg-black hover:bg-gray-900 transition-all duration-300 font-medium"
-            >
-              Shop Collection
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Link 
+                href="/products"
+                className="inline-flex items-center gap-2 px-10 py-4 text-xs uppercase tracking-widest text-white bg-black hover:bg-gray-900 transition-all duration-300 font-medium"
+              >
+                Shop Collection
+              </Link>
+              <Link 
+                href="/about"
+                className="inline-flex items-center gap-2 px-10 py-4 text-xs uppercase tracking-widest text-gray-900 border border-gray-300 hover:border-black transition-all duration-300 font-medium"
+              >
+                Learn More
+              </Link>
+            </div>
           </div>
         </div>
       </div>
