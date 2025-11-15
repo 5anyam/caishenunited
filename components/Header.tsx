@@ -8,7 +8,7 @@ import { FiSearch } from "react-icons/fi";
 import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 import { BiChevronDown } from "react-icons/bi";
 import { Moon, Sun, Crown } from "lucide-react";
-import { useTheme } from "./ThemeProvider"; // Your existing theme provider
+import { useTheme } from "./ThemeProvider";
 
 const navItems = [
   { name: "Home", to: "/" },
@@ -40,7 +40,7 @@ const navItems = [
 export default function Header() {
   const location = usePathname();
   const isMobile = useIsMobile();
-  const { theme, toggleTheme } = useTheme(); // Using your existing theme provider
+  const { theme, toggleTheme } = useTheme();
   const [search, setSearch] = useState("");
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -49,25 +49,6 @@ export default function Header() {
   const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoLoaded, setVideoLoaded] = useState(false);
-
-  // Video autoplay with 3 second delay
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (videoRef.current) {
-        videoRef.current.play().catch((error) => {
-          console.log('Video autoplay prevented:', error);
-        });
-      }
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleVideoLoaded = () => {
-    setVideoLoaded(true);
-  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -121,41 +102,20 @@ export default function Header() {
 
   return (
     <>
-      {/* Premium Black Header with Gold Accents */}
+      {/* Premium Black Header with Gold Accents - Static Image Logo */}
       <header className="sticky top-0 z-50 bg-black dark:bg-black border-b border-[#D4AF37]/20 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-20 lg:h-24">
-            {/* Animated Video Logo + Brand */}
+            {/* Static Image Logo + Brand */}
             <div className="flex items-center flex-shrink-0">
               <Link href="/" className="flex items-center gap-2 sm:gap-3 group">
-                {/* Video Logo Container */}
+                {/* Static Image Logo Container */}
                 <div className="relative h-10 sm:h-12 md:h-14 lg:h-16 w-10 sm:w-12 md:w-14 lg:w-16 overflow-hidden">
-                  {!videoLoaded && (
-                    <img 
-                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500" 
-                      src="/logo.png" 
-                      alt='Caishen United'
-                    />
-                  )}
-                  
-                  <video
-                    ref={videoRef}
-                    className={`w-full h-full object-contain transition-opacity duration-500 ${
-                      videoLoaded ? 'opacity-100' : 'opacity-0'
-                    }`}
-                    muted
-                    loop
-                    playsInline
-                    preload="auto"
-                    onLoadedData={handleVideoLoaded}
-                  >
-                    <source src="/logo-video.mp4" type="video/mp4" />
-                    <img 
-                      className="w-full h-full object-contain" 
-                      src="/logo.png" 
-                      alt='Caishen United' 
-                    />
-                  </video>
+                  <img 
+                    className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" 
+                    src="/logo.png" 
+                    alt='Caishen United'
+                  />
                   
                   {/* Gold glow effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/0 via-[#D4AF37]/20 to-[#D4AF37]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none blur-lg" />
@@ -292,7 +252,6 @@ export default function Header() {
                 aria-label="Toggle theme"
               >
                 <div className="relative w-5 h-5">
-                  {/* Sun Icon (Light Mode) */}
                   <Sun 
                     className={`absolute inset-0 w-5 h-5 transition-all duration-500 ${
                       theme === 'light' 
@@ -300,7 +259,6 @@ export default function Header() {
                         : 'rotate-90 scale-0 opacity-0'
                     }`}
                   />
-                  {/* Moon Icon (Dark Mode) */}
                   <Moon 
                     className={`absolute inset-0 w-5 h-5 transition-all duration-500 ${
                       theme === 'dark' 
@@ -309,7 +267,6 @@ export default function Header() {
                     }`}
                   />
                 </div>
-                {/* Gold glow on hover */}
                 <div className="absolute inset-0 bg-[#D4AF37] opacity-0 group-hover:opacity-20 blur-lg transition-opacity duration-300 rounded-full" />
               </button>
 
@@ -338,7 +295,7 @@ export default function Header() {
         />
       )}
 
-      {/* Mobile Menu - Premium Black Theme */}
+      {/* Mobile Menu - WITH ANIMATED VIDEO LOGO */}
       <div className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-black dark:bg-black border-l border-[#D4AF37]/20 z-50 transition-transform duration-300 lg:hidden ${
         mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>

@@ -1,254 +1,187 @@
 'use client';
+import { Shield, Package, CheckCircle, Clock, RefreshCw, AlertCircle, Mail, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 
-import React from 'react';
-import { RotateCcw, CreditCard, XCircle, CheckCircle, Package, AlertTriangle, Clock, Mail, Shield, Heart, Smartphone, Phone } from 'lucide-react';
-
-export default function ReturnsRefundPolicy() {
+export default function ReturnRefundPolicy() {
   return (
-    <div className="min-h-screen bg-white dark:bg-black py-16 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
-      <div className="max-w-4xl mx-auto bg-white dark:bg-black p-6 lg:p-8 shadow-xl rounded-lg border border-gray-200 dark:border-[#9e734d]/20">
-        
-        {/* Header Section */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#9e734d]/10 to-[#8a6342]/10 text-[#9e734d] px-4 py-2 rounded-full text-sm font-medium mb-4 border border-[#9e734d]/20">
-            <RotateCcw className="w-4 h-4" />
-            Quality Assurance Policy
-          </div>
-          <div className="flex items-center justify-center mb-4">
-            <Smartphone className="w-8 h-8 text-[#9e734d] mr-2" />
-            <h1 className="text-3xl lg:text-4xl font-light text-gray-900 dark:text-white tracking-tight">
-              Returns & Refunds Policy
-            </h1>
-          </div>
-          <p className="text-base text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-2 leading-relaxed">
-            Your satisfaction with our premium phone cases and mobile accessories is our priority
-          </p>
-          <p className="text-sm text-[#9e734d] font-medium">Please read carefully before making your purchase</p>
+    <div className="min-h-screen bg-black text-white">
+      {/* Hero Section */}
+      <section className="relative py-20 px-4 bg-gradient-to-b from-[#0a0a0a] to-black border-b border-[#9e734d]/20">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, #9e734d 1px, transparent 0)`,
+            backgroundSize: '40px 40px'
+          }} />
         </div>
 
-        <section className="space-y-8 text-sm leading-7 text-gray-700 dark:text-gray-300">
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#9e734d]/10 border border-[#9e734d]/30 rounded-full mb-6">
+            <Shield className="w-4 h-4 text-[#9e734d]" />
+            <span className="text-sm text-[#9e734d] font-medium">Customer Protection</span>
+          </div>
           
+          <h1 className="text-4xl md:text-6xl font-light text-white mb-6">
+            Return & Refund Policy
+          </h1>
+          
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            Your satisfaction is our priority. We ensure a transparent and hassle-free return process.
+          </p>
+        </div>
+      </section>
+
+      {/* Main Content */}
+      <section className="py-16 px-4">
+        <div className="max-w-4xl mx-auto">
           {/* Introduction */}
-          <div className="bg-gradient-to-r from-[#F5E6D3]/10 to-[#9e734d]/5 dark:from-[#9e734d]/5 dark:to-transparent p-6 rounded-xl border border-[#9e734d]/20">
-            <p className="font-light">
-              At <span className="font-medium text-transparent bg-clip-text bg-gradient-to-r from-[#9e734d] to-[#8a6342]">Caishen United</span>, we take great care in packaging and shipping your premium phone cases and accessories. Each item is carefully inspected and securely packaged to ensure it reaches you in perfect condition. However, we understand that sometimes issues may arise, and we are here to help.
+          <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#9e734d]/20 rounded-2xl p-8 md:p-12 mb-12">
+            <p className="text-gray-300 leading-relaxed text-lg">
+              At <span className="text-[#9e734d] font-semibold">Caishen United</span>, we stand behind every product we deliver. Each item is handled with care and inspected to meet our highest standards before it reaches you. Yet, if your order does not meet expectations, we ensure a smooth and transparent resolution process.
             </p>
           </div>
 
-          {/* Returns Section */}
-          <div className="border-l-4 border-[#9e734d] pl-6 pt-4">
-            <h2 className="text-xl font-light mb-4 text-gray-900 dark:text-white flex items-center gap-2">
-              <Package className="w-5 h-5 text-[#9e734d]" />
-              Returns Policy
-            </h2>
-            <div className="bg-gray-50 dark:bg-[#9e734d]/5 p-4 rounded-lg border border-gray-200 dark:border-[#9e734d]/20 mb-4">
-              <p className="font-light text-gray-600 dark:text-gray-400">
-                All Caishen United shipments undergo rigorous quality checks before dispatch. If you receive a phone case or accessory in any compromised condition, please notify us within <span className="font-medium text-[#9e734d]">7 days</span> of delivery for the fastest resolution.
-              </p>
-            </div>
-          </div>
-
-          {/* Acceptable Returns */}
-          <div className="border-l-4 border-[#9e734d] pl-6 pt-4">
-            <h3 className="text-lg font-light mb-4 text-gray-900 dark:text-white flex items-center gap-2">
-              <CheckCircle className="w-5 h-5 text-[#9e734d]" />
-              7-Day Return Policy: Acceptable Reasons
-            </h3>
-            <div className="bg-gray-50 dark:bg-[#9e734d]/5 p-4 rounded-lg border border-gray-200 dark:border-[#9e734d]/20">
-              <ul className="list-disc pl-6 space-y-2 text-gray-600 dark:text-gray-400 font-light">
-                <li><strong>Damaged Product:</strong> Broken, cracked, or defective phone cases or accessories</li>
-                <li><strong>Wrong Product:</strong> Received a different item or wrong model than what you ordered</li>
-                <li><strong>Manufacturing Defects:</strong> Faulty design, poor fit, or material issues</li>
-                <li><strong>Incomplete Order:</strong> Missing items from your accessory collection order</li>
-                <li><strong>Shipping Damage:</strong> Products damaged during transit despite our secure packaging</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Unacceptable Returns */}
-          <div className="border-l-4 border-[#8a6342] pl-6 pt-4">
-            <h3 className="text-lg font-light mb-4 text-gray-900 dark:text-white flex items-center gap-2">
-              <XCircle className="w-5 h-5 text-[#8a6342]" />
-              Non-Returnable Items
-            </h3>
-            <div className="bg-gray-50 dark:bg-[#9e734d]/5 p-4 rounded-lg border border-gray-200 dark:border-[#9e734d]/20">
-              <ul className="list-disc pl-6 space-y-2 text-gray-600 dark:text-gray-400 font-light">
-                <li><strong>Used Products:</strong> Items that show signs of use, wear, or scratches</li>
-                <li><strong>Missing Packaging:</strong> Items without original packaging, tags, or accessories</li>
-                <li><strong>Late Requests:</strong> Return requests made after 7 days of delivery</li>
-                <li><strong>Personal Preferences:</strong> Changes in style preference, color choice, or design taste</li>
-                <li><strong>Altered Products:</strong> Items that have been customized, modified, or damaged by user</li>
-                <li><strong>Hygiene Items:</strong> Screen protectors or certain personal accessories once applied</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Return Process */}
-          <div className="border-l-4 border-[#9e734d] pl-6 pt-4">
-            <h3 className="text-lg font-light mb-4 text-gray-900 dark:text-white flex items-center gap-2">
-              <Clock className="w-5 h-5 text-[#9e734d]" />
-              Return Process for Acceptable Cases
-            </h3>
-            <div className="bg-gray-50 dark:bg-[#9e734d]/5 p-4 rounded-lg border border-gray-200 dark:border-[#9e734d]/20">
-              <ol className="list-decimal pl-6 space-y-2 text-gray-600 dark:text-gray-400 font-light">
-                <li>Contact us immediately at <a href="mailto:support@caishenunited.com" className="text-[#9e734d] hover:text-[#8a6342] font-medium">support@caishenunited.com</a> with clear photos of the damaged product</li>
-                <li>Include your order number, delivery details, and description of the issue</li>
-                <li>Our customer care team will review your request within 24 hours</li>
-                <li>If confirmed as a valid claim, we will arrange for pickup or replacement</li>
-                <li>Replacement items will be dispatched within 3-5 business days</li>
-                <li>If pickup is not available in your area, we will provide a prepaid return label</li>
-              </ol>
-            </div>
-          </div>
-
-          {/* Refunds Section */}
-          <div className="border-l-4 border-[#8a6342] pl-6 pt-4">
-            <h2 className="text-xl font-light mb-4 text-gray-900 dark:text-white flex items-center gap-2">
-              <CreditCard className="w-5 h-5 text-[#8a6342]" />
-              Refunds Policy
-            </h2>
-          </div>
-
-          {/* No Refunds */}
-          <div className="border-l-4 border-[#9e734d] pl-6 pt-4">
-            <h3 className="text-lg font-light mb-4 text-gray-900 dark:text-white flex items-center gap-2">
-              <XCircle className="w-5 h-5 text-[#9e734d]" />
-              Refunds Will Not Be Issued For
-            </h3>
-            <div className="bg-gray-50 dark:bg-[#9e734d]/5 p-4 rounded-lg border border-gray-200 dark:border-[#9e734d]/20">
-              <ul className="list-disc pl-6 space-y-2 text-gray-600 dark:text-gray-400 font-light">
-                <li>Products that show signs of use, wear, or damage</li>
-                <li>Orders with incorrect shipping addresses provided by the customer</li>
-                <li>Personal style preferences or design choices</li>
-                <li>Items returned without original packaging or after the 7-day window</li>
-                <li>Claims that do not comply with our return policy guidelines</li>
-                <li>COD orders where bank details are not provided for processing</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Refund Eligible */}
-          <div className="border-l-4 border-[#9e734d] pl-6 pt-4">
-            <h3 className="text-lg font-light mb-4 text-gray-900 dark:text-white flex items-center gap-2">
-              <CheckCircle className="w-5 h-5 text-[#9e734d]" />
-              Refunds May Be Issued For
-            </h3>
-            <div className="bg-gray-50 dark:bg-[#9e734d]/5 p-4 rounded-lg border border-gray-200 dark:border-[#9e734d]/20">
-              <ul className="list-disc pl-6 space-y-2 text-gray-600 dark:text-gray-400 font-light">
-                <li>Out of stock items that cannot be fulfilled</li>
-                <li>Undeliverable addresses where shipping cannot reach</li>
-                <li>Valid return policy conditions met within the timeframe</li>
-                <li>Duplicate payments made for the same order</li>
-                <li>Manufacturing defects confirmed by our quality team</li>
-                <li>Orders cancelled before dispatch (subject to processing status)</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Cancellation */}
-          <div className="border-l-4 border-[#8a6342] pl-6 pt-4">
-            <h2 className="text-xl font-light mb-4 text-gray-900 dark:text-white flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5 text-[#8a6342]" />
-              Order Cancellation & Refunds
-            </h2>
-            <div className="bg-gray-50 dark:bg-[#9e734d]/5 p-4 rounded-lg border border-gray-200 dark:border-[#9e734d]/20">
-              <ul className="list-disc pl-6 space-y-2 text-gray-600 dark:text-gray-400 font-light">
-                <li>You can cancel your order before dispatch by emailing <a href="mailto:support@caishenunited.com" className="text-[#8a6342] hover:text-[#9e734d] font-medium">support@caishenunited.com</a></li>
-                <li>Once your items are dispatched, cancellations are not possible</li>
-                <li>Refunds for cancelled orders will be processed within 5-7 business days</li>
-                <li>Refunds will be credited to the same payment method used for purchase</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Additional Information */}
-          <div className="border-l-4 border-[#9e734d] pl-6 pt-4">
-            <h2 className="text-xl font-light mb-4 text-gray-900 dark:text-white flex items-center gap-2">
-              <Shield className="w-5 h-5 text-[#9e734d]" />
-              Additional Refund Information
-            </h2>
-            <div className="bg-gray-50 dark:bg-[#9e734d]/5 p-4 rounded-lg border border-gray-200 dark:border-[#9e734d]/20">
-              <ul className="list-disc pl-6 space-y-2 text-gray-600 dark:text-gray-400 font-light">
-                <li>No processing fees are charged for valid returns or replacements</li>
-                <li>If exchanging for a higher-priced item, you will pay the difference</li>
-                <li>Prepaid order refunds are credited to the original payment source</li>
-                <li>COD order refunds require your bank account details</li>
-                <li>All refunds are processed within 5-7 business days after verification</li>
-                <li>Replacement items are shipped within 3-5 business days after approval</li>
-                <li>We cover return shipping costs for valid quality-related returns</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Quality Commitment */}
-          <div className="border-l-4 border-[#8a6342] pl-6 pt-4">
-            <h2 className="text-xl font-light mb-4 text-gray-900 dark:text-white flex items-center gap-2">
-              <Heart className="w-5 h-5 text-[#8a6342]" />
-              Our Quality Commitment
-            </h2>
-            <div className="bg-gradient-to-r from-[#F5E6D3]/10 to-[#9e734d]/5 dark:from-[#9e734d]/5 dark:to-transparent p-4 rounded-lg border border-[#9e734d]/20">
-              <p className="font-light text-gray-600 dark:text-gray-400 mb-3">
-                We understand that choosing the right phone case is important for protection and style. While we cannot accept returns on used items, we are committed to:
-              </p>
-              <ul className="list-disc pl-6 space-y-1 text-gray-600 dark:text-gray-400 font-light">
-                <li>Providing accurate product descriptions, dimensions, and compatibility details</li>
-                <li>Ensuring secure packaging that protects your items during shipping</li>
-                <li>Offering device-specific guidance to help you choose the perfect fit</li>
-                <li>Standing behind the durability and quality of every Caishen United product</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Contact Section */}
-          <div className="border-l-4 border-[#9e734d] pl-6 pt-4">
-            <h2 className="text-xl font-light mb-4 text-gray-900 dark:text-white flex items-center gap-2">
-              <Mail className="w-5 h-5 text-[#9e734d]" />
-              Need Help?
-            </h2>
-            <div className="bg-gradient-to-r from-[#F5E6D3]/10 to-[#9e734d]/5 dark:from-[#9e734d]/5 dark:to-transparent p-4 rounded-lg border border-[#9e734d]/20">
-              <p className="font-light text-gray-600 dark:text-gray-400 mb-3">
-                Our customer care team is here to assist with any concerns about your order:
-              </p>
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-gradient-to-r from-[#9e734d] to-[#8a6342] rounded-lg text-white">
-                    <Mail className="w-4 h-4" />
+          {/* Policy Points */}
+          <div className="space-y-6 mb-12">
+            {[
+              {
+                icon: Clock,
+                title: "7-Day Return Window",
+                description: "Eligible returns must be requested within 7 days of delivery through our customer care team or email support."
+              },
+              {
+                icon: Package,
+                title: "Product Condition",
+                description: "Returned items must remain unused, in original packaging, and accompanied by a valid proof of purchase."
+              },
+              {
+                icon: CheckCircle,
+                title: "Inspection & Approval",
+                description: "Once your item is received and inspected, we will notify you regarding the approval or rejection of your return."
+              },
+              {
+                icon: RefreshCw,
+                title: "Refund Processing",
+                description: "Approved refunds will be processed to your original method of payment within 5–7 business days."
+              },
+              {
+                icon: Shield,
+                title: "Exchange & Replacement",
+                description: "In cases of exchange, replacement, or damaged delivery, our support team will coordinate immediate corrective action to ensure complete satisfaction."
+              },
+              {
+                icon: AlertCircle,
+                title: "Non-Returnable Items",
+                description: "Certain products, such as custom-made items or hygiene-sensitive goods, are not eligible for return or refund, unless defective upon arrival."
+              }
+            ].map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={index}
+                  className="group flex gap-6 p-6 bg-[#0a0a0a] border border-[#9e734d]/20 rounded-xl hover:border-[#9e734d]/50 transition-all duration-300"
+                >
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 bg-[#9e734d]/10 rounded-full flex items-center justify-center group-hover:bg-[#9e734d]/20 transition-colors">
+                      <Icon className="w-6 h-6 text-[#9e734d]" />
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-medium text-gray-900 dark:text-white">Email:</p>
-                    <a href="mailto:support@caishenunited.com" className="text-[#9e734d] hover:text-[#8a6342] font-medium">
-                      support@caishenunited.com
-                    </a>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-semibold text-white mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-400 leading-relaxed">
+                      {item.description}
+                    </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-gradient-to-r from-[#9e734d] to-[#8a6342] rounded-lg text-white">
-                    <Phone className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-900 dark:text-white">Phone:</p>
-                    <a href="tel:+919818400981" className="text-[#9e734d] hover:text-[#8a6342] font-medium">
-                      +91 98184 00981
-                    </a>
-                  </div>
-                </div>
-                <p className="text-gray-600 dark:text-gray-400 text-sm">
-                  <strong>Response Time:</strong> Within 24 hours | <strong>Available:</strong> Monday to Saturday, 9 AM - 6 PM IST
-                </p>
-              </div>
-            </div>
+              );
+            })}
           </div>
 
           {/* Closing Statement */}
-          <div className="bg-gradient-to-r from-[#9e734d] to-[#8a6342] p-8 rounded-xl text-center text-white shadow-lg mt-12">
-            <Heart className="w-12 h-12 mx-auto mb-4" />
-            <h3 className="text-xl font-light mb-2">Your Satisfaction is Our Priority</h3>
-            <p className="text-base opacity-90 max-w-2xl mx-auto leading-relaxed">
-              At Caishen United, we are committed to ensuring your experience with our premium phone cases and accessories is exceptional. Your trust in our brand means everything to us.
-            </p>
+          <div className="relative overflow-hidden bg-gradient-to-br from-[#9e734d]/10 to-[#9e734d]/5 border border-[#9e734d]/30 rounded-2xl p-8 md:p-12">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#9e734d]/10 rounded-full blur-3xl" />
+            <div className="relative z-10">
+              <p className="text-gray-200 leading-relaxed text-lg italic">
+                At <span className="text-[#9e734d] font-semibold not-italic">Caishen United</span>, every return is more than a formality, it is an opportunity to reaffirm our promise of quality, trust, and unmatched service.
+              </p>
+            </div>
           </div>
-        </section>
-      </div>
+
+          {/* Contact CTA */}
+          <div className="mt-16 text-center">
+            <h3 className="text-2xl font-light text-white mb-6">
+              Need Help with a Return?
+            </h3>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#9e734d] to-[#b8834f] text-black rounded-full font-semibold hover:shadow-[0_0_30px_rgba(158,115,77,0.5)] transition-all hover:scale-105"
+              >
+                <Mail className="w-5 h-5" />
+                Contact Support
+                <ChevronRight className="w-5 h-5" />
+              </Link>
+              <Link
+                href="/"
+                className="inline-flex items-center gap-2 px-8 py-4 border-2 border-[#9e734d] text-white rounded-full hover:bg-[#9e734d]/10 transition-all"
+              >
+                Back to Home
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 px-4 bg-[#0a0a0a] border-t border-[#9e734d]/20">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-light text-center text-white mb-12">
+            Frequently Asked Questions
+          </h2>
+          
+          <div className="space-y-4">
+            {[
+              {
+                question: "How do I initiate a return?",
+                answer: "Contact our customer care team or email us within 7 days of delivery with your order number and reason for return."
+              },
+              {
+                question: "Who pays for return shipping?",
+                answer: "Return shipping costs depend on the reason for return. For defective or incorrect items, we cover the cost. For other returns, customers are responsible."
+              },
+              {
+                question: "How long does a refund take?",
+                answer: "Once your return is approved and received, refunds are processed within 5-7 business days to your original payment method."
+              },
+              {
+                question: "Can I exchange my item?",
+                answer: "Yes! Our support team will help coordinate exchanges for size, color, or product variations based on availability."
+              }
+            ].map((faq, index) => (
+              <details
+                key={index}
+                className="group bg-black border border-[#9e734d]/20 rounded-xl overflow-hidden hover:border-[#9e734d]/50 transition-colors"
+              >
+                <summary className="px-6 py-4 cursor-pointer flex items-center justify-between text-white font-medium">
+                  <span>{faq.question}</span>
+                  <ChevronRight className="w-5 h-5 text-[#9e734d] transform group-open:rotate-90 transition-transform" />
+                </summary>
+                <div className="px-6 pb-4 text-gray-400">
+                  {faq.answer}
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+      `}</style>
     </div>
   );
 }
