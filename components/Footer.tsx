@@ -80,22 +80,22 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               <li>
-                <Link href="/shop/covers/iphone" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
-                  iPhone Cases
+                <Link href="/device/iphone-covers" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
+                  iPhone Covers
                 </Link>
               </li>
               <li>
-                <Link href="/shop/covers/samsung" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
+                <Link href="/shop/samsung-covers" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
                   Samsung Cases
                 </Link>
               </li>
               <li>
-                <Link href="/shop/covers/oneplus" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
+                <Link href="/shop/oneplus-covers" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
                   OnePlus Cases
                 </Link>
               </li>
               <li>
-                <Link href="/shop/accessories" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
+                <Link href="/device/chargers" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
                   Accessories
                 </Link>
               </li>
@@ -134,7 +134,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/warranty" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
+                <Link href="/warranty-replacement-policy" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
                   Warranty Information
                 </Link>
               </li>
