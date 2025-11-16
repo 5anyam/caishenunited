@@ -118,10 +118,10 @@ export default function Header() {
                 
                 {/* Brand name with copper gradient */}
                 <div className="border-l border-[#9e734d]/30 pl-2 sm:pl-3 ml-1">
-                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#9e734d] to-[#F5E6D3] font-light text-xs sm:text-sm lg:text-lg tracking-[0.12em] sm:tracking-[0.15em] leading-none">
+                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#9e734d] to-[#F5E6D3] font-light text-sm sm:text-base lg:text-xl tracking-[0.12em] sm:tracking-[0.15em] leading-none">
                     CAISHEN UNITED
                   </span>
-                  <span className="block text-[#9e734d]/60 text-[7px] sm:text-[8px] lg:text-[9px] tracking-[0.2em] sm:tracking-[0.25em] uppercase mt-0.5 sm:mt-1">
+                  <span className="block text-[#9e734d]/60 text-[8px] sm:text-[9px] lg:text-[10px] tracking-[0.2em] sm:tracking-[0.25em] uppercase mt-0.5 sm:mt-1">
                     Premium Protection
                   </span>
                 </div>
@@ -139,18 +139,18 @@ export default function Header() {
                       onMouseLeave={handleSubmenuMouseLeave}
                     >
                       <button
-                        className={`text-xs uppercase tracking-[0.12em] font-medium transition-all duration-300 py-2 flex items-center gap-1 ${
+                        className={`text-sm uppercase tracking-[0.12em] font-medium transition-all duration-300 py-2 flex items-center gap-1 ${
                           location.startsWith(item.to) 
                             ? "text-[#9e734d]" 
                             : "text-[#9e734d] hover:text-white"
                         }`}
                       >
                         {item.name}
-                        <BiChevronDown className={`text-sm transition-transform duration-300 ${activeSubmenu === item.name ? 'rotate-180' : ''}`} />
+                        <BiChevronDown className={`text-base transition-transform duration-300 ${activeSubmenu === item.name ? 'rotate-180' : ''}`} />
                       </button>
                       
                       {/* Dropdown with Copper Accents */}
-                      <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-6 bg-black border border-[#9e734d]/30 min-w-[220px] backdrop-blur-md transition-all duration-300 shadow-[0_8px_30px_rgba(158,115,77,0.2)] ${
+                      <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-6 bg-black border border-[#9e734d]/30 min-w-[240px] backdrop-blur-md transition-all duration-300 shadow-[0_8px_30px_rgba(158,115,77,0.2)] ${
                         activeSubmenu === item.name ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
                       }`}>
                         <div className="py-2">
@@ -158,7 +158,7 @@ export default function Header() {
                             <Link
                               key={subItem.name}
                               href={subItem.to}
-                              className={`block px-5 py-2.5 text-xs transition-all duration-200 ${
+                              className={`block px-5 py-3 text-sm transition-all duration-200 ${
                                 location === subItem.to 
                                   ? 'text-white bg-[#9e734d]/10 font-medium border-l-2 border-[#9e734d]' 
                                   : 'text-[#9e734d] hover:text-white hover:bg-[#9e734d]/5 font-light'
@@ -173,7 +173,7 @@ export default function Header() {
                   ) : (
                     <Link
                       href={item.to}
-                      className={`text-xs uppercase tracking-[0.12em] font-medium transition-all duration-300 py-2 relative group ${
+                      className={`text-sm uppercase tracking-[0.12em] font-medium transition-all duration-300 py-2 relative group ${
                         location === item.to 
                           ? "text-[#9e734d]" 
                           : "text-[#9e734d] hover:text-white"
@@ -196,7 +196,7 @@ export default function Header() {
                 <form className="hidden lg:flex items-center group relative" onSubmit={handleSearch}>
                   <input
                     type="text"
-                    className="w-48 xl:w-56 px-4 py-2 text-xs text-white bg-white/5 border border-[#9e734d]/20 focus:border-[#9e734d] focus:bg-white/10 focus:outline-none transition-all duration-300 font-light placeholder:text-gray-500"
+                    className="w-48 xl:w-56 px-4 py-2 text-sm text-white bg-white/5 border border-[#9e734d]/20 focus:border-[#9e734d] focus:bg-white/10 focus:outline-none transition-all duration-300 font-light placeholder:text-gray-500"
                     placeholder="Search products..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
@@ -205,7 +205,7 @@ export default function Header() {
                     type="submit"
                     className="absolute right-3 text-gray-500 hover:text-[#9e734d] transition-colors duration-300"
                   >
-                    <FiSearch className="text-base" />
+                    <FiSearch className="text-lg" />
                   </button>
                 </form>
               )}
@@ -216,7 +216,7 @@ export default function Header() {
                   className="text-[#9e734d] hover:text-white transition-colors p-1.5"
                   onClick={() => setShowMobileSearch(true)}
                 >
-                  <FiSearch className="text-lg sm:text-xl" />
+                  <FiSearch className="text-xl sm:text-2xl" />
                 </button>
               )}
 
@@ -224,7 +224,7 @@ export default function Header() {
                 <form className="flex items-center relative" onSubmit={handleSearch}>
                   <input
                     type="text"
-                    className="w-32 sm:w-40 px-3 py-1.5 text-xs text-white bg-white/5 border border-[#9e734d]/20 focus:border-[#9e734d] focus:outline-none placeholder:text-gray-500 font-light"
+                    className="w-32 sm:w-40 px-3 py-1.5 text-sm text-white bg-white/5 border border-[#9e734d]/20 focus:border-[#9e734d] focus:outline-none placeholder:text-gray-500 font-light"
                     placeholder="Search..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
@@ -235,7 +235,7 @@ export default function Header() {
                     className="absolute right-2 text-gray-500"
                     onClick={() => setShowMobileSearch(false)}
                   >
-                    <HiOutlineX className="text-base" />
+                    <HiOutlineX className="text-lg" />
                   </button>
                 </form>
               )}
@@ -250,7 +250,7 @@ export default function Header() {
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="lg:hidden text-[#9e734d] hover:text-white transition-colors p-1.5"
               >
-                {mobileMenuOpen ? <HiOutlineX className="text-xl sm:text-2xl" /> : <HiOutlineMenuAlt3 className="text-xl sm:text-2xl" />}
+                {mobileMenuOpen ? <HiOutlineX className="text-2xl sm:text-3xl" /> : <HiOutlineMenuAlt3 className="text-2xl sm:text-3xl" />}
               </button>
             </div>
           </div>
@@ -272,7 +272,7 @@ export default function Header() {
         {/* Header with Animated Video Logo */}
         <div className="flex items-center justify-between px-5 sm:px-6 py-5 sm:py-6 border-b border-[#9e734d]/20">
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="relative h-9 sm:h-10 w-9 sm:w-10 overflow-hidden">
+            <div className="relative h-10 sm:h-11 w-10 sm:w-11 overflow-hidden">
               <video
                 className="w-full h-full object-contain"
                 autoPlay
@@ -290,10 +290,10 @@ export default function Header() {
               </video>
             </div>
             <div>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#9e734d] to-[#F5E6D3] font-light text-xs sm:text-sm tracking-[0.12em]">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#9e734d] to-[#F5E6D3] font-light text-sm sm:text-base tracking-[0.12em]">
                 CAISHEN UNITED
               </span>
-              <span className="block text-[#9e734d]/60 text-[7px] sm:text-[8px] tracking-[0.2em] uppercase mt-0.5">
+              <span className="block text-[#9e734d]/60 text-[9px] sm:text-[10px] tracking-[0.2em] uppercase mt-0.5">
                 Premium Protection
               </span>
             </div>
@@ -302,7 +302,7 @@ export default function Header() {
             onClick={() => setMobileMenuOpen(false)}
             className="text-[#9e734d] hover:text-white transition-colors p-1"
           >
-            <HiOutlineX className="text-xl sm:text-2xl" />
+            <HiOutlineX className="text-2xl sm:text-3xl" />
           </button>
         </div>
 
@@ -313,7 +313,7 @@ export default function Header() {
               {item.submenu ? (
                 <div>
                   <button
-                    className={`w-full text-left px-3 sm:px-4 py-2.5 sm:py-3 text-[11px] sm:text-xs uppercase tracking-[0.1em] font-medium transition-colors flex items-center justify-between ${
+                    className={`w-full text-left px-3 sm:px-4 py-3 sm:py-3.5 text-sm sm:text-base uppercase tracking-[0.1em] font-medium transition-colors flex items-center justify-between ${
                       location.startsWith(item.to) 
                         ? "text-[#9e734d]" 
                         : "text-[#9e734d] hover:text-white"
@@ -321,7 +321,7 @@ export default function Header() {
                     onClick={() => setMobileActiveSubmenu(mobileActiveSubmenu === item.name ? null : item.name)}
                   >
                     {item.name}
-                    <BiChevronDown className={`text-sm transition-transform duration-300 ${mobileActiveSubmenu === item.name ? 'rotate-180' : ''}`} />
+                    <BiChevronDown className={`text-base transition-transform duration-300 ${mobileActiveSubmenu === item.name ? 'rotate-180' : ''}`} />
                   </button>
                   
                   <div className={`ml-3 sm:ml-4 transition-all duration-300 overflow-hidden ${
@@ -331,7 +331,7 @@ export default function Header() {
                       <Link
                         key={subItem.name}
                         href={subItem.to}
-                        className={`block px-3 sm:px-4 py-2 sm:py-2.5 text-[10px] sm:text-xs transition-colors border-l-2 ${
+                        className={`block px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm transition-colors border-l-2 ${
                           location === subItem.to 
                             ? 'text-white border-[#9e734d] font-medium bg-[#9e734d]/5' 
                             : 'text-[#9e734d] border-gray-800 hover:text-white hover:border-[#9e734d]/50 font-light'
@@ -349,7 +349,7 @@ export default function Header() {
               ) : (
                 <Link
                   href={item.to}
-                  className={`block px-3 sm:px-4 py-2.5 sm:py-3 text-[11px] sm:text-xs uppercase tracking-[0.1em] font-medium transition-colors ${
+                  className={`block px-3 sm:px-4 py-3 sm:py-3.5 text-sm sm:text-base uppercase tracking-[0.1em] font-medium transition-colors ${
                     location === item.to 
                       ? "text-[#9e734d]" 
                       : "text-[#9e734d] hover:text-white"
@@ -365,12 +365,12 @@ export default function Header() {
           {/* Mobile Menu Footer */}
           <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 border-t border-[#9e734d]/20 bg-black">
             <div className="flex items-center justify-center gap-2 mb-2">
-              <Crown className="w-3 h-3 text-[#9e734d]" />
-              <p className="text-[9px] sm:text-[10px] text-[#9e734d]/80 text-center tracking-wider uppercase font-medium">
+              <Crown className="w-4 h-4 text-[#9e734d]" />
+              <p className="text-[10px] sm:text-[11px] text-[#9e734d]/80 text-center tracking-wider uppercase font-medium">
                 Premium Protection
               </p>
             </div>
-            <p className="text-[8px] text-gray-600 text-center tracking-wider">
+            <p className="text-[9px] text-gray-600 text-center tracking-wider">
               Timeless Design. Military-Grade Quality.
             </p>
           </div>

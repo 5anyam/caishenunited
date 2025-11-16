@@ -360,119 +360,120 @@ export default function Homepage() {
 
       {/* Featured Products Section - Redesigned */}
       <section className="py-20 px-4 bg-white">
-        <div className="max-w-7xl mx-auto">
-          {/* Section Header */}
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#9e734d]/10 border border-[#9e734d]/30 rounded-full mb-6">
-              <Star className="w-4 h-4 text-[#9e734d]" />
-              <span className="text-sm text-[#9e734d] font-medium">Featured Collection</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-light text-white mb-4">
-              Discover Our Best Sellers
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Handpicked premium cases designed for style and protection
-            </p>
-          </div>
+  <div className="max-w-7xl mx-auto">
+    {/* Section Header */}
+    <div className="text-center mb-16">
+      <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#9e734d]/10 border border-[#9e734d]/30 rounded-full mb-6">
+        <Star className="w-4 h-4 text-[#9e734d]" />
+        <span className="text-sm text-[#9e734d] font-medium">Featured Collection</span>
+      </div>
+      <h2 className="text-4xl md:text-5xl font-light text-gray-900 mb-4">
+        Discover Our Best Sellers
+      </h2>
+      <p className="text-gray-600 max-w-2xl mx-auto">
+        Handpicked premium cases designed for style and protection
+      </p>
+    </div>
 
-          {/* Search & Filters */}
-          <div className="mb-12 space-y-6">
-            {/* Search Bar */}
-            <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                <input
-                  type="text"
-                  placeholder="Search products..."
-                  value={searchQuery}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 bg-[#0a0a0a] border border-[#9e734d]/20 rounded-xl text-white placeholder-gray-600 focus:border-[#9e734d] focus:outline-none transition-colors"
-                />
-              </div>
-            </form>
-
-            {/* Category Tabs */}
-            <div className="flex flex-wrap justify-center gap-3">
-              {[
-                { key: 'all' as const, label: 'All Products' },
-                { key: 'covers' as const, label: 'Phone Cases' },
-                { key: 'accessories' as const, label: 'Accessories' }
-              ].map((cat) => (
-                <button
-                  key={cat.key}
-                  onClick={() => setActiveCategory(cat.key)}
-                  className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                    activeCategory === cat.key
-                      ? 'bg-[#9e734d] text-black shadow-[0_0_20px_rgba(158,115,77,0.4)]'
-                      : 'bg-[#0a0a0a] text-gray-400 border border-[#9e734d]/20 hover:border-[#9e734d]/50'
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Brand Filter */}
-            <ShopByBrand 
-              brands={[]} 
-              activeBrand={activeBrand} 
-              onBrandSelect={handleBrandSelect} 
-            />
-          </div>
-
-          {/* Products Grid */}
-          {isLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {[...Array(8)].map((_, i) => (
-                <ProductSkeleton key={i} />
-              ))}
-            </div>
-          ) : isError ? (
-            <div className="text-center py-20">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-[#9e734d]/10 rounded-full mb-4">
-                <Shield className="w-8 h-8 text-[#9e734d]" />
-              </div>
-              <p className="text-gray-400 mb-6">Unable to load products</p>
-              <button 
-                onClick={() => window.location.reload()}
-                className="px-8 py-3 bg-[#9e734d] text-black rounded-full font-medium hover:shadow-[0_0_20px_rgba(158,115,77,0.5)] transition-all"
-              >
-                Retry
-              </button>
-            </div>
-          ) : displayProducts.length === 0 ? (
-            <div className="text-center py-20">
-              <Search className="w-16 h-16 mx-auto mb-4 text-gray-700" />
-              <p className="text-gray-400">No products found</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {displayProducts.map((prod, i) => (
-                <div
-                  key={prod.id}
-                  className="animate-fade-in-up"
-                  style={{ animationDelay: `${i * 50}ms` }}
-                >
-                  <ProductCard product={prod} />
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* View All Button */}
-          {!isLoading && displayProducts.length > 0 && (
-            <div className="mt-16 text-center">
-              <Link
-                href="/products"
-                className="inline-flex items-center gap-2 px-8 py-4 border-2 border-[#9e734d] text-white rounded-full hover:bg-[#9e734d] hover:text-black transition-all duration-300 font-medium"
-              >
-                View All Products
-                <ChevronRight className="w-5 h-5" />
-              </Link>
-            </div>
-          )}
+    {/* Search & Filters */}
+    <div className="mb-12 space-y-6">
+      {/* Search Bar */}
+      <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
+        <div className="relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={searchQuery}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
+            className="w-full pl-12 pr-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:border-[#9e734d] focus:outline-none transition-colors"
+          />
         </div>
-      </section>
+      </form>
+
+      {/* Category Tabs */}
+      <div className="flex flex-wrap justify-center gap-3">
+        {[
+          { key: 'all' as const, label: 'All Products' },
+          { key: 'covers' as const, label: 'Phone Cases' },
+          { key: 'accessories' as const, label: 'Accessories' }
+        ].map((cat) => (
+          <button
+            key={cat.key}
+            onClick={() => setActiveCategory(cat.key)}
+            className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+              activeCategory === cat.key
+                ? 'bg-[#9e734d] text-white shadow-[0_0_20px_rgba(158,115,77,0.4)]'
+                : 'bg-white text-gray-600 border border-gray-200 hover:border-[#9e734d]/50 hover:text-[#9e734d]'
+            }`}
+          >
+            {cat.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Brand Filter */}
+      <ShopByBrand 
+        brands={[]} 
+        activeBrand={activeBrand} 
+        onBrandSelect={handleBrandSelect} 
+      />
+    </div>
+
+    {/* Products Grid */}
+    {isLoading ? (
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {[...Array(8)].map((_, i) => (
+          <ProductSkeleton key={i} />
+        ))}
+      </div>
+    ) : isError ? (
+      <div className="text-center py-20">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-[#9e734d]/10 rounded-full mb-4">
+          <Shield className="w-8 h-8 text-[#9e734d]" />
+        </div>
+        <p className="text-gray-600 mb-6">Unable to load products</p>
+        <button 
+          onClick={() => window.location.reload()}
+          className="px-8 py-3 bg-[#9e734d] text-white rounded-full font-medium hover:shadow-[0_0_20px_rgba(158,115,77,0.5)] transition-all"
+        >
+          Retry
+        </button>
+      </div>
+    ) : displayProducts.length === 0 ? (
+      <div className="text-center py-20">
+        <Search className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+        <p className="text-gray-600">No products found</p>
+      </div>
+    ) : (
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {displayProducts.map((prod, i) => (
+          <div
+            key={prod.id}
+            className="animate-fade-in-up"
+            style={{ animationDelay: `${i * 50}ms` }}
+          >
+            <ProductCard product={prod} />
+          </div>
+        ))}
+      </div>
+    )}
+
+    {/* View All Button */}
+    {!isLoading && displayProducts.length > 0 && (
+      <div className="mt-16 text-center">
+        <Link
+          href="/products"
+          className="inline-flex items-center gap-2 px-8 py-4 border-2 border-[#9e734d] text-gray-900 rounded-full hover:bg-[#9e734d] hover:text-white transition-all duration-300 font-medium"
+        >
+          View All Products
+          <ChevronRight className="w-5 h-5" />
+        </Link>
+      </div>
+    )}
+  </div>
+</section>
+
 
       {/* Banner Section - Redesigned */}
       <section className="py-20 px-4 bg-[#0a0a0a]">
