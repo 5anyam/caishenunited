@@ -495,7 +495,7 @@ export default function Homepage() {
                   Discover our premium range of handcrafted phone cases
                 </p>
                 <Link
-                  href="/products"
+                  href="/collections"
                   className="inline-flex items-center gap-2 px-8 py-3 bg-white text-black rounded-full font-semibold hover:bg-[#9e734d] transition-all"
                 >
                   Explore Now
