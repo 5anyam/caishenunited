@@ -7,8 +7,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 import { BiChevronDown } from "react-icons/bi";
-import { Moon, Sun, Crown } from "lucide-react";
-import { useTheme } from "./ThemeProvider";
+import { Crown } from "lucide-react";
 
 const navItems = [
   { name: "Home", to: "/" },
@@ -37,7 +36,6 @@ const navItems = [
 export default function Header() {
   const location = usePathname();
   const isMobile = useIsMobile();
-  const { theme, toggleTheme } = useTheme();
   const [search, setSearch] = useState("");
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -99,8 +97,8 @@ export default function Header() {
 
   return (
     <>
-      {/* Premium Black Header with Gold Accents - Static Image Logo */}
-      <header className="sticky top-0 z-50 bg-black dark:bg-black border-b border-[#D4AF37]/20 backdrop-blur-md">
+      {/* Black Header with Copper Accents */}
+      <header className="sticky top-0 z-50 bg-black border-b border-[#9e734d]/20 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-20 lg:h-24">
             {/* Static Image Logo + Brand */}
@@ -114,23 +112,23 @@ export default function Header() {
                     alt='Caishen United'
                   />
                   
-                  {/* Gold glow effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/0 via-[#D4AF37]/20 to-[#D4AF37]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none blur-lg" />
+                  {/* Copper glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#9e734d]/0 via-[#9e734d]/20 to-[#9e734d]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none blur-lg" />
                 </div>
                 
-                {/* Brand name with gold gradient */}
-                <div className="border-l border-[#D4AF37]/30 pl-2 sm:pl-3 ml-1">
-                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#F5E6D3] font-light text-xs sm:text-sm lg:text-lg tracking-[0.12em] sm:tracking-[0.15em] leading-none">
+                {/* Brand name with copper gradient */}
+                <div className="border-l border-[#9e734d]/30 pl-2 sm:pl-3 ml-1">
+                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#9e734d] to-[#F5E6D3] font-light text-xs sm:text-sm lg:text-lg tracking-[0.12em] sm:tracking-[0.15em] leading-none">
                     CAISHEN UNITED
                   </span>
-                  <span className="block text-[#D4AF37]/60 text-[7px] sm:text-[8px] lg:text-[9px] tracking-[0.2em] sm:tracking-[0.25em] uppercase mt-0.5 sm:mt-1">
+                  <span className="block text-[#9e734d]/60 text-[7px] sm:text-[8px] lg:text-[9px] tracking-[0.2em] sm:tracking-[0.25em] uppercase mt-0.5 sm:mt-1">
                     Premium Protection
                   </span>
                 </div>
               </Link>
             </div>
 
-            {/* Desktop Nav with Gold Theme */}
+            {/* Desktop Nav with Copper Theme */}
             <nav className="hidden lg:flex items-center space-x-8 flex-1 justify-center" ref={menuRef}>
               {navItems.map((item) => (
                 <div key={item.name} className="relative">
@@ -143,16 +141,16 @@ export default function Header() {
                       <button
                         className={`text-xs uppercase tracking-[0.12em] font-medium transition-all duration-300 py-2 flex items-center gap-1 ${
                           location.startsWith(item.to) 
-                            ? "text-[#D4AF37]" 
-                            : "text-gray-400 hover:text-[#D4AF37]"
+                            ? "text-[#9e734d]" 
+                            : "text-[#9e734d] hover:text-white"
                         }`}
                       >
                         {item.name}
                         <BiChevronDown className={`text-sm transition-transform duration-300 ${activeSubmenu === item.name ? 'rotate-180' : ''}`} />
                       </button>
                       
-                      {/* Premium Dropdown with Gold Accents */}
-                      <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-6 bg-black border border-[#D4AF37]/30 min-w-[220px] backdrop-blur-md transition-all duration-300 shadow-[0_8px_30px_rgba(212,175,55,0.2)] ${
+                      {/* Dropdown with Copper Accents */}
+                      <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-6 bg-black border border-[#9e734d]/30 min-w-[220px] backdrop-blur-md transition-all duration-300 shadow-[0_8px_30px_rgba(158,115,77,0.2)] ${
                         activeSubmenu === item.name ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
                       }`}>
                         <div className="py-2">
@@ -162,8 +160,8 @@ export default function Header() {
                               href={subItem.to}
                               className={`block px-5 py-2.5 text-xs transition-all duration-200 ${
                                 location === subItem.to 
-                                  ? 'text-[#D4AF37] bg-[#D4AF37]/10 font-medium border-l-2 border-[#D4AF37]' 
-                                  : 'text-gray-400 hover:text-[#D4AF37] hover:bg-[#D4AF37]/5 font-light'
+                                  ? 'text-white bg-[#9e734d]/10 font-medium border-l-2 border-[#9e734d]' 
+                                  : 'text-[#9e734d] hover:text-white hover:bg-[#9e734d]/5 font-light'
                               }`}
                             >
                               <span className="tracking-wide">{subItem.name}</span>
@@ -177,13 +175,13 @@ export default function Header() {
                       href={item.to}
                       className={`text-xs uppercase tracking-[0.12em] font-medium transition-all duration-300 py-2 relative group ${
                         location === item.to 
-                          ? "text-[#D4AF37]" 
-                          : "text-gray-400 hover:text-[#D4AF37]"
+                          ? "text-[#9e734d]" 
+                          : "text-[#9e734d] hover:text-white"
                       }`}
                     >
                       {item.name}
                       {location === item.to && (
-                        <span className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent" />
+                        <span className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#9e734d] to-transparent" />
                       )}
                     </Link>
                   )}
@@ -191,21 +189,21 @@ export default function Header() {
               ))}
             </nav>
 
-            {/* Right Actions with Theme Toggle */}
+            {/* Right Actions */}
             <div className="flex items-center gap-3 lg:gap-6 justify-end">
               {/* Desktop Search */}
               {!isMobile && (
                 <form className="hidden lg:flex items-center group relative" onSubmit={handleSearch}>
                   <input
                     type="text"
-                    className="w-48 xl:w-56 px-4 py-2 text-xs text-white bg-white/5 border border-[#D4AF37]/20 focus:border-[#D4AF37] focus:bg-white/10 focus:outline-none transition-all duration-300 font-light placeholder:text-gray-500"
+                    className="w-48 xl:w-56 px-4 py-2 text-xs text-white bg-white/5 border border-[#9e734d]/20 focus:border-[#9e734d] focus:bg-white/10 focus:outline-none transition-all duration-300 font-light placeholder:text-gray-500"
                     placeholder="Search products..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />
                   <button
                     type="submit"
-                    className="absolute right-3 text-gray-500 hover:text-[#D4AF37] transition-colors duration-300"
+                    className="absolute right-3 text-gray-500 hover:text-[#9e734d] transition-colors duration-300"
                   >
                     <FiSearch className="text-base" />
                   </button>
@@ -215,7 +213,7 @@ export default function Header() {
               {/* Mobile Search */}
               {isMobile && !showMobileSearch && (
                 <button
-                  className="text-gray-400 hover:text-[#D4AF37] transition-colors p-1.5"
+                  className="text-[#9e734d] hover:text-white transition-colors p-1.5"
                   onClick={() => setShowMobileSearch(true)}
                 >
                   <FiSearch className="text-lg sm:text-xl" />
@@ -226,7 +224,7 @@ export default function Header() {
                 <form className="flex items-center relative" onSubmit={handleSearch}>
                   <input
                     type="text"
-                    className="w-32 sm:w-40 px-3 py-1.5 text-xs text-white bg-white/5 border border-[#D4AF37]/20 focus:border-[#D4AF37] focus:outline-none placeholder:text-gray-500 font-light"
+                    className="w-32 sm:w-40 px-3 py-1.5 text-xs text-white bg-white/5 border border-[#9e734d]/20 focus:border-[#9e734d] focus:outline-none placeholder:text-gray-500 font-light"
                     placeholder="Search..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
@@ -242,31 +240,6 @@ export default function Header() {
                 </form>
               )}
 
-              {/* Premium Theme Toggle Button */}
-              <button
-                onClick={toggleTheme}
-                className="relative p-2 text-gray-400 hover:text-[#D4AF37] transition-all duration-500 group"
-                aria-label="Toggle theme"
-              >
-                <div className="relative w-5 h-5">
-                  <Sun 
-                    className={`absolute inset-0 w-5 h-5 transition-all duration-500 ${
-                      theme === 'light' 
-                        ? 'rotate-0 scale-100 opacity-100' 
-                        : 'rotate-90 scale-0 opacity-0'
-                    }`}
-                  />
-                  <Moon 
-                    className={`absolute inset-0 w-5 h-5 transition-all duration-500 ${
-                      theme === 'dark' 
-                        ? 'rotate-0 scale-100 opacity-100' 
-                        : '-rotate-90 scale-0 opacity-0'
-                    }`}
-                  />
-                </div>
-                <div className="absolute inset-0 bg-[#D4AF37] opacity-0 group-hover:opacity-20 blur-lg transition-opacity duration-300 rounded-full" />
-              </button>
-
               {/* Cart */}
               <div className="flex items-center">
                 <CartIcon />
@@ -275,7 +248,7 @@ export default function Header() {
               {/* Mobile Menu Toggle */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden text-gray-400 hover:text-[#D4AF37] transition-colors p-1.5"
+                className="lg:hidden text-[#9e734d] hover:text-white transition-colors p-1.5"
               >
                 {mobileMenuOpen ? <HiOutlineX className="text-xl sm:text-2xl" /> : <HiOutlineMenuAlt3 className="text-xl sm:text-2xl" />}
               </button>
@@ -292,12 +265,12 @@ export default function Header() {
         />
       )}
 
-      {/* Mobile Menu - WITH ANIMATED VIDEO LOGO */}
-      <div className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-black dark:bg-black border-l border-[#D4AF37]/20 z-50 transition-transform duration-300 lg:hidden ${
+      {/* Mobile Menu */}
+      <div className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-black border-l border-[#9e734d]/20 z-50 transition-transform duration-300 lg:hidden ${
         mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
         {/* Header with Animated Video Logo */}
-        <div className="flex items-center justify-between px-5 sm:px-6 py-5 sm:py-6 border-b border-[#D4AF37]/20">
+        <div className="flex items-center justify-between px-5 sm:px-6 py-5 sm:py-6 border-b border-[#9e734d]/20">
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="relative h-9 sm:h-10 w-9 sm:w-10 overflow-hidden">
               <video
@@ -317,23 +290,23 @@ export default function Header() {
               </video>
             </div>
             <div>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#F5E6D3] font-light text-xs sm:text-sm tracking-[0.12em]">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#9e734d] to-[#F5E6D3] font-light text-xs sm:text-sm tracking-[0.12em]">
                 CAISHEN UNITED
               </span>
-              <span className="block text-[#D4AF37]/60 text-[7px] sm:text-[8px] tracking-[0.2em] uppercase mt-0.5">
+              <span className="block text-[#9e734d]/60 text-[7px] sm:text-[8px] tracking-[0.2em] uppercase mt-0.5">
                 Premium Protection
               </span>
             </div>
           </div>
           <button
             onClick={() => setMobileMenuOpen(false)}
-            className="text-gray-400 hover:text-[#D4AF37] transition-colors p-1"
+            className="text-[#9e734d] hover:text-white transition-colors p-1"
           >
             <HiOutlineX className="text-xl sm:text-2xl" />
           </button>
         </div>
 
-        {/* Nav with Gold Theme */}
+        {/* Nav with Copper Theme */}
         <nav className="flex flex-col px-3 sm:px-4 py-4 sm:py-6 space-y-0.5 h-full overflow-y-auto pb-32">
           {navItems.map((item) => (
             <div key={item.name}>
@@ -342,8 +315,8 @@ export default function Header() {
                   <button
                     className={`w-full text-left px-3 sm:px-4 py-2.5 sm:py-3 text-[11px] sm:text-xs uppercase tracking-[0.1em] font-medium transition-colors flex items-center justify-between ${
                       location.startsWith(item.to) 
-                        ? "text-[#D4AF37]" 
-                        : "text-gray-400 hover:text-[#D4AF37]"
+                        ? "text-[#9e734d]" 
+                        : "text-[#9e734d] hover:text-white"
                     }`}
                     onClick={() => setMobileActiveSubmenu(mobileActiveSubmenu === item.name ? null : item.name)}
                   >
@@ -360,8 +333,8 @@ export default function Header() {
                         href={subItem.to}
                         className={`block px-3 sm:px-4 py-2 sm:py-2.5 text-[10px] sm:text-xs transition-colors border-l-2 ${
                           location === subItem.to 
-                            ? 'text-[#D4AF37] border-[#D4AF37] font-medium bg-[#D4AF37]/5' 
-                            : 'text-gray-500 border-gray-800 hover:text-[#D4AF37] hover:border-[#D4AF37]/50 font-light'
+                            ? 'text-white border-[#9e734d] font-medium bg-[#9e734d]/5' 
+                            : 'text-[#9e734d] border-gray-800 hover:text-white hover:border-[#9e734d]/50 font-light'
                         }`}
                         onClick={() => {
                           setMobileMenuOpen(false);
@@ -378,8 +351,8 @@ export default function Header() {
                   href={item.to}
                   className={`block px-3 sm:px-4 py-2.5 sm:py-3 text-[11px] sm:text-xs uppercase tracking-[0.1em] font-medium transition-colors ${
                     location === item.to 
-                      ? "text-[#D4AF37]" 
-                      : "text-gray-400 hover:text-[#D4AF37]"
+                      ? "text-[#9e734d]" 
+                      : "text-[#9e734d] hover:text-white"
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -389,35 +362,11 @@ export default function Header() {
             </div>
           ))}
 
-          {/* Premium Theme Toggle in Mobile Menu */}
-          <div className="px-3 sm:px-4 py-6 border-t border-[#D4AF37]/20 mt-4">
-            <button
-              onClick={toggleTheme}
-              className="w-full flex items-center justify-between px-4 py-3 bg-white/5 border border-[#D4AF37]/20 hover:border-[#D4AF37] transition-all duration-300 group"
-            >
-              <span className="text-xs uppercase tracking-wider text-gray-400 group-hover:text-[#D4AF37] font-medium">
-                Theme: {theme === 'dark' ? 'Dark' : 'Light'}
-              </span>
-              <div className="relative w-5 h-5">
-                <Sun 
-                  className={`absolute inset-0 w-5 h-5 text-gray-400 group-hover:text-[#D4AF37] transition-all duration-500 ${
-                    theme === 'light' ? 'rotate-0 scale-100 opacity-100' : 'rotate-90 scale-0 opacity-0'
-                  }`}
-                />
-                <Moon 
-                  className={`absolute inset-0 w-5 h-5 text-gray-400 group-hover:text-[#D4AF37] transition-all duration-500 ${
-                    theme === 'dark' ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'
-                  }`}
-                />
-              </div>
-            </button>
-          </div>
-
           {/* Mobile Menu Footer */}
-          <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 border-t border-[#D4AF37]/20 bg-black">
+          <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 border-t border-[#9e734d]/20 bg-black">
             <div className="flex items-center justify-center gap-2 mb-2">
-              <Crown className="w-3 h-3 text-[#D4AF37]" />
-              <p className="text-[9px] sm:text-[10px] text-[#D4AF37]/80 text-center tracking-wider uppercase font-medium">
+              <Crown className="w-3 h-3 text-[#9e734d]" />
+              <p className="text-[9px] sm:text-[10px] text-[#9e734d]/80 text-center tracking-wider uppercase font-medium">
                 Premium Protection
               </p>
             </div>

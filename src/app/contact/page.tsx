@@ -79,10 +79,10 @@ export default function ContactPage() {
             </p>
             <div className="text-center">
               <a 
-                href="tel:+919XXXXXXXXX" 
+                href="tel:+919911636888" 
                 className="text-xs text-gray-900 hover:text-black font-light transition-colors"
               >
-                +91 9XXXXXXXXX
+                +91 9911636888
               </a>
             </div>
           </div>
@@ -97,8 +97,7 @@ export default function ContactPage() {
             </p>
             <div className="text-center">
               <address className="text-xs text-gray-900 not-italic font-light leading-relaxed">
-                Your Address Line 1,<br/> 
-                City, State - Pincode
+                Rohini, Delhi<br/> 
               </address>
             </div>
           </div>

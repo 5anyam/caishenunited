@@ -5,7 +5,7 @@ import { IconBrandWhatsapp } from "@tabler/icons-react";
 import Link from "next/link";
 import { useMemo } from "react";
 
-const PHONE = "+919818400981"; // international format, no +, spaces or dashes
+const PHONE = "+919911636888"; // international format, no +, spaces or dashes
 
 function buildWaLink(baseMsg: string) {
   // Encode and include current page URL for context

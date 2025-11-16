@@ -159,18 +159,16 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <Phone className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
                 <a 
-                  href="tel:+919XXXXXXXXX"
+                  href="tel:+919911636888"
                   className="text-xs text-gray-600 hover:text-black transition-colors font-light"
                 >
-                  +91 9XXXXXXXXX
+                  +91 9911636888
                 </a>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
                 <span className="text-xs text-gray-600 font-light leading-relaxed">
-                  Your Address Line 1,<br />
-                  Your Address Line 2,<br />
-                  City, State - Pincode
+                  Rohini, Delhi<br />
                 </span>
               </li>
             </ul>
