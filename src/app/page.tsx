@@ -312,7 +312,7 @@ export default function Homepage() {
 
           <div className="flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-in-up animation-delay-600">
             <Link
-              href="/products"
+              href="/collections"
               className="group relative px-12 py-5 bg-gradient-to-r from-[#9e734d] via-[#b8834f] to-[#9e734d] text-black text-sm font-bold tracking-widest uppercase overflow-hidden transition-all duration-500 flex items-center gap-2 hover:gap-5 hover:shadow-[0_0_50px_rgba(158,115,77,0.7)] hover:scale-110 transform rounded-lg bg-[length:200%_100%] animate-shimmer-slow"
             >
               <span className="relative z-10">Explore Collection</span>
