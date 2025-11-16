@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { productToSlug } from "../lib/slug";
@@ -24,18 +24,14 @@ export default function ProductCard({ product }: { product: Product }) {
   const originalPrice = Number(product.regular_price);
   const isOnSale = originalPrice > salePrice;
 
-  const discountPercentage = isOnSale
-    ? Math.round(((originalPrice - salePrice) / originalPrice) * 100)
-    : 0;
-
   return (
     <Link href={productUrl}>
-      <div className="group relative overflow-hidden bg-white dark:bg-black transition-all duration-500 hover:shadow-[0_8px_30px_rgba(212,175,55,0.15)] border border-gray-100 dark:border-[#D4AF37]/20 hover:border-[#D4AF37]/30 dark:hover:border-[#D4AF37]">
+      <div className="group relative overflow-hidden bg-white dark:bg-black transition-all duration-500 hover:shadow-[0_8px_30px_rgba(212,175,55,0.15)] dark:border-[#D4AF37]/20 hover:border-[#D4AF37]/30 dark:hover:border-[#D4AF37] hover:scale-105 transform">
         {/* Gold gradient overlay on hover */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/0 via-[#D4AF37]/5 to-[#D4AF37]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10" />
         
         {/* Image Container */}
-        <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 dark:from-black dark:to-black">
+        <div className="relative aspect-square overflow-hidden bg-white dark:from-black dark:to-black">
           <img
             src={product.images?.[0]?.src || "/placeholder.png"}
             alt={product.name}
@@ -44,16 +40,6 @@ export default function ProductCard({ product }: { product: Product }) {
           
           {/* Gold shimmer effect on hover */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#D4AF37]/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-          
-          {/* Discount Badge - Premium Gold */}
-          {isOnSale && (
-            <div className="absolute top-3 left-3 bg-gradient-to-r from-[#D4AF37] to-[#C5A028] text-black px-4 py-1.5 text-xs font-bold tracking-wider shadow-[0_4px_12px_rgba(212,175,55,0.4)] backdrop-blur-sm">
-              <span className="flex items-center gap-1">
-                <Sparkles className="w-3 h-3" />
-                {discountPercentage}% OFF
-              </span>
-            </div>
-          )}
 
           {/* New Badge - Premium Style */}
           {product.badge === 'New' && (
