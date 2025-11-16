@@ -14,23 +14,20 @@ const navItems = [
   { name: "Home", to: "/" },
   { 
     name: "Phone Covers", 
-    to: "/shop/covers",
+    to: "/device/covers",
     submenu: [
-      { name: "iPhone Cases", to: "/shop/covers/iphone" },
-      { name: "Samsung Cases", to: "/shop/covers/samsung" },
-      { name: "OnePlus Cases", to: "/shop/covers/oneplus" },
-      { name: "Realme Cases", to: "/shop/covers/realme" },
-      { name: "Xiaomi Cases", to: "/shop/covers/xiaomi" },
+      { name: "iPhone Cases", to: "/device/iphone-covers" },
+      { name: "Samsung Cases", to: "/device/samsung-covers" },
+      { name: "OnePlus Cases", to: "/device/oneplus-covers" },
     ]
   },
   { 
     name: "Accessories", 
-    to: "/shop/accessories",
+    to: "/device/accessories",
     submenu: [
-      { name: "Chargers", to: "/shop/accessories/chargers" },
-      { name: "Cables", to: "/shop/accessories/cables" },
-      { name: "Screen Guards", to: "/shop/accessories/screen-guards" },
-      { name: "Phone Holders", to: "/shop/accessories/holders" },
+      { name: "Chargers", to: "/device/chargers" },
+      { name: "Charger Covers", to: "/device/charger-covers" },
+      { name: "Cables", to: "/device/cables" },
     ]
   },
   { name: "Collections", to: "/collections" },
