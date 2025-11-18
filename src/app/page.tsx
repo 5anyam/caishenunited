@@ -463,7 +463,7 @@ export default function Homepage() {
     {!isLoading && displayProducts.length > 0 && (
       <div className="mt-16 text-center">
         <Link
-          href="/products"
+          href="/collections"
           className="inline-flex items-center gap-2 px-8 py-4 border-2 border-[#9e734d] text-gray-900 rounded-full hover:bg-[#9e734d] hover:text-white transition-all duration-300 font-medium"
         >
           View All Products

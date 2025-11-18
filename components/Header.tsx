@@ -7,12 +7,17 @@ import React, { useState, useRef, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 import { BiChevronDown } from "react-icons/bi";
-import { Crown } from "lucide-react";
 
-const navItems = [
-  { name: "Home", to: "/" },
+interface NavItem {
+  name: string;
+  to: string;
+  submenu?: { name: string; to: string }[];
+}
+
+const navItems: NavItem[] = [
+  { name: "HOME", to: "/" },
   { 
-    name: "Phone Covers", 
+    name: "PHONE COVERS", 
     to: "/device/covers",
     submenu: [
       { name: "iPhone Cases", to: "/device/iphone-covers" },
@@ -21,7 +26,7 @@ const navItems = [
     ]
   },
   { 
-    name: "Accessories", 
+    name: "ACCESSORIES", 
     to: "/device/accessories",
     submenu: [
       { name: "Chargers", to: "/device/chargers" },
@@ -29,8 +34,8 @@ const navItems = [
       { name: "Cables", to: "/device/cables" },
     ]
   },
-  { name: "Collections", to: "/collections" },
-  { name: "About", to: "/about" },
+  { name: "COLLECTIONS", to: "/collections" },
+  { name: "ABOUT", to: "/about" },
 ];
 
 export default function Header() {
@@ -97,39 +102,54 @@ export default function Header() {
 
   return (
     <>
-      {/* Black Header with Copper Accents */}
-      <header className="sticky top-0 z-50 bg-black border-b border-[#9e734d]/20 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between h-20 lg:h-24">
-            {/* Static Image Logo + Brand */}
-            <div className="flex items-center flex-shrink-0">
-              <Link href="/" className="flex items-center gap-2 sm:gap-3 group">
-                {/* Static Image Logo Container */}
-                <div className="relative h-10 sm:h-12 md:h-14 lg:h-16 w-10 sm:w-12 md:w-14 lg:w-16 overflow-hidden">
-                  <img 
-                    className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" 
-                    src="/logo.png" 
-                    alt='Caishen United'
-                  />
-                  
-                  {/* Copper glow effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#9e734d]/0 via-[#9e734d]/20 to-[#9e734d]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none blur-lg" />
-                </div>
-                
-                {/* Brand name with copper gradient */}
-                <div className="border-l border-[#9e734d]/30 pl-2 sm:pl-3 ml-1">
-                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#9e734d] to-[#F5E6D3] font-light text-sm sm:text-base lg:text-xl tracking-[0.12em] sm:tracking-[0.15em] leading-none">
-                    CAISHEN UNITED
-                  </span>
-                  <span className="block text-[#9e734d]/60 text-[8px] sm:text-[9px] lg:text-[10px] tracking-[0.2em] sm:tracking-[0.25em] uppercase mt-0.5 sm:mt-1">
-                    Premium Protection
-                  </span>
-                </div>
-              </Link>
+      {/* Top Info Bar */}
+      <div className="bg-black text-white text-xs py-2 px-4 text-center">
+        <p>Buy 2 Get 10% Off | Buy 3 Get 15% - Discount Auto-applied at checkout</p>
+      </div>
+
+      {/* Main Header */}
+      <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-center justify-between h-24">
+            {/* Search Icon (Left) */}
+            <div className="flex items-center">
+              {!isMobile ? (
+                <button 
+                  onClick={() => setShowMobileSearch(true)}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                >
+                  <FiSearch className="w-5 h-5 text-gray-700" />
+                </button>
+              ) : (
+                <button
+                  onClick={() => setMobileMenuOpen(true)}
+                  className="p-2"
+                >
+                  <HiOutlineMenuAlt3 className="text-2xl text-gray-700" />
+                </button>
+              )}
             </div>
 
-            {/* Desktop Nav with Copper Theme */}
-            <nav className="hidden lg:flex items-center space-x-8 flex-1 justify-center" ref={menuRef}>
+            {/* Centered Logo - Bigger Size */}
+            <Link href="/" className="absolute left-1/2 -translate-x-1/2">
+              <img 
+                src="/logo.png" 
+                alt="Caishen United"
+                className="h-16 w-auto object-contain"
+              />
+            </Link>
+
+            {/* Right Icons - Only Cart */}
+            <div className="flex items-center">
+              <CartIcon />
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:block border-t border-gray-200 bg-white" ref={menuRef}>
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center justify-center">
               {navItems.map((item) => (
                 <div key={item.name} className="relative">
                   {item.submenu ? (
@@ -139,18 +159,18 @@ export default function Header() {
                       onMouseLeave={handleSubmenuMouseLeave}
                     >
                       <button
-                        className={`text-sm uppercase tracking-[0.12em] font-medium transition-all duration-300 py-2 flex items-center gap-1 ${
+                        className={`px-6 py-4 text-xs font-medium tracking-wider transition-colors flex items-center gap-1 ${
                           location.startsWith(item.to) 
-                            ? "text-[#9e734d]" 
-                            : "text-[#9e734d] hover:text-white"
+                            ? "text-black" 
+                            : "text-gray-700 hover:text-black"
                         }`}
                       >
                         {item.name}
-                        <BiChevronDown className={`text-base transition-transform duration-300 ${activeSubmenu === item.name ? 'rotate-180' : ''}`} />
+                        <BiChevronDown className={`text-sm transition-transform duration-300 ${activeSubmenu === item.name ? 'rotate-180' : ''}`} />
                       </button>
                       
-                      {/* Dropdown with Copper Accents */}
-                      <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-6 bg-black border border-[#9e734d]/30 min-w-[240px] backdrop-blur-md transition-all duration-300 shadow-[0_8px_30px_rgba(158,115,77,0.2)] ${
+                      {/* Dropdown */}
+                      <div className={`absolute top-full left-0 mt-0 bg-white border border-gray-200 min-w-[220px] shadow-lg transition-all duration-300 ${
                         activeSubmenu === item.name ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
                       }`}>
                         <div className="py-2">
@@ -158,13 +178,13 @@ export default function Header() {
                             <Link
                               key={subItem.name}
                               href={subItem.to}
-                              className={`block px-5 py-3 text-sm transition-all duration-200 ${
+                              className={`block px-5 py-2.5 text-sm transition-all duration-200 ${
                                 location === subItem.to 
-                                  ? 'text-white bg-[#9e734d]/10 font-medium border-l-2 border-[#9e734d]' 
-                                  : 'text-[#9e734d] hover:text-white hover:bg-[#9e734d]/5 font-light'
+                                  ? 'text-black bg-gray-50 font-medium' 
+                                  : 'text-gray-700 hover:text-black hover:bg-gray-50'
                               }`}
                             >
-                              <span className="tracking-wide">{subItem.name}</span>
+                              {subItem.name}
                             </Link>
                           ))}
                         </div>
@@ -173,209 +193,103 @@ export default function Header() {
                   ) : (
                     <Link
                       href={item.to}
-                      className={`text-sm uppercase tracking-[0.12em] font-medium transition-all duration-300 py-2 relative group ${
+                      className={`block px-6 py-4 text-xs font-medium tracking-wider transition-colors ${
                         location === item.to 
-                          ? "text-[#9e734d]" 
-                          : "text-[#9e734d] hover:text-white"
+                          ? "text-black" 
+                          : "text-gray-700 hover:text-black"
                       }`}
                     >
                       {item.name}
-                      {location === item.to && (
-                        <span className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#9e734d] to-transparent" />
-                      )}
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      {/* Search Modal */}
+      {showMobileSearch && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center pt-20">
+          <div className="bg-white w-full max-w-2xl mx-4 rounded-lg p-6">
+            <form onSubmit={handleSearch} className="relative">
+              <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full pl-12 pr-12 py-4 border border-gray-300 rounded-lg focus:outline-none focus:border-black"
+                autoFocus
+              />
+              <button
+                type="button"
+                onClick={() => setShowMobileSearch(false)}
+                className="absolute right-4 top-1/2 -translate-y-1/2"
+              >
+                <HiOutlineX className="w-5 h-5 text-gray-400" />
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <>
+          <div 
+            className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <div className="fixed top-0 left-0 h-full w-80 max-w-[85vw] bg-white z-50 overflow-y-auto">
+            <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+              <img src="/logo.png" alt="Logo" className="h-12" />
+              <button onClick={() => setMobileMenuOpen(false)}>
+                <HiOutlineX className="text-2xl" />
+              </button>
+            </div>
+            
+            <nav className="p-4">
+              {navItems.map((item) => (
+                <div key={item.name} className="border-b border-gray-100">
+                  {item.submenu ? (
+                    <div>
+                      <button
+                        className="w-full flex items-center justify-between py-4 text-sm font-medium"
+                        onClick={() => setMobileActiveSubmenu(mobileActiveSubmenu === item.name ? null : item.name)}
+                      >
+                        {item.name}
+                        <BiChevronDown className={`transition-transform ${mobileActiveSubmenu === item.name ? 'rotate-180' : ''}`} />
+                      </button>
+                      <div className={`overflow-hidden transition-all ${mobileActiveSubmenu === item.name ? 'max-h-96' : 'max-h-0'}`}>
+                        {item.submenu.map((subItem) => (
+                          <Link
+                            key={subItem.name}
+                            href={subItem.to}
+                            className="block py-2 pl-4 text-sm text-gray-600 hover:text-black"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            {subItem.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <Link
+                      href={item.to}
+                      className="block py-4 text-sm font-medium"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {item.name}
                     </Link>
                   )}
                 </div>
               ))}
             </nav>
-
-            {/* Right Actions */}
-            <div className="flex items-center gap-3 lg:gap-6 justify-end">
-              {/* Desktop Search */}
-              {!isMobile && (
-                <form className="hidden lg:flex items-center group relative" onSubmit={handleSearch}>
-                  <input
-                    type="text"
-                    className="w-48 xl:w-56 px-4 py-2 text-sm text-white bg-white/5 border border-[#9e734d]/20 focus:border-[#9e734d] focus:bg-white/10 focus:outline-none transition-all duration-300 font-light placeholder:text-gray-500"
-                    placeholder="Search products..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
-                  <button
-                    type="submit"
-                    className="absolute right-3 text-gray-500 hover:text-[#9e734d] transition-colors duration-300"
-                  >
-                    <FiSearch className="text-lg" />
-                  </button>
-                </form>
-              )}
-
-              {/* Mobile Search */}
-              {isMobile && !showMobileSearch && (
-                <button
-                  className="text-[#9e734d] hover:text-white transition-colors p-1.5"
-                  onClick={() => setShowMobileSearch(true)}
-                >
-                  <FiSearch className="text-xl sm:text-2xl" />
-                </button>
-              )}
-
-              {isMobile && showMobileSearch && (
-                <form className="flex items-center relative" onSubmit={handleSearch}>
-                  <input
-                    type="text"
-                    className="w-32 sm:w-40 px-3 py-1.5 text-sm text-white bg-white/5 border border-[#9e734d]/20 focus:border-[#9e734d] focus:outline-none placeholder:text-gray-500 font-light"
-                    placeholder="Search..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    autoFocus
-                  />
-                  <button
-                    type="button"
-                    className="absolute right-2 text-gray-500"
-                    onClick={() => setShowMobileSearch(false)}
-                  >
-                    <HiOutlineX className="text-lg" />
-                  </button>
-                </form>
-              )}
-
-              {/* Cart */}
-              <div className="flex items-center">
-                <CartIcon />
-              </div>
-
-              {/* Mobile Menu Toggle */}
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden text-[#9e734d] hover:text-white transition-colors p-1.5"
-              >
-                {mobileMenuOpen ? <HiOutlineX className="text-2xl sm:text-3xl" /> : <HiOutlineMenuAlt3 className="text-2xl sm:text-3xl" />}
-              </button>
-            </div>
           </div>
-        </div>
-      </header>
-
-      {/* Mobile Overlay */}
-      {mobileMenuOpen && (
-        <div 
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
-          onClick={() => setMobileMenuOpen(false)}
-        />
+        </>
       )}
-
-      {/* Mobile Menu */}
-      <div className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-black border-l border-[#9e734d]/20 z-50 transition-transform duration-300 lg:hidden ${
-        mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-      }`}>
-        {/* Header with Animated Video Logo */}
-        <div className="flex items-center justify-between px-5 sm:px-6 py-5 sm:py-6 border-b border-[#9e734d]/20">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="relative h-10 sm:h-11 w-10 sm:w-11 overflow-hidden">
-              <video
-                className="w-full h-full object-contain"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-              >
-                <source src="/logo-video.mp4" type="video/mp4" />
-                <img 
-                  className="w-full h-full object-contain" 
-                  src="/logo.png" 
-                  alt='Caishen United' 
-                />
-              </video>
-            </div>
-            <div>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#9e734d] to-[#F5E6D3] font-light text-sm sm:text-base tracking-[0.12em]">
-                CAISHEN UNITED
-              </span>
-              <span className="block text-[#9e734d]/60 text-[9px] sm:text-[10px] tracking-[0.2em] uppercase mt-0.5">
-                Premium Protection
-              </span>
-            </div>
-          </div>
-          <button
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-[#9e734d] hover:text-white transition-colors p-1"
-          >
-            <HiOutlineX className="text-2xl sm:text-3xl" />
-          </button>
-        </div>
-
-        {/* Nav with Copper Theme */}
-        <nav className="flex flex-col px-3 sm:px-4 py-4 sm:py-6 space-y-0.5 h-full overflow-y-auto pb-32">
-          {navItems.map((item) => (
-            <div key={item.name}>
-              {item.submenu ? (
-                <div>
-                  <button
-                    className={`w-full text-left px-3 sm:px-4 py-3 sm:py-3.5 text-sm sm:text-base uppercase tracking-[0.1em] font-medium transition-colors flex items-center justify-between ${
-                      location.startsWith(item.to) 
-                        ? "text-[#9e734d]" 
-                        : "text-[#9e734d] hover:text-white"
-                    }`}
-                    onClick={() => setMobileActiveSubmenu(mobileActiveSubmenu === item.name ? null : item.name)}
-                  >
-                    {item.name}
-                    <BiChevronDown className={`text-base transition-transform duration-300 ${mobileActiveSubmenu === item.name ? 'rotate-180' : ''}`} />
-                  </button>
-                  
-                  <div className={`ml-3 sm:ml-4 transition-all duration-300 overflow-hidden ${
-                    mobileActiveSubmenu === item.name ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                  }`}>
-                    {item.submenu.map((subItem) => (
-                      <Link
-                        key={subItem.name}
-                        href={subItem.to}
-                        className={`block px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm transition-colors border-l-2 ${
-                          location === subItem.to 
-                            ? 'text-white border-[#9e734d] font-medium bg-[#9e734d]/5' 
-                            : 'text-[#9e734d] border-gray-800 hover:text-white hover:border-[#9e734d]/50 font-light'
-                        }`}
-                        onClick={() => {
-                          setMobileMenuOpen(false);
-                          setMobileActiveSubmenu(null);
-                        }}
-                      >
-                        <span className="tracking-wide">{subItem.name}</span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <Link
-                  href={item.to}
-                  className={`block px-3 sm:px-4 py-3 sm:py-3.5 text-sm sm:text-base uppercase tracking-[0.1em] font-medium transition-colors ${
-                    location === item.to 
-                      ? "text-[#9e734d]" 
-                      : "text-[#9e734d] hover:text-white"
-                  }`}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
-              )}
-            </div>
-          ))}
-
-          {/* Mobile Menu Footer */}
-          <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 border-t border-[#9e734d]/20 bg-black">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <Crown className="w-4 h-4 text-[#9e734d]" />
-              <p className="text-[10px] sm:text-[11px] text-[#9e734d]/80 text-center tracking-wider uppercase font-medium">
-                Premium Protection
-              </p>
-            </div>
-            <p className="text-[9px] text-gray-600 text-center tracking-wider">
-              Timeless Design. Military-Grade Quality.
-            </p>
-          </div>
-        </nav>
-      </div>
     </>
   );
 }
