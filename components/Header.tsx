@@ -110,32 +110,42 @@ export default function Header() {
       {/* Main Header */}
       <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between h-24">
-            {/* Search Icon (Left) */}
-            <div className="flex items-center">
-              {!isMobile ? (
+          <div className="flex items-center justify-between h-20 md:h-24">
+            {/* Left Side - Search/Menu */}
+            <div className="flex items-center gap-2">
+              {isMobile ? (
+                <>
+                  {/* Mobile Menu Toggle */}
+                  <button
+                    onClick={() => setMobileMenuOpen(true)}
+                    className="p-2"
+                  >
+                    <HiOutlineMenuAlt3 className="text-2xl text-gray-700" />
+                  </button>
+                  {/* Mobile Search Button */}
+                  <button 
+                    onClick={() => setShowMobileSearch(true)}
+                    className="p-2"
+                  >
+                    <FiSearch className="w-5 h-5 text-gray-700" />
+                  </button>
+                </>
+              ) : (
                 <button 
                   onClick={() => setShowMobileSearch(true)}
                   className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                 >
                   <FiSearch className="w-5 h-5 text-gray-700" />
                 </button>
-              ) : (
-                <button
-                  onClick={() => setMobileMenuOpen(true)}
-                  className="p-2"
-                >
-                  <HiOutlineMenuAlt3 className="text-2xl text-gray-700" />
-                </button>
               )}
             </div>
 
-            {/* Centered Logo - Bigger Size */}
+            {/* Centered Logo */}
             <Link href="/" className="absolute left-1/2 -translate-x-1/2">
               <img 
                 src="/logo.png" 
                 alt="Caishen United"
-                className="h-16 w-auto object-contain"
+                className="h-12 md:h-16 w-auto object-contain"
               />
             </Link>
 
