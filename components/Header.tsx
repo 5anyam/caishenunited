@@ -7,6 +7,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 import { BiChevronDown } from "react-icons/bi";
+import { Phone } from "lucide-react";
 
 interface NavItem {
   name: string;
@@ -20,9 +21,9 @@ const navItems: NavItem[] = [
     name: "PHONE COVERS", 
     to: "/device/covers",
     submenu: [
-      { name: "iPhone Cases", to: "/device/iphone-covers" },
-      { name: "Samsung Cases", to: "/device/samsung-covers" },
-      { name: "OnePlus Cases", to: "/device/oneplus-covers" },
+      { name: "iPhone Covers", to: "/device/iphone-covers" },
+      { name: "Samsung Covers", to: "/device/samsung-covers" },
+      { name: "OnePlus Covers", to: "/device/oneplus-covers" },
     ]
   },
   { 
@@ -107,6 +108,7 @@ export default function Header() {
         <p>Buy 2 Get 10% Off | Buy 3 Get 15% - Discount Auto-applied at checkout</p>
       </div>
 
+
       {/* Main Header */}
       <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4">
@@ -119,6 +121,7 @@ export default function Header() {
                   <button
                     onClick={() => setMobileMenuOpen(true)}
                     className="p-2"
+                    aria-label="Open menu"
                   >
                     <HiOutlineMenuAlt3 className="text-2xl text-gray-700" />
                   </button>
@@ -126,6 +129,7 @@ export default function Header() {
                   <button 
                     onClick={() => setShowMobileSearch(true)}
                     className="p-2"
+                    aria-label="Search"
                   >
                     <FiSearch className="w-5 h-5 text-gray-700" />
                   </button>
@@ -134,6 +138,7 @@ export default function Header() {
                 <button 
                   onClick={() => setShowMobileSearch(true)}
                   className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  aria-label="Search"
                 >
                   <FiSearch className="w-5 h-5 text-gray-700" />
                 </button>
@@ -149,8 +154,18 @@ export default function Header() {
               />
             </Link>
 
-            {/* Right Icons - Only Cart */}
-            <div className="flex items-center">
+            {/* Right Icons - Cart & Phone */}
+            <div className="flex items-center gap-2">
+              {/* Desktop Phone Number */}
+              {!isMobile && (
+                <a 
+                  href="tel:+919911636888" 
+                  className="hidden lg:flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-gray-700 hover:text-black transition-colors"
+                >
+                  <Phone className="w-4 h-4" />
+                  <span>+91 9911636888</span>
+                </a>
+              )}
               <CartIcon />
             </div>
           </div>
@@ -180,7 +195,7 @@ export default function Header() {
                       </button>
                       
                       {/* Dropdown */}
-                      <div className={`absolute top-full left-0 mt-0 bg-white border border-gray-200 min-w-[220px] shadow-lg transition-all duration-300 ${
+                      <div className={`absolute top-full left-0 mt-0 bg-white border border-gray-200 min-w-[220px] shadow-lg transition-all duration-300 rounded ${
                         activeSubmenu === item.name ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
                       }`}>
                         <div className="py-2">
@@ -222,7 +237,7 @@ export default function Header() {
       {/* Search Modal */}
       {showMobileSearch && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center pt-20">
-          <div className="bg-white w-full max-w-2xl mx-4 rounded-lg p-6">
+          <div className="bg-white w-full max-w-2xl mx-4 rounded-lg p-6 shadow-xl">
             <form onSubmit={handleSearch} className="relative">
               <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
@@ -230,13 +245,14 @@ export default function Header() {
                 placeholder="Search products..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-12 pr-12 py-4 border border-gray-300 rounded-lg focus:outline-none focus:border-black"
+                className="w-full pl-12 pr-12 py-4 border border-gray-300 rounded-lg focus:outline-none focus:border-black text-gray-900"
                 autoFocus
               />
               <button
                 type="button"
                 onClick={() => setShowMobileSearch(false)}
                 className="absolute right-4 top-1/2 -translate-y-1/2"
+                aria-label="Close search"
               >
                 <HiOutlineX className="w-5 h-5 text-gray-400" />
               </button>
@@ -252,21 +268,32 @@ export default function Header() {
             className="fixed inset-0 bg-black/60 z-40 lg:hidden"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="fixed top-0 left-0 h-full w-80 max-w-[85vw] bg-white z-50 overflow-y-auto">
+          <div className="fixed top-0 left-0 h-full w-80 max-w-[85vw] bg-white z-50 overflow-y-auto shadow-2xl">
             <div className="p-6 border-b border-gray-200 flex items-center justify-between">
               <img src="/logo.png" alt="Logo" className="h-12" />
-              <button onClick={() => setMobileMenuOpen(false)}>
-                <HiOutlineX className="text-2xl" />
+              <button onClick={() => setMobileMenuOpen(false)} aria-label="Close menu">
+                <HiOutlineX className="text-2xl text-gray-900" />
               </button>
             </div>
             
+            {/* Mobile Phone Number */}
+            <div className="p-4 border-b border-gray-100">
+              <a 
+                href="tel:+919911636888" 
+                className="flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors"
+              >
+                <Phone className="w-4 h-4" />
+                <span>+91 9911636888</span>
+              </a>
+            </div>
+
             <nav className="p-4">
               {navItems.map((item) => (
                 <div key={item.name} className="border-b border-gray-100">
                   {item.submenu ? (
                     <div>
                       <button
-                        className="w-full flex items-center justify-between py-4 text-sm font-medium"
+                        className="w-full flex items-center justify-between py-4 text-sm font-medium text-gray-900"
                         onClick={() => setMobileActiveSubmenu(mobileActiveSubmenu === item.name ? null : item.name)}
                       >
                         {item.name}
@@ -277,7 +304,7 @@ export default function Header() {
                           <Link
                             key={subItem.name}
                             href={subItem.to}
-                            className="block py-2 pl-4 text-sm text-gray-600 hover:text-black"
+                            className="block py-2 pl-4 text-sm text-gray-600 hover:text-black transition-colors"
                             onClick={() => setMobileMenuOpen(false)}
                           >
                             {subItem.name}
@@ -288,7 +315,7 @@ export default function Header() {
                   ) : (
                     <Link
                       href={item.to}
-                      className="block py-4 text-sm font-medium"
+                      className="block py-4 text-sm font-medium text-gray-900"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {item.name}

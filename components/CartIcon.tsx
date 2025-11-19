@@ -14,8 +14,7 @@ interface CartItem {
 }
 
 export default function CartDrawer() {
-  const { items, increment, decrement, removeFromCart } = useCart();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { items, increment, decrement, removeFromCart, isCartOpen, setIsCartOpen } = useCart();
   const [showAddedNotification, setShowAddedNotification] = useState<boolean>(false);
   
   const total: number = items.reduce((sum: number, i: CartItem) => sum + parseFloat(i.price) * i.quantity, 0);
@@ -29,25 +28,22 @@ export default function CartDrawer() {
 
   const discountAmount: number = mrpTotal - total;
 
-  // Auto-open drawer when items are added
+  // Show notification when cart opens with items
   useEffect(() => {
-    if (items.length > 0) {
-      setIsOpen(true);
+    if (items.length > 0 && isCartOpen) {
       setShowAddedNotification(true);
-      
       const timer = setTimeout(() => {
         setShowAddedNotification(false);
       }, 3000);
-      
       return () => clearTimeout(timer);
     }
-  }, [items.length]);
+  }, [items.length, isCartOpen]);
 
   return (
     <>
       {/* Cart Button */}
       <button
-        onClick={() => setIsOpen(true)}
+        onClick={() => setIsCartOpen(true)}
         className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
         aria-label="Open shopping cart"
       >
@@ -60,28 +56,28 @@ export default function CartDrawer() {
       </button>
 
       {/* Overlay */}
-      {isOpen && (
+      {isCartOpen && (
         <div 
           className="fixed inset-0 bg-black/50 z-50 transition-opacity duration-300"
-          onClick={() => setIsOpen(false)}
+          onClick={() => setIsCartOpen(false)}
           aria-hidden="true"
         />
       )}
 
       {/* Cart Drawer - 80% width on mobile, 480px on desktop */}
       <div className={`fixed top-0 right-0 h-full w-[80%] sm:w-[480px] max-w-[480px] bg-white z-50 shadow-2xl transform transition-transform duration-300 ${
-        isOpen ? 'translate-x-0' : 'translate-x-full'
+        isCartOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
         {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200">
           <div className="flex items-center gap-2 sm:gap-3">
             <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
-            <h2 className="text-base sm:text-lg font-medium">
+            <h2 className="text-base sm:text-lg font-medium text-gray-900">
               Cart ({totalItems})
             </h2>
           </div>
           <button
-            onClick={() => setIsOpen(false)}
+            onClick={() => setIsCartOpen(false)}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
             aria-label="Close cart"
           >
@@ -110,8 +106,8 @@ export default function CartDrawer() {
                 <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">Your cart is empty</h3>
                 <p className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6">Start shopping to add items</p>
                 <button
-                  onClick={() => setIsOpen(false)}
-                  className="px-5 sm:px-6 py-2 bg-black text-white text-xs sm:text-sm font-medium hover:bg-gray-800 transition-colors"
+                  onClick={() => setIsCartOpen(false)}
+                  className="px-5 sm:px-6 py-2 bg-black text-white text-xs sm:text-sm font-medium hover:bg-gray-800 transition-colors rounded"
                 >
                   Continue Shopping
                 </button>
@@ -232,15 +228,15 @@ export default function CartDrawer() {
               <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-2 sm:space-y-3">
                 <Link
                   href="/checkout"
-                  className="block w-full bg-black text-white text-center py-2.5 sm:py-3 text-sm font-medium hover:bg-gray-800 transition-colors"
-                  onClick={() => setIsOpen(false)}
+                  className="block w-full bg-black text-white text-center py-2.5 sm:py-3 text-sm font-medium hover:bg-gray-800 transition-colors rounded"
+                  onClick={() => setIsCartOpen(false)}
                 >
                   Proceed to Checkout
                 </Link>
                 
                 <button
-                  onClick={() => setIsOpen(false)}
-                  className="w-full border border-gray-300 text-gray-700 py-2.5 sm:py-3 text-sm font-medium hover:bg-gray-50 transition-colors"
+                  onClick={() => setIsCartOpen(false)}
+                  className="w-full border border-gray-300 text-gray-700 py-2.5 sm:py-3 text-sm font-medium hover:bg-gray-50 transition-colors rounded"
                 >
                   Continue Shopping
                 </button>

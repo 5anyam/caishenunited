@@ -1,5 +1,5 @@
 'use client';
-import React, { useContext, createContext, useReducer, useEffect } from "react";
+import React, { useContext, createContext, useReducer, useEffect, useState } from "react";
 
 export type Product = {
   id: number;
@@ -17,10 +17,12 @@ export type CartAction =
   | { type: "increment"; id: number }
   | { type: "decrement"; id: number }
   | { type: "clear" }
-  | { type: "load"; items: CartItem[] }; // load action
+  | { type: "load"; items: CartItem[] };
 
 const CartContext = createContext<
   (CartState & {
+    isCartOpen: boolean;
+    setIsCartOpen: (open: boolean) => void;
     addToCart: (product: Product) => void;
     removeFromCart: (id: number) => void;
     increment: (id: number) => void;
@@ -69,6 +71,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [] });
+  const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
 
   // Load from localStorage
   useEffect(() => {
@@ -83,7 +86,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("cart", JSON.stringify(state.items));
   }, [state.items]);
 
-  const addToCart = (product: Product) => dispatch({ type: "add", product });
+  const addToCart = (product: Product) => {
+    dispatch({ type: "add", product });
+    // Auto-open cart when item is added
+    setIsCartOpen(true);
+  };
+  
   const removeFromCart = (id: number) => dispatch({ type: "remove", id });
   const increment = (id: number) => dispatch({ type: "increment", id });
   const decrement = (id: number) => dispatch({ type: "decrement", id });
@@ -93,6 +101,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     <CartContext.Provider
       value={{
         ...state,
+        isCartOpen,
+        setIsCartOpen,
         addToCart,
         removeFromCart,
         increment,

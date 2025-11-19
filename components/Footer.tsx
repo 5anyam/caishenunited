@@ -1,17 +1,17 @@
 import Link from "next/link";
-import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
+import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import { Mail, Phone, MapPin, Shield } from "lucide-react";
 
 export default function Footer() {
   return (
     <footer className="bg-white text-gray-900 border-t border-gray-100">
-      <div className="max-w-7xl mx-auto px-4 py-20">
+      <div className="max-w-7xl mx-auto px-4 py-12 sm:py-20">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 lg:gap-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12 lg:gap-16">
           {/* Brand Section */}
           <div className="md:col-span-1">
             <div className="mb-6">
-              <img className="h-16 sm:h-18" src="/logo.png" alt="Caishen United" />
+              <img className="h-14 sm:h-16 md:h-18" src="/logo.png" alt="Caishen United" />
             </div>
             <div className="mb-6">
               <h3 className="font-light text-sm text-gray-900 mb-3 tracking-[0.12em] uppercase">
@@ -28,7 +28,7 @@ export default function Footer() {
               <span className="text-[10px] uppercase tracking-wider font-medium">Lifetime Warranty</span>
             </div>
             
-            {/* Social Media Icons */}
+            {/* Social Media Icons - Only Facebook & Instagram */}
             <div className="flex gap-3">
               <Link 
                 target="_blank"
@@ -40,58 +40,42 @@ export default function Footer() {
               </Link>
               <Link 
                 target="_blank"
-                href="https://x.com/caishenunited" 
-                className="p-2.5 border border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all duration-300"
-                aria-label="Twitter"
-              >
-                <FaTwitter className="text-xs" />
-              </Link>
-              <Link 
-                target="_blank"
                 href="https://www.instagram.com/caishenunited" 
                 className="p-2.5 border border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all duration-300"
                 aria-label="Instagram"
               >
                 <FaInstagram className="text-xs" />
               </Link>
-              <Link 
-                target="_blank"
-                href="https://www.linkedin.com/company/caishenunited" 
+              {/* Phone Call Button */}
+              <a 
+                href="tel:+911800890660" 
                 className="p-2.5 border border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all duration-300"
-                aria-label="LinkedIn"
+                aria-label="Call us"
               >
-                <FaLinkedinIn className="text-xs" />
-              </Link>
-              <Link 
-                target="_blank"
-                href="https://www.youtube.com/@caishenunited" 
-                className="p-2.5 border border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all duration-300"
-                aria-label="YouTube"
-              >
-                <FaYoutube className="text-xs" />
-              </Link>
+                <Phone className="w-3.5 h-3.5" />
+              </a>
             </div>
           </div>
 
           {/* Shop Links */}
           <div className="md:col-span-1">
-            <h4 className="text-[10px] font-medium text-gray-500 mb-6 uppercase tracking-[0.2em]">
+            <h4 className="text-[10px] font-medium text-gray-500 mb-4 sm:mb-6 uppercase tracking-[0.2em]">
               Shop
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link href="/device/iphone-covers" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
                   iPhone Covers
                 </Link>
               </li>
               <li>
-                <Link href="/shop/samsung-covers" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
-                  Samsung Cases
+                <Link href="/device/samsung-covers" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
+                  Samsung Covers
                 </Link>
               </li>
               <li>
-                <Link href="/shop/oneplus-covers" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
-                  OnePlus Cases
+                <Link href="/device/oneplus-covers" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
+                  OnePlus Covers
                 </Link>
               </li>
               <li>
@@ -101,7 +85,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/collections" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
-                  Collections
+                  Shop Collections
                 </Link>
               </li>
             </ul>
@@ -109,10 +93,10 @@ export default function Footer() {
 
           {/* Customer Service Links */}
           <div className="md:col-span-1">
-            <h4 className="text-[10px] font-medium text-gray-500 mb-6 uppercase tracking-[0.2em]">
+            <h4 className="text-[10px] font-medium text-gray-500 mb-4 sm:mb-6 uppercase tracking-[0.2em]">
               Customer Service
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link href="/about" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
                   About Us
@@ -143,15 +127,15 @@ export default function Footer() {
 
           {/* Contact Section */}
           <div className="md:col-span-1">
-            <h4 className="text-[10px] font-medium text-gray-500 mb-6 uppercase tracking-[0.2em]">
+            <h4 className="text-[10px] font-medium text-gray-500 mb-4 sm:mb-6 uppercase tracking-[0.2em]">
               Get in Touch
             </h4>
-            <ul className="space-y-4">
+            <ul className="space-y-3 sm:space-y-4">
               <li className="flex items-start gap-3">
                 <Mail className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
                 <a 
                   href="mailto:support@caishenunited.com"
-                  className="text-xs text-gray-600 hover:text-black transition-colors font-light"
+                  className="text-xs text-gray-600 hover:text-black transition-colors font-light break-all"
                 >
                   support@caishenunited.com
                 </a>
@@ -168,13 +152,16 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
                 <span className="text-xs text-gray-600 font-light leading-relaxed">
-                  Rohini, Delhi<br />
+                  Caishen United<br />
+                  Sector 15, Rohini<br />
+                  New Delhi, Delhi 110085<br />
+                  India
                 </span>
               </li>
             </ul>
 
             {/* Legal Links - Mobile Friendly */}
-            <div className="mt-8 pt-6 border-t border-gray-100">
+            <div className="mt-6 sm:mt-8 pt-6 border-t border-gray-100">
               <h5 className="text-[10px] font-medium text-gray-500 mb-3 uppercase tracking-[0.2em]">
                 Legal
               </h5>
@@ -195,7 +182,7 @@ export default function Footer() {
         </div>
 
         {/* Newsletter Section */}
-        <div className="mt-16 pt-12 border-t border-gray-100">
+        <div className="mt-12 sm:mt-16 pt-8 sm:pt-12 border-t border-gray-100">
           <div className="max-w-2xl mx-auto text-center">
             <h4 className="text-sm font-light text-gray-900 mb-3 tracking-wide uppercase">
               Stay Updated
@@ -223,18 +210,18 @@ export default function Footer() {
 
       {/* Footer Bottom */}
       <div className="border-t border-gray-100 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-gray-600 font-light">
+        <div className="max-w-7xl mx-auto px-4 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 text-[10px] text-gray-600 font-light">
             <div className="text-center sm:text-left">
               © {new Date().getFullYear()} Caishen United. All rights reserved. Crafted by{" "}
               <Link href="https://www.proshala.com" className="text-black hover:underline transition-colors font-medium">
                 Proshala Tech
               </Link>
             </div>
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4 sm:gap-6">
               <span className="text-[10px] uppercase tracking-wider">We Accept</span>
               <div className="flex items-center gap-2 opacity-60">
-                <img className="h-6" src="/badges.png" alt="Payment methods" />
+                <img className="h-5 sm:h-6" src="/badges.png" alt="Payment methods" />
               </div>
             </div>
           </div>
