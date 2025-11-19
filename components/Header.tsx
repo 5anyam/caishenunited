@@ -33,6 +33,7 @@ const navItems: NavItem[] = [
       { name: "Chargers", to: "/device/chargers" },
       { name: "Charger Covers", to: "/device/charger-covers" },
       { name: "Cables", to: "/device/cables" },
+      { name: "Sticky Pad", to: "device/sticky-pad" },
     ]
   },
   { name: "COLLECTIONS", to: "/collections" },
@@ -150,7 +151,7 @@ export default function Header() {
               <img 
                 src="/logo.png" 
                 alt="Caishen United"
-                className="h-12 md:h-16 w-auto object-contain"
+                className="h-12 md:h-18 w-auto object-contain"
               />
             </Link>
 

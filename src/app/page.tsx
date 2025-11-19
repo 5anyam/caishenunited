@@ -88,7 +88,7 @@ const ShopByBrand: React.FC<{
                 }`}
               >
                 <div className="flex items-center gap-2">
-                  <span className="text-lg">{brand.icon}</span>
+                 
                   <div className="flex-1 min-w-0">
                     <div className={`text-xs font-medium truncate ${
                       activeBrand === brand.id ? 'text-[#9e734d]' : 'text-white'
@@ -117,7 +117,7 @@ const ShopByBrand: React.FC<{
               }`}
             >
               <div className="flex items-center gap-2">
-                <span className="text-base">{brand.icon}</span>
+                
                 <div className={`text-sm font-medium whitespace-nowrap ${
                   activeBrand === brand.id ? 'text-[#9e734d]' : 'text-white'
                 }`}>
@@ -148,10 +148,8 @@ export default function Homepage() {
   const [activeBrand, setActiveBrand] = useState<string>('');
   const [scrollY, setScrollY] = useState<number>(0);
   const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [searchQuery, setSearchQuery] = useState<string>('');
   const heroRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -221,19 +219,6 @@ export default function Homepage() {
       .slice(0, 8);
   }
 
-  if (searchQuery.trim()) {
-    displayProducts = displayProducts.filter((p: Product) =>
-      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.categories?.some((c: { name: string }) => c.name.toLowerCase().includes(searchQuery.toLowerCase()))
-    );
-  }
-
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
-    }
-  };
 
   const handleBrandSelect = (brand: BrandCategory) => {
     setActiveBrand(brand.id);
@@ -358,84 +343,161 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* Featured Products Section - Redesigned */}
-      <section className="py-20 px-4 bg-white">
+    {/* Featured Products Section - Enhanced Device Selection */}
+<section className="py-12 px-4 bg-white">
   <div className="max-w-7xl mx-auto">
     {/* Section Header */}
-    <div className="text-center mb-16">
-      <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#9e734d]/10 border border-[#9e734d]/30 rounded-full mb-6">
-        <Star className="w-4 h-4 text-[#9e734d]" />
-        <span className="text-sm text-[#9e734d] font-medium">Featured Collection</span>
-      </div>
-      <h2 className="text-4xl md:text-5xl font-light text-gray-900 mb-4">
-        Discover Our Best Sellers
+    <div className="text-center mb-10">
+      <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-2">
+        Shop by Device
       </h2>
-      <p className="text-gray-600 max-w-2xl mx-auto">
-        Handpicked premium cases designed for style and protection
+      <p className="text-gray-600 text-sm">
+        Find the perfect cover for your device
       </p>
     </div>
 
-    {/* Search & Filters */}
-    <div className="mb-12 space-y-6">
-      {/* Search Bar */}
-      <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
-        <div className="relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={searchQuery}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:border-[#9e734d] focus:outline-none transition-colors"
-          />
+    {/* Enhanced Device Categories */}
+    <div className="mb-12">
+  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 md:gap-4">
+    {[
+      { 
+        name: 'Apple', 
+        models: 'iPhone 17 Pro, 16, 15 & more',
+        link: '/device/iphone-covers',
+        logo: '/apple.svg', // Add your logo path
+        bgColor: 'bg-gradient-to-br from-gray-50 to-gray-100',
+        hoverColor: 'hover:from-gray-100 hover:to-gray-200'
+      },
+      { 
+        name: 'Samsung', 
+        models: 'Galaxy S25, Z Fold 7 & more',
+        link: '/device/samsung-covers',
+        logo: '/samsung.svg',
+        bgColor: 'bg-gradient-to-br from-blue-50 to-blue-100',
+        hoverColor: 'hover:from-blue-100 hover:to-blue-200'
+      },
+      { 
+        name: 'OnePlus', 
+        models: 'OnePlus 15, 13 & more',
+        link: '/device/oneplus-covers',
+        logo: '/oneplus.png',
+        bgColor: 'bg-gradient-to-br from-red-50 to-red-100',
+        hoverColor: 'hover:from-red-100 hover:to-red-200'
+      },
+      { 
+        name: 'Google', 
+        models: 'Pixel 10, 9 & more',
+        link: '/device/google-covers',
+        logo: '/google.webp',
+        bgColor: 'bg-gradient-to-br from-green-50 to-green-100',
+        hoverColor: 'hover:from-green-100 hover:to-green-200'
+      },
+      { 
+        name: 'Nothing', 
+        models: 'Nothing Phone & more',
+        link: '/device/nothing-covers',
+        logo: '/realme.png',
+        bgColor: 'bg-gradient-to-br from-yellow-50 to-yellow-100',
+        hoverColor: 'hover:from-yellow-100 hover:to-yellow-200'
+      },
+      { 
+        name: 'Vivo', 
+        models: 'Vivo V40, X100 & more',
+        link: '/device/vivo-covers',
+        logo: '/vivo.png',
+        bgColor: 'bg-gradient-to-br from-purple-50 to-purple-100',
+        hoverColor: 'hover:from-purple-100 hover:to-purple-200'
+      },
+    ].map((device) => (
+      <Link
+        key={device.name}
+        href={device.link}
+        className={`group relative ${device.bgColor} ${device.hoverColor} border border-gray-200 hover:border-gray-300 rounded-xl transition-all duration-300 overflow-hidden shadow-sm hover:shadow-md`}
+      >
+        <div className="p-6 text-center">
+          {/* Device Brand Logo */}
+          <div className="w-12 h-12 mx-auto mb-3 bg-white rounded-full flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow p-2">
+            <img 
+              src={device.logo} 
+              alt={`${device.name} logo`}
+              className="w-full h-full object-contain"
+              onError={(e) => {
+                // Fallback to letter if image fails to load
+                e.currentTarget.style.display = 'none';
+                e.currentTarget.parentElement!.innerHTML = `<span class="text-xl font-bold text-gray-800">${device.name.charAt(0)}</span>`;
+              }}
+            />
+          </div>
+          
+          {/* Device Name */}
+          <h3 className="text-base font-semibold text-gray-900 mb-1">
+            {device.name}
+          </h3>
+          
+          {/* Device Models */}
+          <p className="text-xs text-gray-600 leading-tight">
+            {device.models}
+          </p>
         </div>
-      </form>
 
-      {/* Category Tabs */}
-      <div className="flex flex-wrap justify-center gap-3">
+        {/* Hover Effect Arrow */}
+        <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <ChevronRight className="w-4 h-4 text-gray-600" />
+        </div>
+      </Link>
+    ))}
+  </div>
+</div>
+
+
+    {/* Enhanced Category Tabs */}
+    <div className="mb-10">
+      <div className="flex flex-wrap justify-center gap-2">
         {[
-          { key: 'all' as const, label: 'All Products' },
-          { key: 'covers' as const, label: 'Phone Cases' },
-          { key: 'accessories' as const, label: 'Accessories' }
+          { key: 'all' as const, label: 'All Products', icon: '🛍️' },
+          { key: 'covers' as const, label: 'Phone Covers', icon: '📱' },
+          { key: 'accessories' as const, label: 'Accessories', icon: '🔌' }
         ].map((cat) => (
           <button
             key={cat.key}
             onClick={() => setActiveCategory(cat.key)}
-            className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+            className={`group px-6 py-3 text-sm font-medium rounded-full transition-all duration-300 border-2 ${
               activeCategory === cat.key
-                ? 'bg-[#9e734d] text-white shadow-[0_0_20px_rgba(158,115,77,0.4)]'
-                : 'bg-white text-gray-600 border border-gray-200 hover:border-[#9e734d]/50 hover:text-[#9e734d]'
+                ? 'bg-black text-white border-black shadow-lg scale-105'
+                : 'bg-white text-gray-700 border-gray-200 hover:border-gray-400 hover:shadow-md'
             }`}
           >
-            {cat.label}
+            <span className="flex items-center gap-2">
+              {cat.label}
+            </span>
           </button>
         ))}
       </div>
-
-      {/* Brand Filter */}
-      <ShopByBrand 
-        brands={[]} 
-        activeBrand={activeBrand} 
-        onBrandSelect={handleBrandSelect} 
-      />
     </div>
+
+    {/* Brand Filter */}
+    <ShopByBrand 
+      brands={[]} 
+      activeBrand={activeBrand} 
+      onBrandSelect={handleBrandSelect} 
+    />
 
     {/* Products Grid */}
     {isLoading ? (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8">
         {[...Array(8)].map((_, i) => (
           <ProductSkeleton key={i} />
         ))}
       </div>
     ) : isError ? (
       <div className="text-center py-20">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-[#9e734d]/10 rounded-full mb-4">
-          <Shield className="w-8 h-8 text-[#9e734d]" />
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+          <Shield className="w-8 h-8 text-gray-400" />
         </div>
-        <p className="text-gray-600 mb-6">Unable to load products</p>
+        <p className="text-gray-600 mb-6 text-sm">Unable to load products</p>
         <button 
           onClick={() => window.location.reload()}
-          className="px-8 py-3 bg-[#9e734d] text-white rounded-full font-medium hover:shadow-[0_0_20px_rgba(158,115,77,0.5)] transition-all"
+          className="px-8 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-all shadow-md hover:shadow-lg"
         >
           Retry
         </button>
@@ -443,10 +505,10 @@ export default function Homepage() {
     ) : displayProducts.length === 0 ? (
       <div className="text-center py-20">
         <Search className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-        <p className="text-gray-600">No products found</p>
+        <p className="text-gray-600 text-sm">No products found</p>
       </div>
     ) : (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8">
         {displayProducts.map((prod, i) => (
           <div
             key={prod.id}
@@ -461,10 +523,10 @@ export default function Homepage() {
 
     {/* View All Button */}
     {!isLoading && displayProducts.length > 0 && (
-      <div className="mt-16 text-center">
+      <div className="mt-12 text-center">
         <Link
           href="/collections"
-          className="inline-flex items-center gap-2 px-8 py-4 border-2 border-[#9e734d] text-gray-900 rounded-full hover:bg-[#9e734d] hover:text-white transition-all duration-300 font-medium"
+          className="inline-flex items-center gap-2 px-8 py-3.5 border-2 border-black text-black rounded-lg hover:bg-black hover:text-white transition-all duration-300 font-medium shadow-md hover:shadow-lg"
         >
           View All Products
           <ChevronRight className="w-5 h-5" />
@@ -473,6 +535,7 @@ export default function Homepage() {
     )}
   </div>
 </section>
+
 
 
       {/* Banner Section - Redesigned */}
