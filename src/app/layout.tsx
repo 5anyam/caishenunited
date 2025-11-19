@@ -8,6 +8,7 @@ import Script from 'next/script';
 import AnnouncementBar from '../../components/anouncement';
 import Whatsapp from '../../components/Whatsapp';
 import { ThemeProvider } from '../../components/ThemeProvider';
+import Instagram from '../../components/Instagram';
 
 export const metadata = {
   title: 'Caishen United - Premium Phone Cases & Accessories | Military-Grade Protection',
@@ -347,6 +348,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 {children}
               </main>
               <Footer />
+              <Instagram/>
               <Whatsapp/>
             </CartProvider>
           </ReactQueryProvider>

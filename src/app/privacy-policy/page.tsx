@@ -188,7 +188,7 @@ export default function PrivacyPolicyPage() {
             </div>
           </div>
 
-          {/* Section 10 */}
+          {/* Section 10 - UPDATED ADDRESS & PHONE */}
           <div className="border-l-4 border-[#8a6342] pl-6 pt-4">
             <h2 className="text-xl font-light mb-4 text-gray-900 dark:text-white flex items-center gap-2">
               <Mail className="w-5 h-5 text-[#8a6342]" />
@@ -225,8 +225,8 @@ export default function PrivacyPolicyPage() {
                   </div>
                   <div>
                     <p className="font-medium text-gray-900 dark:text-white">Phone:</p>
-                    <a href="tel:+919818400981" className="text-[#9e734d] hover:text-[#8a6342] font-medium">
-                      +91 98184 00981
+                    <a href="tel:+919911636888" className="text-[#9e734d] hover:text-[#8a6342] font-medium">
+                      +91 9911636888
                     </a>
                   </div>
                 </div>
@@ -237,8 +237,10 @@ export default function PrivacyPolicyPage() {
                   <div>
                     <p className="font-medium text-gray-900 dark:text-white">Address:</p>
                     <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                      [Your Business Address]<br />
-                      [City, State - PIN Code], India
+                      Caishen United<br />
+                      Sector 15, Rohini<br />
+                      New Delhi, Delhi 110085<br />
+                      India
                     </p>
                   </div>
                 </div>

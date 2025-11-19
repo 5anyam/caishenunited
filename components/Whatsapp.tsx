@@ -55,19 +55,6 @@ export default function Whatsapp() {
           <IconBrandWhatsapp className="h-6 w-6" aria-hidden="true" />
         </span>
       </Link>
-
-      {/* Small helper label (optional) */}
-      <div
-        className="
-          pointer-events-none mt-2 select-none rounded-md px-2 py-1 text-xs
-          text-neutral-600/80 bg-white/70 backdrop-blur border border-neutral-200
-          shadow-sm
-          dark:bg-neutral-900/60 dark:text-neutral-200 dark:border-neutral-800
-        "
-        style={{ width: "fit-content" }}
-      >
-        WhatsApp
-      </div>
     </div>
   );
 }

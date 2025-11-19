@@ -13,6 +13,7 @@ import ProductFAQ from '../../../../components/ProductFaq'
 import RelatedProducts from '../../../../components/RelatedProducts'
 import ProductReviews from '../../../../components/ProductReviews'
 import { Heart, Star, Shield, Truck, Award, CreditCard, Plus, Minus, Crown, Sparkles, Check } from 'lucide-react'
+import confetti from 'canvas-confetti'
 
 export interface ImageData { src: string }
 export interface Attribute { option: string }
@@ -27,6 +28,40 @@ export interface Product {
   images: ImageData[]
   attributes?: Attribute[]
 }
+
+const triggerConfetti = () => {
+  const duration = 2.5 * 1000;
+  const animationEnd = Date.now() + duration;
+  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+  function randomInRange(min: number, max: number) {
+    return Math.random() * (max - min) + min;
+  }
+
+  const interval: NodeJS.Timeout = setInterval(function() {
+    const timeLeft = animationEnd - Date.now();
+
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
+    }
+
+    const particleCount = 50 * (timeLeft / duration);
+
+    // Copper/gold colors
+    confetti({
+      ...defaults,
+      particleCount,
+      origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+      colors: ['#9e734d', '#8a6342', '#FFD700', '#FFA500', '#FF8C00']
+    });
+    confetti({
+      ...defaults,
+      particleCount,
+      origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+      colors: ['#9e734d', '#8a6342', '#FFD700', '#FFA500', '#FF8C00']
+    });
+  }, 250);
+};
 
 export default function ProductClient({
   initialProduct,
@@ -123,8 +158,12 @@ export default function ProductClient({
         })
       }
       trackAddToCart({ id: product.id, name: product.name, price: salePrice }, quantity)
+      
+      // ⭐ TRIGGER CONFETTI
+      triggerConfetti()
+      
       toast({
-        title: '✨ Added to Cart',
+        title: '🎉 Added to Cart',
         description: `${quantity} x ${product.name} added successfully.`,
       })
     } catch (error) {
@@ -135,6 +174,7 @@ export default function ProductClient({
     }
   }
 
+  // ⭐ UPDATED - Add confetti on buy now
   const handleBuyNow = async () => {
     setIsBuyingNow(true)
     try {
@@ -150,6 +190,10 @@ export default function ProductClient({
       const cartItems = [{ id: product.id, name: product.name, price: salePrice, quantity }]
       const total = salePrice * quantity
       trackInitiateCheckout(cartItems, total)
+      
+      // ⭐ TRIGGER CONFETTI
+      triggerConfetti()
+      
       setTimeout(() => {
         router.push('/checkout')
         setIsBuyingNow(false)
@@ -160,6 +204,7 @@ export default function ProductClient({
       setIsBuyingNow(false)
     }
   }
+
 
   return (
     <div className="min-h-screen bg-white pb-20 lg:pb-8">

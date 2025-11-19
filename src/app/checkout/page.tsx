@@ -7,6 +7,7 @@ import { toast } from "../../../hooks/use-toast";
 import { useFacebookPixel } from "../../../hooks/useFacebookPixel";
 import type { CartItem } from "../../../lib/facebook-pixel";
 import Script from "next/script";
+import confetti from 'canvas-confetti';
 
 
 // Updated for Caishen United - assuming CMS URL; replace with your actual CMS if different
@@ -96,6 +97,40 @@ declare global {
   }
 }
 
+// ⭐ CONFETTI FUNCTION - ADD THIS
+const triggerConfetti = () => {
+  const duration = 3 * 1000;
+  const animationEnd = Date.now() + duration;
+  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+  function randomInRange(min: number, max: number) {
+    return Math.random() * (max - min) + min;
+  }
+
+  const interval: NodeJS.Timeout = setInterval(function() {
+    const timeLeft = animationEnd - Date.now();
+
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
+    }
+
+    const particleCount = 50 * (timeLeft / duration);
+
+    // Copper/gold colors
+    confetti({
+      ...defaults,
+      particleCount,
+      origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+      colors: ['#9e734d', '#8a6342', '#FFD700', '#FFA500', '#FF8C00']
+    });
+    confetti({
+      ...defaults,
+      particleCount,
+      origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+      colors: ['#9e734d', '#8a6342', '#FFD700', '#FFA500', '#FF8C00']
+    });
+  }, 250);
+};
 
 // [Keep all the same interfaces and config - no changes to functionality]
 const createWooCommerceOrder = async (orderData: Record<string, unknown>): Promise<WooCommerceOrder> => {
@@ -358,10 +393,10 @@ export default function Checkout(): React.ReactElement {
   }
 
 
+  // ⭐ UPDATED - Add confetti on payment success
   const handlePaymentSuccess = async (wooOrder: WooCommerceOrder, response: RazorpayHandlerResponse): Promise<void> => {
     try {
       await updateWooCommerceOrderStatus(wooOrder.id, 'processing', response);
-
 
       const orderItems: CartItem[] = items.map(item => ({
         id: item.id, 
@@ -371,18 +406,17 @@ export default function Checkout(): React.ReactElement {
       }));
       trackPurchase(orderItems, finalTotal, response.razorpay_payment_id);
 
-
       clear();
 
+      // ⭐ TRIGGER CONFETTI
+      triggerConfetti();
 
       toast({
-        title: "Payment Successful",
+        title: "🎉 Payment Successful!",
         description: `Order #${wooOrder.id} confirmed. You'll receive updates via WhatsApp.`,
       });
 
-
       router.push(`/order-confirmation?orderId=${response.razorpay_payment_id}&wcOrderId=${wooOrder.id}`);
-
 
     } catch {
       toast({
@@ -394,7 +428,6 @@ export default function Checkout(): React.ReactElement {
       setStep("form");
     }
   };
-
 
   const handlePaymentFailure = async (wooOrder: WooCommerceOrder | null, response: RazorpayFailureResponse): Promise<void> => {
     if (wooOrder?.id) {

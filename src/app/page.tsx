@@ -363,7 +363,7 @@ export default function Homepage() {
       { 
         name: 'Apple', 
         models: 'iPhone 17 Pro, 16, 15 & more',
-        link: '/device/iphone-covers',
+        link: '/shop/iphone-covers',
         logo: '/apple.svg', // Add your logo path
         bgColor: 'bg-gradient-to-br from-gray-50 to-gray-100',
         hoverColor: 'hover:from-gray-100 hover:to-gray-200'
@@ -371,7 +371,7 @@ export default function Homepage() {
       { 
         name: 'Samsung', 
         models: 'Galaxy S25, Z Fold 7 & more',
-        link: '/device/samsung-covers',
+        link: '/shop/samsung-covers',
         logo: '/samsung.svg',
         bgColor: 'bg-gradient-to-br from-blue-50 to-blue-100',
         hoverColor: 'hover:from-blue-100 hover:to-blue-200'
@@ -379,7 +379,7 @@ export default function Homepage() {
       { 
         name: 'OnePlus', 
         models: 'OnePlus 15, 13 & more',
-        link: '/device/oneplus-covers',
+        link: '/shop/oneplus-covers',
         logo: '/oneplus.png',
         bgColor: 'bg-gradient-to-br from-red-50 to-red-100',
         hoverColor: 'hover:from-red-100 hover:to-red-200'
@@ -387,7 +387,7 @@ export default function Homepage() {
       { 
         name: 'Google', 
         models: 'Pixel 10, 9 & more',
-        link: '/device/google-covers',
+        link: '/shop/google-covers',
         logo: '/google.webp',
         bgColor: 'bg-gradient-to-br from-green-50 to-green-100',
         hoverColor: 'hover:from-green-100 hover:to-green-200'
@@ -395,7 +395,7 @@ export default function Homepage() {
       { 
         name: 'Nothing', 
         models: 'Nothing Phone & more',
-        link: '/device/nothing-covers',
+        link: '/shop/nothing-covers',
         logo: '/realme.png',
         bgColor: 'bg-gradient-to-br from-yellow-50 to-yellow-100',
         hoverColor: 'hover:from-yellow-100 hover:to-yellow-200'
@@ -403,7 +403,7 @@ export default function Homepage() {
       { 
         name: 'Vivo', 
         models: 'Vivo V40, X100 & more',
-        link: '/device/vivo-covers',
+        link: '/shop/vivo-covers',
         logo: '/vivo.png',
         bgColor: 'bg-gradient-to-br from-purple-50 to-purple-100',
         hoverColor: 'hover:from-purple-100 hover:to-purple-200'

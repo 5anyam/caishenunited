@@ -1,15 +1,16 @@
 import Link from "next/link";
-import { FaFacebookF, FaInstagram } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 import { Mail, Phone, MapPin, Shield } from "lucide-react";
 
 export default function Footer() {
   return (
     <footer className="bg-white text-gray-900 border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-4 py-12 sm:py-20">
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12 lg:gap-16">
-          {/* Brand Section */}
-          <div className="md:col-span-1">
+        {/* Main Footer Content - 5 Columns */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-12 lg:gap-8">
+          
+          {/* Column 1: Brand Section */}
+          <div className="lg:col-span-1">
             <div className="mb-6">
               <img className="h-14 sm:h-16 md:h-18" src="/logo.png" alt="Caishen United" />
             </div>
@@ -18,7 +19,7 @@ export default function Footer() {
                 Caishen United
               </h3>
               <p className="text-xs leading-relaxed text-gray-600 font-light mb-6">
-                Premium phone protection crafted for those who demand excellence. Where military-grade durability meets timeless design.
+                Premium phone protection crafted for those who demand excellence. Where military grade durability meets timeless design.
               </p>
             </div>
             
@@ -28,12 +29,12 @@ export default function Footer() {
               <span className="text-[10px] uppercase tracking-wider font-medium">Lifetime Warranty</span>
             </div>
             
-            {/* Social Media Icons - Only Facebook & Instagram */}
+            {/* Social Media Icons */}
             <div className="flex gap-3">
               <Link 
                 target="_blank"
                 href="https://www.facebook.com/caishenunited" 
-                className="p-2.5 border border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all duration-300"
+                className="p-2.5 border border-gray-200 hover:border-[#1877F2] hover:bg-[#1877F2] hover:text-white transition-all duration-300 rounded"
                 aria-label="Facebook"
               >
                 <FaFacebookF className="text-xs" />
@@ -41,15 +42,23 @@ export default function Footer() {
               <Link 
                 target="_blank"
                 href="https://www.instagram.com/caishenunited" 
-                className="p-2.5 border border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all duration-300"
+                className="p-2.5 border border-gray-200 hover:border-[#E4405F] hover:bg-gradient-to-br hover:from-[#833AB4] hover:via-[#E4405F] hover:to-[#F77737] hover:text-white transition-all duration-300 rounded"
                 aria-label="Instagram"
               >
                 <FaInstagram className="text-xs" />
               </Link>
+              <Link 
+                target="_blank"
+                href="https://www.youtube.com/@caishenunited" 
+                className="p-2.5 border border-gray-200 hover:border-[#FF0000] hover:bg-[#FF0000] hover:text-white transition-all duration-300 rounded"
+                aria-label="YouTube"
+              >
+                <FaYoutube className="text-xs" />
+              </Link>
               {/* Phone Call Button */}
               <a 
-                href="tel:+911800890660" 
-                className="p-2.5 border border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all duration-300"
+                href="tel:+919911636888" 
+                className="p-2.5 border border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all duration-300 rounded"
                 aria-label="Call us"
               >
                 <Phone className="w-3.5 h-3.5" />
@@ -57,29 +66,29 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Shop Links */}
-          <div className="md:col-span-1">
+          {/* Column 2: Shop Links */}
+          <div className="lg:col-span-1">
             <h4 className="text-[10px] font-medium text-gray-500 mb-4 sm:mb-6 uppercase tracking-[0.2em]">
               Shop
             </h4>
             <ul className="space-y-2 sm:space-y-3">
               <li>
-                <Link href="/device/iphone-covers" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
+                <Link href="/shop/iphone-covers" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
                   iPhone Covers
                 </Link>
               </li>
               <li>
-                <Link href="/device/samsung-covers" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
+                <Link href="/shop/samsung-covers" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
                   Samsung Covers
                 </Link>
               </li>
               <li>
-                <Link href="/device/oneplus-covers" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
+                <Link href="/shop/oneplus-covers" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
                   OnePlus Covers
                 </Link>
               </li>
               <li>
-                <Link href="/device/chargers" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
+                <Link href="/shop/chargers" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
                   Accessories
                 </Link>
               </li>
@@ -91,8 +100,8 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Customer Service Links */}
-          <div className="md:col-span-1">
+          {/* Column 3: Customer Service Links */}
+          <div className="lg:col-span-1">
             <h4 className="text-[10px] font-medium text-gray-500 mb-4 sm:mb-6 uppercase tracking-[0.2em]">
               Customer Service
             </h4>
@@ -125,8 +134,37 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact Section */}
-          <div className="md:col-span-1">
+          {/* Column 4: Policies (Separate Column) */}
+          <div className="lg:col-span-1">
+            <h4 className="text-[10px] font-medium text-gray-500 mb-4 sm:mb-6 uppercase tracking-[0.2em]">
+              Legal & Policies
+            </h4>
+            <ul className="space-y-2 sm:space-y-3">
+              <li>
+                <Link href="/privacy-policy" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms-and-conditions" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
+                  Terms & Conditions
+                </Link>
+              </li>
+              <li>
+                <Link href="/cancellation-policy" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
+                  Cancellation Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/disclaimer" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
+                  Disclaimer
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 5: Contact Section */}
+          <div className="lg:col-span-1">
             <h4 className="text-[10px] font-medium text-gray-500 mb-4 sm:mb-6 uppercase tracking-[0.2em]">
               Get in Touch
             </h4>
@@ -159,25 +197,6 @@ export default function Footer() {
                 </span>
               </li>
             </ul>
-
-            {/* Legal Links - Mobile Friendly */}
-            <div className="mt-6 sm:mt-8 pt-6 border-t border-gray-100">
-              <h5 className="text-[10px] font-medium text-gray-500 mb-3 uppercase tracking-[0.2em]">
-                Legal
-              </h5>
-              <ul className="space-y-2">
-                <li>
-                  <Link href="/privacy-policy" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/terms-and-conditions" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
-                    Terms & Conditions
-                  </Link>
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
 
@@ -194,12 +213,12 @@ export default function Footer() {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-3 text-xs border border-gray-200 focus:border-black focus:outline-none transition-colors font-light"
+                className="flex-1 px-4 py-3 text-xs border border-gray-200 rounded focus:border-black focus:outline-none transition-colors font-light"
                 required
               />
               <button
                 type="submit"
-                className="px-8 py-3 bg-black text-white text-xs uppercase tracking-widest hover:bg-gray-800 transition-colors font-medium"
+                className="px-8 py-3 bg-black text-white text-xs uppercase tracking-widest rounded hover:bg-gray-800 transition-colors font-medium"
               >
                 Subscribe
               </button>

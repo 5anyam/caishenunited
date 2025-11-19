@@ -22,7 +22,6 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission logic here
     console.log('Form submitted:', formData);
     setIsSubmitted(true);
     setTimeout(() => {
@@ -51,8 +50,8 @@ export default function ContactPage() {
 
         {/* Contact Information Cards */}
         <section className="grid md:grid-cols-3 gap-8">
-          <div className="bg-white p-8 border border-gray-100 hover:border-gray-300 transition-all duration-300 group">
-            <div className="w-14 h-14 border border-gray-200 group-hover:border-black group-hover:bg-black transition-all duration-300 flex items-center justify-center mx-auto mb-6">
+          <div className="bg-white p-8 border border-gray-100 hover:border-gray-300 transition-all duration-300 group rounded-lg">
+            <div className="w-14 h-14 border border-gray-200 group-hover:border-black group-hover:bg-black transition-all duration-300 flex items-center justify-center mx-auto mb-6 rounded">
               <Mail className="w-6 h-6 text-gray-600 group-hover:text-white transition-colors" />
             </div>
             <h3 className="text-xs font-medium text-gray-900 mb-4 text-center uppercase tracking-wider">Email Us</h3>
@@ -69,8 +68,8 @@ export default function ContactPage() {
             </div>
           </div>
 
-          <div className="bg-white p-8 border border-gray-100 hover:border-gray-300 transition-all duration-300 group">
-            <div className="w-14 h-14 border border-gray-200 group-hover:border-black group-hover:bg-black transition-all duration-300 flex items-center justify-center mx-auto mb-6">
+          <div className="bg-white p-8 border border-gray-100 hover:border-gray-300 transition-all duration-300 group rounded-lg">
+            <div className="w-14 h-14 border border-gray-200 group-hover:border-black group-hover:bg-black transition-all duration-300 flex items-center justify-center mx-auto mb-6 rounded">
               <Phone className="w-6 h-6 text-gray-600 group-hover:text-white transition-colors" />
             </div>
             <h3 className="text-xs font-medium text-gray-900 mb-4 text-center uppercase tracking-wider">Call Us</h3>
@@ -87,8 +86,8 @@ export default function ContactPage() {
             </div>
           </div>
 
-          <div className="bg-white p-8 border border-gray-100 hover:border-gray-300 transition-all duration-300 group">
-            <div className="w-14 h-14 border border-gray-200 group-hover:border-black group-hover:bg-black transition-all duration-300 flex items-center justify-center mx-auto mb-6">
+          <div className="bg-white p-8 border border-gray-100 hover:border-gray-300 transition-all duration-300 group rounded-lg">
+            <div className="w-14 h-14 border border-gray-200 group-hover:border-black group-hover:bg-black transition-all duration-300 flex items-center justify-center mx-auto mb-6 rounded">
               <MapPin className="w-6 h-6 text-gray-600 group-hover:text-white transition-colors" />
             </div>
             <h3 className="text-xs font-medium text-gray-900 mb-4 text-center uppercase tracking-wider">Visit Us</h3>
@@ -97,7 +96,9 @@ export default function ContactPage() {
             </p>
             <div className="text-center">
               <address className="text-xs text-gray-900 not-italic font-light leading-relaxed">
-                Rohini, Delhi<br/> 
+                Sector 15, Rohini<br/>
+                New Delhi, Delhi 110085<br/>
+                India
               </address>
             </div>
           </div>
@@ -105,8 +106,8 @@ export default function ContactPage() {
 
         {/* Contact Form and Info Section */}
         <section className="grid lg:grid-cols-2 gap-16">
-          {/* Contact Form */}
-          <div className="bg-gray-50 p-10 border border-gray-100">
+          {/* Contact Form - Light Theme */}
+          <div className="bg-white p-10 border border-gray-200 rounded-lg">
             <h2 className="text-2xl lg:text-3xl font-light mb-6 text-gray-900 tracking-tight">
               Send us a Message
             </h2>
@@ -126,7 +127,7 @@ export default function ContactPage() {
                     value={formData.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-200 focus:outline-none focus:border-black transition-colors text-xs font-light"
+                    className="w-full px-4 py-3 border border-gray-200 rounded focus:outline-none focus:border-black transition-colors text-sm text-gray-900 font-light bg-white"
                     placeholder="Your full name"
                   />
                 </div>
@@ -140,7 +141,7 @@ export default function ContactPage() {
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-200 focus:outline-none focus:border-black transition-colors text-xs font-light"
+                    className="w-full px-4 py-3 border border-gray-200 rounded focus:outline-none focus:border-black transition-colors text-sm text-gray-900 font-light bg-white"
                     placeholder="your@email.com"
                   />
                 </div>
@@ -157,7 +158,7 @@ export default function ContactPage() {
                     value={formData.phone}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-200 focus:outline-none focus:border-black transition-colors text-xs font-light"
+                    className="w-full px-4 py-3 border border-gray-200 rounded focus:outline-none focus:border-black transition-colors text-sm text-gray-900 font-light bg-white"
                     placeholder="+91 XXXXX XXXXX"
                   />
                 </div>
@@ -170,7 +171,7 @@ export default function ContactPage() {
                     value={formData.subject}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-200 focus:outline-none focus:border-black transition-colors text-xs font-light"
+                    className="w-full px-4 py-3 border border-gray-200 rounded focus:outline-none focus:border-black transition-colors text-sm text-gray-900 font-light bg-white"
                   >
                     <option value="">Select a subject</option>
                     <option value="product">Product Inquiry</option>
@@ -192,7 +193,7 @@ export default function ContactPage() {
                   onChange={handleInputChange}
                   required
                   rows={5}
-                  className="w-full px-4 py-3 border border-gray-200 focus:outline-none focus:border-black transition-colors text-xs font-light resize-none"
+                  className="w-full px-4 py-3 border border-gray-200 rounded focus:outline-none focus:border-black transition-colors text-sm text-gray-900 font-light resize-none bg-white"
                   placeholder="Tell us how we can help you..."
                 ></textarea>
               </div>
@@ -200,7 +201,7 @@ export default function ContactPage() {
               <button
                 type="submit"
                 disabled={isSubmitted}
-                className="w-full bg-black hover:bg-gray-900 text-white py-4 font-medium text-xs uppercase tracking-widest transition-all duration-300 flex items-center justify-center disabled:bg-gray-400"
+                className="w-full bg-black hover:bg-gray-900 text-white py-4 rounded font-medium text-xs uppercase tracking-widest transition-all duration-300 flex items-center justify-center disabled:bg-gray-400"
               >
                 {isSubmitted ? (
                   <>
@@ -219,27 +220,28 @@ export default function ContactPage() {
 
           {/* Office Information */}
           <div className="space-y-8">
-            <div className="bg-white p-8 border border-gray-100">
+            <div className="bg-white p-8 border border-gray-100 rounded-lg">
               <h3 className="text-xl lg:text-2xl font-light mb-8 text-gray-900 tracking-tight">
                 Visit Our Showroom
               </h3>
               <div className="space-y-6">
                 <div className="flex items-start">
-                  <div className="w-12 h-12 border border-gray-200 flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                  <div className="w-12 h-12 border border-gray-200 rounded flex items-center justify-center mr-4 mt-1 flex-shrink-0">
                     <MapPin className="w-5 h-5 text-gray-600" />
                   </div>
                   <div>
                     <h4 className="font-medium text-xs text-gray-900 mb-2 uppercase tracking-wider">Address</h4>
                     <address className="text-xs text-gray-600 not-italic leading-relaxed font-light">
-                      Your Address Line 1,<br />
-                      Your Address Line 2,<br />
-                      City, State - Pincode
+                      Caishen United<br />
+                      Sector 15, Rohini<br />
+                      New Delhi, Delhi 110085<br />
+                      India
                     </address>
                   </div>
                 </div>
 
                 <div className="flex items-start">
-                  <div className="w-12 h-12 border border-gray-200 flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                  <div className="w-12 h-12 border border-gray-200 rounded flex items-center justify-center mr-4 mt-1 flex-shrink-0">
                     <Clock className="w-5 h-5 text-gray-600" />
                   </div>
                   <div>
@@ -253,7 +255,7 @@ export default function ContactPage() {
                 </div>
 
                 <div className="flex items-start">
-                  <div className="w-12 h-12 border border-gray-200 flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                  <div className="w-12 h-12 border border-gray-200 rounded flex items-center justify-center mr-4 mt-1 flex-shrink-0">
                     <Headphones className="w-5 h-5 text-gray-600" />
                   </div>
                   <div>
@@ -268,12 +270,12 @@ export default function ContactPage() {
             </div>
 
             {/* Map Placeholder */}
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 h-80 border border-gray-100 flex items-center justify-center relative overflow-hidden">
+            <div className="bg-gradient-to-br from-gray-50 to-gray-100 h-80 border border-gray-100 rounded-lg flex items-center justify-center relative overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-amber-50/20 via-transparent to-transparent"></div>
               <div className="text-center relative z-10">
                 <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <h4 className="text-base font-light text-gray-900 mb-2 tracking-wide">Find Us Here</h4>
-                <p className="text-xs text-gray-600 font-light">City, State</p>
+                <p className="text-xs text-gray-600 font-light">Sector 15, Rohini, New Delhi</p>
               </div>
             </div>
           </div>
@@ -292,7 +294,7 @@ export default function ContactPage() {
           </div>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="space-y-6">
-              <div className="bg-gray-50 p-6 border border-gray-100">
+              <div className="bg-gray-50 p-6 border border-gray-100 rounded-lg">
                 <h3 className="font-medium text-xs mb-3 text-gray-900 uppercase tracking-wider">
                   How quickly will I receive a response?
                 </h3>
@@ -300,7 +302,7 @@ export default function ContactPage() {
                   We respond to emails within 24 hours and phone calls are answered during business hours, Monday through Saturday.
                 </p>
               </div>
-              <div className="bg-gray-50 p-6 border border-gray-100">
+              <div className="bg-gray-50 p-6 border border-gray-100 rounded-lg">
                 <h3 className="font-medium text-xs mb-3 text-gray-900 uppercase tracking-wider">
                   Do you offer product consultations?
                 </h3>
@@ -310,7 +312,7 @@ export default function ContactPage() {
               </div>
             </div>
             <div className="space-y-6">
-              <div className="bg-gray-50 p-6 border border-gray-100">
+              <div className="bg-gray-50 p-6 border border-gray-100 rounded-lg">
                 <h3 className="font-medium text-xs mb-3 text-gray-900 uppercase tracking-wider">
                   Can I visit your showroom without an appointment?
                 </h3>
@@ -318,7 +320,7 @@ export default function ContactPage() {
                   Walk-ins are welcome during business hours, though appointments ensure dedicated attention from our team.
                 </p>
               </div>
-              <div className="bg-gray-50 p-6 border border-gray-100">
+              <div className="bg-gray-50 p-6 border border-gray-100 rounded-lg">
                 <h3 className="font-medium text-xs mb-3 text-gray-900 uppercase tracking-wider">
                   How do I file a warranty claim?
                 </h3>
@@ -331,7 +333,7 @@ export default function ContactPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="text-center bg-black p-16 text-white relative overflow-hidden">
+        <section className="text-center bg-black p-16 rounded-lg text-white relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-amber-900/10 via-transparent to-transparent"></div>
           <div className="relative z-10">
             <h2 className="text-3xl lg:text-4xl font-light mb-4 tracking-tight">
@@ -342,15 +344,15 @@ export default function ContactPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="tel:+919XXXXXXXXX"
-                className="inline-flex items-center justify-center px-10 py-4 bg-white text-black text-xs font-medium uppercase tracking-widest hover:bg-gray-100 transition-colors"
+                href="tel:+919911636888"
+                className="inline-flex items-center justify-center px-10 py-4 bg-white text-black rounded text-xs font-medium uppercase tracking-widest hover:bg-gray-100 transition-colors"
               >
                 <Phone className="w-4 h-4 mr-2" />
                 Call Now
               </a>
               <a
                 href="mailto:support@caishenunited.com"
-                className="inline-flex items-center justify-center px-10 py-4 border-2 border-white text-white text-xs font-medium uppercase tracking-widest hover:bg-white hover:text-black transition-colors"
+                className="inline-flex items-center justify-center px-10 py-4 border-2 border-white rounded text-white text-xs font-medium uppercase tracking-widest hover:bg-white hover:text-black transition-colors"
               >
                 <Mail className="w-4 h-4 mr-2" />
                 Email Us
