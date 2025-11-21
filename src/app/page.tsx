@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchProducts } from "../../lib/woocommerceApi";
 import ProductCard from "../../components/ProductCard";
 import Link from "next/link";
-import { ChevronRight, Shield, Sparkles, Package, Award, Star, Crown, Smartphone, Search } from 'lucide-react';
+import { ChevronRight, Shield, Sparkles, Package, Award, Star, Smartphone, Search } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -229,7 +229,7 @@ export default function Homepage() {
       {/* ORIGINAL Hero Section - Enhanced Black with Copper (KEPT AS-IS) */}
       <section 
         ref={heroRef}
-        className="relative h-screen flex items-center justify-center bg-gradient-to-b from-[#0A0A0A] via-[#1A1A1A] to-black overflow-hidden"
+        className="relative h-96 flex items-center justify-center bg-gradient-to-b from-[#0A0A0A] via-[#1A1A1A] to-black overflow-hidden"
       >
         <div 
           className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-[#9e734d]/15 via-[#9e734d]/5 to-transparent animate-pulse-slow"
@@ -271,54 +271,25 @@ export default function Homepage() {
             opacity: 1 - scrollY / 600
           }}
         >
-          <div className="mb-12 flex justify-center animate-fade-in-up">
+          <div className="mb-6 flex justify-center animate-fade-in-up">
             <div className="relative group">
               <div className="absolute inset-0 blur-3xl bg-gradient-to-r from-[#9e734d]/30 via-[#F5E6D3]/20 to-[#9e734d]/30 animate-pulse-slow" />
               <div className="absolute -inset-4 bg-gradient-to-r from-[#9e734d]/20 to-[#F5E6D3]/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <img 
                 src="/logo.png" 
                 alt="Caishen United" 
-                className="relative h-32 md:h-44 w-auto filter drop-shadow-[0_0_40px_rgba(158,115,77,0.6)] hover:drop-shadow-[0_0_60px_rgba(158,115,77,0.8)] hover:scale-110 transition-all duration-700"
+                className="relative h-28 md:h-36 w-auto filter drop-shadow-[0_0_40px_rgba(158,115,77,0.6)] hover:drop-shadow-[0_0_60px_rgba(158,115,77,0.8)] hover:scale-110 transition-all duration-700"
               />
             </div>
           </div>
 
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-extralight text-transparent bg-clip-text bg-gradient-to-r from-[#9e734d] via-[#F5E6D3] to-[#9e734d] mb-8 tracking-tighter animate-fade-in-up animation-delay-200 animate-shimmer-text bg-[length:200%_100%] drop-shadow-[0_0_30px_rgba(158,115,77,0.5)]">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-extralight text-transparent bg-clip-text bg-gradient-to-r from-[#9e734d] via-[#F5E6D3] to-[#9e734d] mb-3 tracking-tighter animate-fade-in-up animation-delay-200 animate-shimmer-text bg-[length:200%_100%] drop-shadow-[0_0_30px_rgba(158,115,77,0.5)]">
             Armor Your Device
           </h1>
           <p className="text-2xl md:text-3xl text-gray-200 mb-6 font-light tracking-wide max-w-3xl mx-auto animate-fade-in-up animation-delay-400">
             Premium protection meets <span className="text-[#9e734d] font-medium">sophisticated design</span>
           </p>
-          <p className="text-lg md:text-xl text-[#9e734d] mb-14 font-light tracking-widest max-w-2xl mx-auto animate-fade-in-up animation-delay-500 flex items-center justify-center gap-3">
-            <Crown className="w-6 h-6 animate-pulse" />
-            Where luxury embraces functionality
-            <Crown className="w-6 h-6 animate-pulse" />
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-in-up animation-delay-600">
-            <Link
-              href="/collections"
-              className="group relative px-12 py-5 bg-gradient-to-r from-[#9e734d] via-[#b8834f] to-[#9e734d] text-black text-sm font-bold tracking-widest uppercase overflow-hidden transition-all duration-500 flex items-center gap-2 hover:gap-5 hover:shadow-[0_0_50px_rgba(158,115,77,0.7)] hover:scale-110 transform rounded-lg bg-[length:200%_100%] animate-shimmer-slow"
-            >
-              <span className="relative z-10">Explore Collection</span>
-              <ChevronRight className="relative z-10 w-5 h-5 transition-transform duration-500 group-hover:translate-x-2" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#F5E6D3] to-[#9e734d] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            </Link>
-            <Link
-              href="/about"
-              className="px-12 py-5 border-2 border-[#9e734d] text-[#9e734d] text-sm font-semibold tracking-widest uppercase hover:bg-[#9e734d] hover:text-black transition-all duration-500 hover:shadow-[0_0_40px_rgba(158,115,77,0.6)] hover:scale-110 transform relative overflow-hidden group rounded-lg"
-            >
-              <span className="relative z-10">Our Story</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#F5E6D3]/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-            </Link>
-          </div>
-        </div>
-
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce-slow">
-          <div className="w-7 h-11 border-2 border-[#9e734d] rounded-full flex justify-center relative overflow-hidden shadow-[0_0_20px_rgba(158,115,77,0.4)]">
-            <div className="w-1.5 h-4 bg-gradient-to-b from-[#9e734d] to-[#F5E6D3] rounded-full mt-2 animate-scroll-indicator shadow-[0_0_15px_rgba(158,115,77,0.7)]"></div>
-          </div>
-        </div>
+</div>
       </section>
 
       {/* Trust Banner - Redesigned */}
