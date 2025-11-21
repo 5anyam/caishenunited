@@ -102,32 +102,6 @@ const ShopByBrand: React.FC<{
           </div>
         )}
       </div>
-
-      {/* Desktop View - Horizontal Scroll */}
-      <div className="hidden lg:block">
-        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-          {finalBrands.map((brand) => (
-            <button
-              key={brand.id}
-              onClick={() => handleBrandSelect(brand)}
-              className={`flex-shrink-0 px-5 py-2.5 rounded-full border transition-all duration-300 ${
-                activeBrand === brand.id
-                  ? 'border-[#9e734d] bg-[#9e734d]/10 shadow-[0_0_20px_rgba(158,115,77,0.3)]'
-                  : 'border-[#9e734d]/20 bg-[#0a0a0a] hover:border-[#9e734d]/50'
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                
-                <div className={`text-sm font-medium whitespace-nowrap ${
-                  activeBrand === brand.id ? 'text-[#9e734d]' : 'text-white'
-                }`}>
-                  {brand.name}
-                </div>
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
     </div>
   );
 };
