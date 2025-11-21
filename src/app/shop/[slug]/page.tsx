@@ -64,19 +64,19 @@ export default function CategoryPage() {
     .join(' ');
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-gray-50 to-white dark:from-[#0a0a0a] dark:to-black border-b border-gray-100 dark:border-[#9e734d]/20 py-16">
+      <section className="bg-gradient-to-b from-gray-50 to-white border-b border-gray-100 py-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 dark:text-gray-400 mb-4 font-medium">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-4 font-medium">
               Browse Collection
             </p>
-            <h1 className="text-4xl md:text-5xl font-light text-gray-900 dark:text-white mb-4 tracking-tight">
+            <h1 className="text-4xl md:text-5xl font-light text-gray-900 mb-4 tracking-tight">
               {categoryName}
             </h1>
-            <div className="w-20 h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-[#9e734d] to-transparent mx-auto mb-6"></div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <div className="w-20 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent mx-auto mb-6"></div>
+            <p className="text-sm text-gray-600 max-w-2xl mx-auto">
               Discover our premium selection of {categoryName.toLowerCase()} designed for style and protection
             </p>
           </div>
@@ -84,7 +84,7 @@ export default function CategoryPage() {
       </section>
 
       {/* Filters & Sort */}
-      <section className="border-b border-gray-100 dark:border-[#9e734d]/20 py-6 sticky top-20 bg-white dark:bg-black z-30 backdrop-blur-md">
+      <section className="border-b border-gray-100 py-6 sticky top-20 bg-white z-30 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Search */}
@@ -95,13 +95,13 @@ export default function CategoryPage() {
                 placeholder="Search products..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 text-sm border border-gray-200 dark:border-[#9e734d]/20 bg-white dark:bg-black text-gray-900 dark:text-white focus:outline-none focus:border-gray-900 dark:focus:border-[#9e734d] transition-colors"
+                className="w-full pl-10 pr-4 py-2 text-sm border border-gray-200 bg-white text-gray-900 focus:outline-none focus:border-gray-900 transition-colors"
               />
             </div>
 
             <div className="flex items-center gap-4 w-full md:w-auto">
               {/* Results Count */}
-              <span className="text-xs text-gray-500 dark:text-gray-400">
+              <span className="text-xs text-gray-500">
                 {sortedProducts.length} Products
               </span>
 
@@ -110,7 +110,7 @@ export default function CategoryPage() {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="appearance-none pl-4 pr-10 py-2 text-xs border border-gray-200 dark:border-[#9e734d]/20 bg-white dark:bg-black text-gray-900 dark:text-white focus:outline-none focus:border-gray-900 dark:focus:border-[#9e734d] cursor-pointer"
+                  className="appearance-none pl-4 pr-10 py-2 text-xs border border-gray-200 bg-white text-gray-900 focus:outline-none focus:border-gray-900 cursor-pointer"
                 >
                   <option value="default">Sort By</option>
                   <option value="price-low">Price: Low to High</option>
@@ -121,13 +121,13 @@ export default function CategoryPage() {
               </div>
 
               {/* View Mode Toggle */}
-              <div className="flex items-center border border-gray-200 dark:border-[#9e734d]/20">
+              <div className="flex items-center border border-gray-200">
                 <button
                   onClick={() => setViewMode('grid')}
                   className={`p-2 ${
                     viewMode === 'grid'
-                      ? 'bg-gray-900 dark:bg-[#9e734d] text-white'
-                      : 'text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                      ? 'bg-gray-900 text-white'
+                      : 'text-gray-400 hover:text-gray-900'
                   } transition-colors`}
                 >
                   <Grid className="w-4 h-4" />
@@ -136,8 +136,8 @@ export default function CategoryPage() {
                   onClick={() => setViewMode('list')}
                   className={`p-2 ${
                     viewMode === 'list'
-                      ? 'bg-gray-900 dark:bg-[#9e734d] text-white'
-                      : 'text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                      ? 'bg-gray-900 text-white'
+                      : 'text-gray-400 hover:text-gray-900'
                   } transition-colors`}
                 >
                   <List className="w-4 h-4" />
@@ -156,29 +156,29 @@ export default function CategoryPage() {
               {[...Array(8)].map((_, i) => (
                 <div
                   key={i}
-                  className="aspect-square bg-gray-100 dark:bg-[#1a1a1a] animate-pulse rounded-sm"
+                  className="aspect-square bg-gray-100 animate-pulse rounded-sm"
                 />
               ))}
             </div>
           ) : isError ? (
             <div className="text-center py-20">
-              <p className="text-gray-500 dark:text-gray-400 mb-4">
+              <p className="text-gray-500 mb-4">
                 Failed to load products
               </p>
               <button
                 onClick={() => window.location.reload()}
-                className="px-6 py-2 bg-gray-900 dark:bg-[#9e734d] text-white text-sm hover:bg-gray-800 dark:hover:bg-[#8a6342] transition-colors"
+                className="px-6 py-2 bg-gray-900 text-white text-sm hover:bg-gray-800 transition-colors"
               >
                 Retry
               </button>
             </div>
           ) : sortedProducts.length === 0 ? (
             <div className="text-center py-20">
-              <Filter className="w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-700" />
-              <p className="text-gray-500 dark:text-gray-400 mb-2">
+              <Filter className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+              <p className="text-gray-500 mb-2">
                 No products found
               </p>
-              <p className="text-sm text-gray-400 dark:text-gray-600">
+              <p className="text-sm text-gray-400">
                 Try adjusting your search or filters
               </p>
             </div>

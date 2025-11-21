@@ -358,7 +358,7 @@ export default function Homepage() {
 
     {/* Enhanced Device Categories */}
     <div className="mb-12">
-  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 md:gap-4">
+  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
     {[
       { 
         name: 'Apple', 
@@ -407,6 +407,22 @@ export default function Homepage() {
         logo: '/vivo.png',
         bgColor: 'bg-gradient-to-br from-purple-50 to-purple-100',
         hoverColor: 'hover:from-purple-100 hover:to-purple-200'
+      },
+      { 
+        name: 'Redmi', 
+        models: 'Redmi 17 Pro, 16, 15 & more',
+        link: '/shop/redmi-covers',
+        logo: '/redmi.png', // Add your logo path
+        bgColor: 'bg-gradient-to-br from-gray-50 to-gray-100',
+        hoverColor: 'hover:from-gray-100 hover:to-gray-200'
+      },
+      { 
+        name: 'Motorola', 
+        models: 'Motorola M25, M9 & more',
+        link: '/shop/motorola-covers',
+        logo: '/motorola.svg',
+        bgColor: 'bg-gradient-to-br from-blue-50 to-blue-100',
+        hoverColor: 'hover:from-blue-100 hover:to-blue-200'
       },
     ].map((device) => (
       <Link
