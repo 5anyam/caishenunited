@@ -36,20 +36,16 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
       if (searchTerm && !product.name.toLowerCase().includes(searchTerm.toLowerCase())) {
         return false;
       }
-
       if (selectedCategory && !product.categories?.some(cat => cat.name === selectedCategory)) {
         return false;
       }
-
       if (priceRange.min || priceRange.max) {
         const price = parseFloat(product.price.replace(/[^\d.]/g, ''));
         if (priceRange.min && price < parseFloat(priceRange.min)) return false;
         if (priceRange.max && price > parseFloat(priceRange.max)) return false;
       }
-
       return true;
     });
-
     filtered.sort((a, b) => {
       switch (sortBy) {
         case 'price-low':
@@ -61,7 +57,6 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
           return a.name.localeCompare(b.name);
       }
     });
-
     return filtered;
   }, [products, searchTerm, selectedCategory, priceRange, sortBy]);
 
@@ -74,7 +69,7 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section - Minimal */}
+      {/* Hero Section */}
       <div className="border-b border-gray-200 bg-white">
         <div className="max-w-7xl mx-auto px-4 py-16 lg:py-20">
           <div className="text-center">
@@ -83,20 +78,20 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
             </h1>
             <div className="w-16 h-px bg-gray-300 mx-auto mb-6"></div>
             <p className="text-base text-gray-600 max-w-2xl mx-auto font-light">
-              Discover our curated selection of luxury fragrances
+              Discover our curated selection of premium phone cases and accessories—designed for ultimate protection, style, and durability.
             </p>
           </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-12">
-        {/* Search Bar - Minimal */}
+        {/* Search Bar */}
         <div className="mb-12">
           <div className="relative max-w-2xl mx-auto">
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             <input
               type="text"
-              placeholder="Search fragrances..."
+              placeholder="Search products..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full px-4 py-3 pl-12 border-b-2 border-gray-200 focus:border-black focus:outline-none transition-colors bg-white text-gray-900 placeholder:text-gray-400 font-light"
@@ -126,7 +121,7 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-12">
-          {/* Filters Sidebar - Minimal */}
+          {/* Filters Sidebar */}
           <div className={`lg:w-1/4 ${showFilters ? 'block' : 'hidden lg:block'}`}>
             <div className="bg-gray-50 p-6 sticky top-6">
               <div className="flex items-center justify-between mb-8">
@@ -140,7 +135,6 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
                   Clear
                 </button>
               </div>
-
               {/* Category Filter */}
               <div className="mb-8">
                 <label className="block text-xs font-light text-gray-600 mb-3 uppercase tracking-widest">
@@ -159,7 +153,6 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
                   ))}
                 </select>
               </div>
-
               {/* Price Range */}
               <div className="mb-8">
                 <label className="block text-xs font-light text-gray-600 mb-3 uppercase tracking-widest">
@@ -182,7 +175,6 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
                   />
                 </div>
               </div>
-
               {/* Sort Options */}
               <div className="mb-8">
                 <label className="block text-xs font-light text-gray-600 mb-3 uppercase tracking-widest">
@@ -198,7 +190,6 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
                   <option value="price-high">Price: High to Low</option>
                 </select>
               </div>
-
               {/* Active Filters */}
               {(searchTerm || selectedCategory || priceRange.min || priceRange.max) && (
                 <div className="border-t border-gray-200 pt-6">
@@ -226,10 +217,8 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
               )}
             </div>
           </div>
-
           {/* Products Section */}
           <div className="lg:w-3/4">
-            {/* Results Header */}
             <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-200">
               <h2 className="text-sm font-light text-gray-900 tracking-wide">
                 {filteredProducts.length} {filteredProducts.length !== 1 ? 'Products' : 'Product'}
@@ -238,7 +227,6 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
                 Showing {filteredProducts.length} of {products.length}
               </div>
             </div>
-
             {/* Products Grid */}
             {filteredProducts.length === 0 ? (
               <div className="text-center py-20 bg-gray-50">
@@ -251,7 +239,7 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
                   No Results Found
                 </h3>
                 <p className="text-gray-600 mb-8 max-w-md mx-auto font-light text-sm">
-                  We could not find any fragrances matching your criteria.
+                  We could not find any products matching your criteria.
                 </p>
                 <button
                   onClick={clearFilters}
@@ -277,7 +265,7 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
         </div>
       </div>
 
-      {/* Contact Section - Minimal */}
+      {/* Contact Section */}
       <div className="mt-20 border-t border-gray-200 bg-gray-50 py-16">
         <div className="max-w-4xl mx-auto text-center px-4">
           <h2 className="text-2xl font-light text-gray-900 mb-4 tracking-wide">
@@ -285,17 +273,17 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
           </h2>
           <div className="w-16 h-px bg-gray-300 mx-auto mb-6"></div>
           <p className="text-sm text-gray-600 mb-8 font-light">
-            Our fragrance consultants are here to help you find your perfect scent
+            Our customer team is here to help you choose the best case or accessory for your device.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
-              href="mailto:care@edaperfumes.com"
+              href="mailto:support@caishenunited.com"
               className="inline-block px-8 py-3 text-xs text-black border border-gray-300 hover:bg-black hover:text-white hover:border-black transition-colors tracking-widest uppercase font-light"
             >
               Email Us
             </a>
             <a 
-              href="https://wa.me/919876543210"
+              href="https://wa.me/919911636888"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block px-8 py-3 text-xs text-white bg-black hover:bg-gray-800 transition-colors tracking-widest uppercase font-light"

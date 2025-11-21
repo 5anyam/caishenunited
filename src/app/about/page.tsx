@@ -322,7 +322,7 @@ export default function AboutPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
-              href="/products"
+              href="/collections"
               className="inline-block px-10 py-4 text-xs text-white bg-black hover:bg-gray-900 transition-all duration-300 tracking-widest uppercase font-medium"
             >
               Shop Collection

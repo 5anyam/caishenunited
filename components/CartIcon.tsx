@@ -166,7 +166,7 @@ export default function CartDrawer() {
                               <button
                                 onClick={() => decrement(item.id as number)}
                                 disabled={item.quantity <= 1}
-                                className="p-1 sm:p-1.5 hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="p-1 sm:p-1.5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                 aria-label="Decrease quantity"
                               >
                                 <Minus className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-600" />
@@ -176,7 +176,7 @@ export default function CartDrawer() {
                               </span>
                               <button
                                 onClick={() => increment(item.id as number)}
-                                className="p-1 sm:p-1.5 hover:bg-gray-100 transition-colors"
+                                className="p-1 sm:p-1.5 transition-colors"
                                 aria-label="Increase quantity"
                               >
                                 <Plus className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-600" />
@@ -228,7 +228,7 @@ export default function CartDrawer() {
               <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-2 sm:space-y-3">
                 <Link
                   href="/checkout"
-                  className="block w-full bg-black text-white text-center py-2.5 sm:py-3 text-sm font-medium hover:bg-gray-800 transition-colors rounded"
+                  className="block w-full bg-black text-white text-center py-2.5 sm:py-3 text-sm font-medium transition-colors rounded"
                   onClick={() => setIsCartOpen(false)}
                 >
                   Proceed to Checkout
@@ -236,7 +236,7 @@ export default function CartDrawer() {
                 
                 <button
                   onClick={() => setIsCartOpen(false)}
-                  className="w-full border border-gray-300 text-gray-700 py-2.5 sm:py-3 text-sm font-medium hover:bg-gray-50 transition-colors rounded"
+                  className="w-full border border-gray-300 text-gray-700 py-2.5 sm:py-3 text-sm font-medium transition-colors rounded"
                 >
                   Continue Shopping
                 </button>

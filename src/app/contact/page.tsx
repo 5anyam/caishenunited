@@ -92,7 +92,7 @@ export default function ContactPage() {
             </div>
             <h3 className="text-xs font-medium text-gray-900 mb-4 text-center uppercase tracking-wider">Visit Us</h3>
             <p className="text-xs text-gray-600 text-center mb-4 font-light leading-relaxed">
-              Come visit our showroom for hands-on experience
+              Come visit our Head Office
             </p>
             <div className="text-center">
               <address className="text-xs text-gray-900 not-italic font-light leading-relaxed">
