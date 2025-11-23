@@ -67,9 +67,14 @@ const BannerSlider: React.FC = () => {
   };
 
   return (
-    <div className="w-full relative rounded-3xl overflow-hidden shadow-lg">
-      {/* Main carousel container */}
-      <div className="w-full relative overflow-hidden" style={{ aspectRatio: '16/6' }}>
+    <div className="w-full relative rounded-xl md:rounded-3xl overflow-hidden shadow-lg">
+      {/* Main carousel container - Responsive aspect ratio */}
+      <div 
+        className="w-full relative overflow-hidden"
+        style={{ 
+          aspectRatio: typeof window !== 'undefined' && window.innerWidth < 768 ? '4/3' : '16/6'
+        }}
+      >
         
         {/* Slides container */}
         <div 
@@ -89,21 +94,26 @@ const BannerSlider: React.FC = () => {
                 loading={index === 0 ? 'eager' : 'lazy'}
               />
               
-              {/* Overlay gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+              {/* Overlay gradient - stronger on mobile */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent md:from-black/60 md:via-black/30" />
               
-              {/* Content */}
-              <div className="absolute inset-0 flex items-end p-8 md:p-12">
-                <div className="max-w-2xl">
-                  <h3 className="text-3xl md:text-5xl font-light text-white mb-4">
+              {/* Content - Fully responsive */}
+              <div className="absolute inset-0 flex items-end p-4 sm:p-6 md:p-8 lg:p-12">
+                <div className="w-full max-w-2xl">
+                  {/* Title - responsive text */}
+                  <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-light text-white mb-2 sm:mb-3 md:mb-4 leading-tight">
                     {banner.title}
                   </h3>
-                  <p className="text-gray-300 mb-6 text-lg">
+                  
+                  {/* Description - hidden on very small screens, responsive on larger */}
+                  <p className="hidden sm:block text-sm sm:text-base md:text-lg text-gray-200 md:text-gray-300 mb-4 sm:mb-5 md:mb-6 leading-snug">
                     {banner.description}
                   </p>
-                  <div className="inline-flex items-center gap-2 px-8 py-3 bg-white text-black rounded-full font-semibold hover:bg-[#9e734d] hover:text-white transition-all">
+                  
+                  {/* CTA Button - touch-friendly sizing */}
+                  <div className="inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 bg-white text-black rounded-full text-xs sm:text-sm md:text-base font-semibold hover:bg-[#9e734d] hover:text-white transition-all active:scale-95">
                     {banner.buttonText}
-                    <ChevronRight className="w-5 h-5" />
+                    <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
                   </div>
                 </div>
               </div>
@@ -111,40 +121,40 @@ const BannerSlider: React.FC = () => {
           ))}
         </div>
 
-        {/* Navigation buttons */}
+        {/* Navigation buttons - Hidden on mobile, visible on tablet+ */}
         <button
           onClick={goToPrevious}
-          className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-40 
+          className="hidden md:flex absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-40 
             bg-white/90 hover:bg-white border border-gray-200 text-gray-700 
             w-8 h-8 sm:w-10 sm:h-10 rounded-full transition-all duration-300 hover:scale-110
-            flex items-center justify-center shadow-lg hover:shadow-xl"
+            items-center justify-center shadow-lg hover:shadow-xl"
           aria-label="Previous slide"
         >
-          <ChevronLeft size={16} className="sm:w-5 sm:h-5" />
+          <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
         <button
           onClick={goToNext}
-          className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-40 
+          className="hidden md:flex absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-40 
             bg-white/90 hover:bg-white border border-gray-200 text-gray-700 
             w-8 h-8 sm:w-10 sm:h-10 rounded-full transition-all duration-300 hover:scale-110
-            flex items-center justify-center shadow-lg hover:shadow-xl"
+            items-center justify-center shadow-lg hover:shadow-xl"
           aria-label="Next slide"
         >
-          <ChevronRight size={16} className="sm:w-5 sm:h-5" />
+          <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
-        {/* Slide indicators */}
-        <div className="absolute bottom-3 sm:bottom-4 left-1/2 transform -translate-x-1/2 z-30 
-          flex gap-1.5 sm:gap-2 bg-white/90 backdrop-blur-sm rounded-full px-3 py-2 shadow-lg">
+        {/* Slide indicators - Always visible, responsive sizing */}
+        <div className="absolute bottom-2 sm:bottom-3 md:bottom-4 left-1/2 transform -translate-x-1/2 z-30 
+          flex gap-1 sm:gap-1.5 md:gap-2 bg-white/80 md:bg-white/90 backdrop-blur-sm rounded-full px-2 sm:px-2.5 md:px-3 py-1.5 sm:py-2 shadow-lg">
           {banners.map((_: Banner, index: number) => (
             <button
               key={index}
               className={`rounded-full cursor-pointer transition-all duration-300 
                 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[#9e734d]/50 
                 ${index === current
-                  ? 'bg-[#9e734d] w-6 sm:w-8 h-2 sm:h-2.5' 
-                  : 'bg-gray-300 hover:bg-gray-400 w-2 sm:w-2.5 h-2 sm:h-2.5'
+                  ? 'bg-[#9e734d] w-4 sm:w-6 md:w-8 h-1.5 sm:h-2 md:h-2.5' 
+                  : 'bg-gray-300 hover:bg-gray-400 w-1.5 sm:w-2 md:w-2.5 h-1.5 sm:h-2 md:h-2.5'
                 }`}
               onClick={() => goToSlide(index)}
               aria-label={`Go to slide ${index + 1}`}
