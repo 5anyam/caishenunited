@@ -6,7 +6,7 @@ import Link from "next/link";
 import { ChevronRight, Shield, Sparkles, Package, Award, Star, Smartphone, Search } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+import BannerSlider from "../../components/HeroCarousel";
 
 // Type definitions
 interface BrandCategory {
@@ -88,7 +88,6 @@ const ShopByBrand: React.FC<{
                 }`}
               >
                 <div className="flex items-center gap-2">
-                 
                   <div className="flex-1 min-w-0">
                     <div className={`text-xs font-medium truncate ${
                       activeBrand === brand.id ? 'text-[#9e734d]' : 'text-white'
@@ -193,14 +192,13 @@ export default function Homepage() {
       .slice(0, 8);
   }
 
-
   const handleBrandSelect = (brand: BrandCategory) => {
     setActiveBrand(brand.id);
   };
 
   return (
     <div className="min-h-screen bg-black overflow-hidden">
-      {/* ORIGINAL Hero Section - Enhanced Black with Copper (KEPT AS-IS) */}
+      {/* Hero Section */}
       <section 
         ref={heroRef}
         className="relative h-96 flex items-center justify-center bg-gradient-to-b from-[#0A0A0A] via-[#1A1A1A] to-black overflow-hidden"
@@ -263,10 +261,10 @@ export default function Homepage() {
           <p className="text-2xl md:text-3xl text-gray-200 mb-6 font-light tracking-wide max-w-3xl mx-auto animate-fade-in-up animation-delay-400">
             Premium protection meets <span className="text-[#9e734d] font-medium">sophisticated design</span>
           </p>
-</div>
+        </div>
       </section>
 
-      {/* Trust Banner - Redesigned */}
+      {/* Trust Banner */}
       <section className="py-6 border-y border-[#9e734d]/20 bg-[#0a0a0a]">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-wrap justify-center items-center gap-8 text-center">
@@ -288,250 +286,273 @@ export default function Homepage() {
         </div>
       </section>
 
-    {/* Featured Products Section - Enhanced Device Selection */}
-<section className="py-12 px-4 bg-white">
+      {/* Featured Products Section */}
+      <section className="py-12 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-2">
+              Shop by Device
+            </h2>
+            <p className="text-gray-600 text-sm">
+              Find the perfect cover for your device
+            </p>
+          </div>
+
+          <div className="mb-12">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+              {[
+                { 
+                  name: 'Apple', 
+                  models: 'iPhone 17 Pro, 16, 15 & more',
+                  link: '/shop/iphone-covers',
+                  logo: '/apple.svg',
+                  bgColor: 'bg-gradient-to-br from-gray-50 to-gray-100',
+                  hoverColor: 'hover:from-gray-100 hover:to-gray-200'
+                },
+                { 
+                  name: 'Samsung', 
+                  models: 'Galaxy S25, Z Fold 7 & more',
+                  link: '/shop/samsung-covers',
+                  logo: '/samsung.svg',
+                  bgColor: 'bg-gradient-to-br from-blue-50 to-blue-100',
+                  hoverColor: 'hover:from-blue-100 hover:to-blue-200'
+                },
+                { 
+                  name: 'OnePlus', 
+                  models: 'OnePlus 15, 13 & more',
+                  link: '/shop/oneplus-covers',
+                  logo: '/oneplus.png',
+                  bgColor: 'bg-gradient-to-br from-red-50 to-red-100',
+                  hoverColor: 'hover:from-red-100 hover:to-red-200'
+                },
+                { 
+                  name: 'Google', 
+                  models: 'Pixel 10, 9 & more',
+                  link: '/shop/google-covers',
+                  logo: '/google.webp',
+                  bgColor: 'bg-gradient-to-br from-green-50 to-green-100',
+                  hoverColor: 'hover:from-green-100 hover:to-green-200'
+                },
+                { 
+                  name: 'Nothing', 
+                  models: 'Nothing Phone & more',
+                  link: '/shop/nothing-covers',
+                  logo: '/realme.png',
+                  bgColor: 'bg-gradient-to-br from-yellow-50 to-yellow-100',
+                  hoverColor: 'hover:from-yellow-100 hover:to-yellow-200'
+                },
+                { 
+                  name: 'Vivo', 
+                  models: 'Vivo V40, X100 & more',
+                  link: '/shop/vivo-covers',
+                  logo: '/vivo.png',
+                  bgColor: 'bg-gradient-to-br from-purple-50 to-purple-100',
+                  hoverColor: 'hover:from-purple-100 hover:to-purple-200'
+                },
+                { 
+                  name: 'Redmi', 
+                  models: 'Redmi 17 Pro, 16, 15 & more',
+                  link: '/shop/redmi-covers',
+                  logo: '/redmi.png',
+                  bgColor: 'bg-gradient-to-br from-gray-50 to-gray-100',
+                  hoverColor: 'hover:from-gray-100 hover:to-gray-200'
+                },
+                { 
+                  name: 'Motorola', 
+                  models: 'Motorola M25, M9 & more',
+                  link: '/shop/motorola-covers',
+                  logo: '/motorola.svg',
+                  bgColor: 'bg-gradient-to-br from-blue-50 to-blue-100',
+                  hoverColor: 'hover:from-blue-100 hover:to-blue-200'
+                },
+              ].map((device) => (
+                <Link
+                  key={device.name}
+                  href={device.link}
+                  className={`group relative ${device.bgColor} ${device.hoverColor} border border-gray-200 hover:border-gray-300 rounded-xl transition-all duration-300 overflow-hidden shadow-sm hover:shadow-md`}
+                >
+                  <div className="p-6 text-center">
+                    <div className="w-12 h-12 mx-auto mb-3 bg-white rounded-full flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow p-2">
+                      <img 
+                        src={device.logo} 
+                        alt={`${device.name} logo`}
+                        className="w-full h-full object-contain"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                          e.currentTarget.parentElement!.innerHTML = `<span class="text-xl font-bold text-gray-800">${device.name.charAt(0)}</span>`;
+                        }}
+                      />
+                    </div>
+                    <h3 className="text-base font-semibold text-gray-900 mb-1">
+                      {device.name}
+                    </h3>
+                    <p className="text-xs text-gray-600 leading-tight">
+                      {device.models}
+                    </p>
+                  </div>
+                  <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <ChevronRight className="w-4 h-4 text-gray-600" />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Category Tabs */}
+          <div className="mb-10">
+            <div className="flex flex-wrap justify-center gap-2">
+              {[
+                { key: 'all' as const, label: 'All Products', icon: '🛍️' },
+                { key: 'covers' as const, label: 'Phone Covers', icon: '📱' },
+                { key: 'accessories' as const, label: 'Accessories', icon: '🔌' }
+              ].map((cat) => (
+                <button
+                  key={cat.key}
+                  onClick={() => setActiveCategory(cat.key)}
+                  className={`group px-6 py-3 text-sm font-medium rounded-full transition-all duration-300 border-2 ${
+                    activeCategory === cat.key
+                      ? 'bg-black text-white border-black shadow-lg scale-105'
+                      : 'bg-white text-gray-700 border-gray-200 hover:border-gray-400 hover:shadow-md'
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    {cat.label}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Brand Filter */}
+          <ShopByBrand 
+            brands={[]} 
+            activeBrand={activeBrand} 
+            onBrandSelect={handleBrandSelect} 
+          />
+
+          {/* Products Grid */}
+          {isLoading ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8">
+              {[...Array(8)].map((_, i) => (
+                <ProductSkeleton key={i} />
+              ))}
+            </div>
+          ) : isError ? (
+            <div className="text-center py-20">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+                <Shield className="w-8 h-8 text-gray-400" />
+              </div>
+              <p className="text-gray-600 mb-6 text-sm">Unable to load products</p>
+              <button 
+                onClick={() => window.location.reload()}
+                className="px-8 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-all shadow-md hover:shadow-lg"
+              >
+                Retry
+              </button>
+            </div>
+          ) : displayProducts.length === 0 ? (
+            <div className="text-center py-20">
+              <Search className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+              <p className="text-gray-600 text-sm">No products found</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8">
+              {displayProducts.map((prod, i) => (
+                <div
+                  key={prod.id}
+                  className="animate-fade-in-up"
+                  style={{ animationDelay: `${i * 50}ms` }}
+                >
+                  <ProductCard product={prod} />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* View All Button */}
+          {!isLoading && displayProducts.length > 0 && (
+            <div className="mt-12 text-center">
+              <Link
+                href="/collections"
+                className="inline-flex items-center gap-2 px-8 py-3.5 border-2 border-black text-black rounded-lg hover:bg-black hover:text-white transition-all duration-300 font-medium shadow-md hover:shadow-lg"
+              >
+                View All Products
+                <ChevronRight className="w-5 h-5" />
+              </Link>
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section className="py-20 px-4 bg-[#0a0a0a]">
   <div className="max-w-7xl mx-auto">
-    {/* Section Header */}
-    <div className="text-center mb-10">
-      <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-2">
-        Shop by Device
-      </h2>
-      <p className="text-gray-600 text-sm">
-        Find the perfect cover for your device
-      </p>
-    </div>
-
-    {/* Enhanced Device Categories */}
-    <div className="mb-12">
-  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-    {[
-      { 
-        name: 'Apple', 
-        models: 'iPhone 17 Pro, 16, 15 & more',
-        link: '/shop/iphone-covers',
-        logo: '/apple.svg', // Add your logo path
-        bgColor: 'bg-gradient-to-br from-gray-50 to-gray-100',
-        hoverColor: 'hover:from-gray-100 hover:to-gray-200'
-      },
-      { 
-        name: 'Samsung', 
-        models: 'Galaxy S25, Z Fold 7 & more',
-        link: '/shop/samsung-covers',
-        logo: '/samsung.svg',
-        bgColor: 'bg-gradient-to-br from-blue-50 to-blue-100',
-        hoverColor: 'hover:from-blue-100 hover:to-blue-200'
-      },
-      { 
-        name: 'OnePlus', 
-        models: 'OnePlus 15, 13 & more',
-        link: '/shop/oneplus-covers',
-        logo: '/oneplus.png',
-        bgColor: 'bg-gradient-to-br from-red-50 to-red-100',
-        hoverColor: 'hover:from-red-100 hover:to-red-200'
-      },
-      { 
-        name: 'Google', 
-        models: 'Pixel 10, 9 & more',
-        link: '/shop/google-covers',
-        logo: '/google.webp',
-        bgColor: 'bg-gradient-to-br from-green-50 to-green-100',
-        hoverColor: 'hover:from-green-100 hover:to-green-200'
-      },
-      { 
-        name: 'Nothing', 
-        models: 'Nothing Phone & more',
-        link: '/shop/nothing-covers',
-        logo: '/realme.png',
-        bgColor: 'bg-gradient-to-br from-yellow-50 to-yellow-100',
-        hoverColor: 'hover:from-yellow-100 hover:to-yellow-200'
-      },
-      { 
-        name: 'Vivo', 
-        models: 'Vivo V40, X100 & more',
-        link: '/shop/vivo-covers',
-        logo: '/vivo.png',
-        bgColor: 'bg-gradient-to-br from-purple-50 to-purple-100',
-        hoverColor: 'hover:from-purple-100 hover:to-purple-200'
-      },
-      { 
-        name: 'Redmi', 
-        models: 'Redmi 17 Pro, 16, 15 & more',
-        link: '/shop/redmi-covers',
-        logo: '/redmi.png', // Add your logo path
-        bgColor: 'bg-gradient-to-br from-gray-50 to-gray-100',
-        hoverColor: 'hover:from-gray-100 hover:to-gray-200'
-      },
-      { 
-        name: 'Motorola', 
-        models: 'Motorola M25, M9 & more',
-        link: '/shop/motorola-covers',
-        logo: '/motorola.svg',
-        bgColor: 'bg-gradient-to-br from-blue-50 to-blue-100',
-        hoverColor: 'hover:from-blue-100 hover:to-blue-200'
-      },
-    ].map((device) => (
-      <Link
-        key={device.name}
-        href={device.link}
-        className={`group relative ${device.bgColor} ${device.hoverColor} border border-gray-200 hover:border-gray-300 rounded-xl transition-all duration-300 overflow-hidden shadow-sm hover:shadow-md`}
-      >
-        <div className="p-6 text-center">
-          {/* Device Brand Logo */}
-          <div className="w-12 h-12 mx-auto mb-3 bg-white rounded-full flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow p-2">
-            <img 
-              src={device.logo} 
-              alt={`${device.name} logo`}
-              className="w-full h-full object-contain"
-              onError={(e) => {
-                // Fallback to letter if image fails to load
-                e.currentTarget.style.display = 'none';
-                e.currentTarget.parentElement!.innerHTML = `<span class="text-xl font-bold text-gray-800">${device.name.charAt(0)}</span>`;
-              }}
-            />
-          </div>
-          
-          {/* Device Name */}
-          <h3 className="text-base font-semibold text-gray-900 mb-1">
-            {device.name}
-          </h3>
-          
-          {/* Device Models */}
-          <p className="text-xs text-gray-600 leading-tight">
-            {device.models}
-          </p>
-        </div>
-
-        {/* Hover Effect Arrow */}
-        <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <ChevronRight className="w-4 h-4 text-gray-600" />
-        </div>
-      </Link>
-    ))}
-  </div>
-</div>
-
-
-    {/* Enhanced Category Tabs */}
-    <div className="mb-10">
-      <div className="flex flex-wrap justify-center gap-2">
-        {[
-          { key: 'all' as const, label: 'All Products', icon: '🛍️' },
-          { key: 'covers' as const, label: 'Phone Covers', icon: '📱' },
-          { key: 'accessories' as const, label: 'Accessories', icon: '🔌' }
-        ].map((cat) => (
-          <button
-            key={cat.key}
-            onClick={() => setActiveCategory(cat.key)}
-            className={`group px-6 py-3 text-sm font-medium rounded-full transition-all duration-300 border-2 ${
-              activeCategory === cat.key
-                ? 'bg-black text-white border-black shadow-lg scale-105'
-                : 'bg-white text-gray-700 border-gray-200 hover:border-gray-400 hover:shadow-md'
-            }`}
-          >
-            <span className="flex items-center gap-2">
-              {cat.label}
-            </span>
-          </button>
-        ))}
-      </div>
-    </div>
-
-    {/* Brand Filter */}
-    <ShopByBrand 
-      brands={[]} 
-      activeBrand={activeBrand} 
-      onBrandSelect={handleBrandSelect} 
-    />
-
-    {/* Products Grid */}
-    {isLoading ? (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8">
-        {[...Array(8)].map((_, i) => (
-          <ProductSkeleton key={i} />
-        ))}
-      </div>
-    ) : isError ? (
-      <div className="text-center py-20">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
-          <Shield className="w-8 h-8 text-gray-400" />
-        </div>
-        <p className="text-gray-600 mb-6 text-sm">Unable to load products</p>
-        <button 
-          onClick={() => window.location.reload()}
-          className="px-8 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-all shadow-md hover:shadow-lg"
-        >
-          Retry
-        </button>
-      </div>
-    ) : displayProducts.length === 0 ? (
-      <div className="text-center py-20">
-        <Search className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-        <p className="text-gray-600 text-sm">No products found</p>
-      </div>
-    ) : (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8">
-        {displayProducts.map((prod, i) => (
-          <div
-            key={prod.id}
-            className="animate-fade-in-up"
-            style={{ animationDelay: `${i * 50}ms` }}
-          >
-            <ProductCard product={prod} />
-          </div>
-        ))}
-      </div>
-    )}
-
-    {/* View All Button */}
-    {!isLoading && displayProducts.length > 0 && (
-      <div className="mt-12 text-center">
-        <Link
-          href="/collections"
-          className="inline-flex items-center gap-2 px-8 py-3.5 border-2 border-black text-black rounded-lg hover:bg-black hover:text-white transition-all duration-300 font-medium shadow-md hover:shadow-lg"
-        >
-          View All Products
-          <ChevronRight className="w-5 h-5" />
-        </Link>
-      </div>
-    )}
+    <BannerSlider />
   </div>
 </section>
 
 
+      {/* MagSafe & Drop Protection GIF Section */}
+      <section className="py-16 px-4 bg-black">
+        <div className="max-w-7xl mx-auto space-y-12">
+          {/* Row 1 - MagSafe */}
+          <div className="grid md:grid-cols-2 gap-10 items-center">
+            <div className="relative rounded-3xl overflow-hidden border border-[#9e734d]/30 bg-[#0a0a0a]">
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#9e734d]/20 via-transparent to-transparent pointer-events-none" />
+              <img
+                src="https://cms.caishenunited.com/wp-content/uploads/2025/11/Magsafe.gif"
+                alt="MagSafe compatible case"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="text-left md:pl-4">
+              <p className="text-xs uppercase tracking-[0.25em] text-[#9e734d] mb-3">
+                Magnetic Ready
+              </p>
+              <h2 className="text-2xl md:text-3xl font-light text-white mb-4">
+                MagSafe Lock-On <span className="text-[#9e734d]">Precision</span>
+              </h2>
+              <p className="text-sm text-gray-300 mb-4 max-w-md">
+                Engineered with perfectly aligned magnets for a strong, secure snap to chargers, car mounts and accessories—without compromising protection.
+              </p>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li>• Strong magnetic alignment for flawless MagSafe charging</li>
+                <li>• No signal loss, no bulk—just a clean, slim profile</li>
+                <li>• Designed to work seamlessly with MagSafe wallets & mounts</li>
+              </ul>
+            </div>
+          </div>
 
-      {/* Banner Section - Redesigned */}
-      <section className="py-20 px-4 bg-[#0a0a0a]">
-        <div className="max-w-7xl mx-auto">
-          <div className="relative h-[500px] rounded-3xl overflow-hidden group">
-            <Image
-              src="https://cms.caishenunited.com/wp-content/uploads/2025/11/banner-scaled.jpg"
-              alt="Caishen United Collection"
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
-            <div className="absolute inset-0 flex items-end p-8 md:p-12">
-              <div className="max-w-2xl">
-                <h3 className="text-3xl md:text-5xl font-light text-white mb-4">
-                  Exclusive Collection
-                </h3>
-                <p className="text-gray-300 mb-6 text-lg">
-                  Discover our premium range of handcrafted phone cases
-                </p>
-                <Link
-                  href="/collections"
-                  className="inline-flex items-center gap-2 px-8 py-3 bg-white text-black rounded-full font-semibold hover:bg-[#9e734d] transition-all"
-                >
-                  Explore Now
-                  <ChevronRight className="w-5 h-5" />
-                </Link>
-              </div>
+          {/* Row 2 - Drop Protection */}
+          <div className="grid md:grid-cols-2 gap-10 items-center">
+            <div className="text-left md:pr-4 order-2 md:order-1">
+              <p className="text-xs uppercase tracking-[0.25em] text-[#9e734d] mb-3">
+                Drop Protection
+              </p>
+              <h2 className="text-2xl md:text-3xl font-light text-white mb-4">
+                Military-Grade <span className="text-[#9e734d]">Impact Shield</span>
+              </h2>
+              <p className="text-sm text-gray-300 mb-4 max-w-md">
+                Multi-layer shock absorption and raised edges safeguard your device from everyday drops, bumps and edge impacts.
+              </p>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li>• Tested for rugged, real-world drop scenarios</li>
+                <li>• Raised camera & screen lips for 360° protection</li>
+                <li>• Anti-slip grip for confident handling all day</li>
+              </ul>
+            </div>
+            <div className="relative rounded-3xl overflow-hidden border border-[#9e734d]/30 bg-[#0a0a0a] order-1 md:order-2">
+              <div className="absolute inset-0 bg-gradient-to-bl from-[#9e734d]/20 via-transparent to-transparent pointer-events-none" />
+              <img
+                src="https://cms.caishenunited.com/wp-content/uploads/2025/11/Drop-Protection.gif"
+                alt="Drop protection animation"
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section - Redesigned */}
+      {/* Stats Section */}
       <section 
         ref={statsRef}
         className="py-20 px-4 bg-black"
@@ -567,7 +588,7 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* Why Choose Us - Redesigned */}
+      {/* Why Choose Us */}
       <section className="py-20 px-4 bg-[#0a0a0a]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -629,12 +650,6 @@ export default function Homepage() {
           100% { background-position: 0% 50%; }
         }
         
-        @keyframes shimmer-slow {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        
         @keyframes float {
           0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0.3; }
           50% { transform: translateY(-30px) translateX(15px); opacity: 1; }
@@ -648,16 +663,6 @@ export default function Homepage() {
         @keyframes spin-reverse {
           from { transform: rotate(12deg); }
           to { transform: rotate(-348deg); }
-        }
-        
-        @keyframes bounce-slow {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-20px); }
-        }
-        
-        @keyframes scroll-indicator {
-          0% { transform: translateY(0); opacity: 1; }
-          100% { transform: translateY(24px); opacity: 0; }
         }
         
         @keyframes fade-in-up {
@@ -678,10 +683,6 @@ export default function Homepage() {
           animation: shimmer-text 5s ease-in-out infinite;
         }
         
-        .animate-shimmer-slow {
-          animation: shimmer-slow 8s ease-in-out infinite;
-        }
-        
         .animate-float {
           animation: float linear infinite;
         }
@@ -694,14 +695,6 @@ export default function Homepage() {
           animation: spin-reverse 25s linear infinite;
         }
         
-        .animate-bounce-slow {
-          animation: bounce-slow 2.5s ease-in-out infinite;
-        }
-        
-        .animate-scroll-indicator {
-          animation: scroll-indicator 2.5s ease-in-out infinite;
-        }
-        
         .animate-fade-in-up {
           animation: fade-in-up 0.6s ease-out forwards;
         }
@@ -712,16 +705,6 @@ export default function Homepage() {
         
         .animation-delay-200 { animation-delay: 200ms; }
         .animation-delay-400 { animation-delay: 400ms; }
-        .animation-delay-500 { animation-delay: 500ms; }
-        .animation-delay-600 { animation-delay: 600ms; }
-        
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
       `}</style>
     </div>
   );
