@@ -416,7 +416,13 @@ export default function Checkout(): React.ReactElement {
         description: `Order #${wooOrder.id} confirmed. You'll receive updates via WhatsApp.`,
       });
 
-      router.push(`/order-confirmation?orderId=${response.razorpay_payment_id}&wcOrderId=${wooOrder.id}`);
+      router.push(
+        `/order-confirmation?orderId=${response.razorpay_payment_id}` +
+        `&wcOrderId=${wooOrder.id}` +
+        `&amount=${finalTotal}` +
+        `&customer=${encodeURIComponent(form.name)}` +
+        `&email=${encodeURIComponent(form.email)}`
+      );
 
     } catch {
       toast({
@@ -437,6 +443,14 @@ export default function Checkout(): React.ReactElement {
         // Silently handle error
       }
     }
+
+    router.push(
+      `/order-failed?status=failed` +
+      (wooOrder?.id ? `&wcOrderId=${wooOrder.id}` : '') +
+      (form.email ? `&email=${encodeURIComponent(form.email)}` : '') +
+      (form.name ? `&customer=${encodeURIComponent(form.name)}` : '') +
+      (typeof finalTotal === "number" ? `&amount=${finalTotal}` : '')
+    );
 
 
     toast({
