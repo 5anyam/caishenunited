@@ -1,12 +1,13 @@
 // app/products/[slug]/page.tsx (Server Component)
 import type { Metadata, ResolvingMetadata } from 'next'
 import ProductClient from './product-client'
-import { fetchProducts } from '../../../../lib/woocommerceApi'
+import { fetchProducts, type Product as WCProduct } from '../../../../lib/woocommerceApi'
 
-// ✅ Updated: Make params a Promise
+
 type Props = { 
-  params: Promise<{ slug: string }>  // ← Changed to Promise
+  params: Promise<{ slug: string }>
 }
+
 
 type ProductWire = {
   id: number
@@ -20,6 +21,7 @@ type ProductWire = {
   attributes?: Array<{ option: string }>
 }
 
+
 type ProductNormalized = {
   id: number
   name: string
@@ -32,6 +34,7 @@ type ProductNormalized = {
   attributes?: Array<{ option: string }>
 }
 
+
 function normalizeProduct(p: ProductWire): ProductNormalized {
   return {
     ...p,
@@ -39,33 +42,38 @@ function normalizeProduct(p: ProductWire): ProductNormalized {
   }
 }
 
+
 async function getAllProducts() {
   const products = await fetchProducts() as ProductWire[]
   return products.map(normalizeProduct)
 }
+
 
 async function getProductBySlug(slug: string) {
   const products = await getAllProducts()
   return products.find(p => p.slug === slug || String(p.id) === slug)
 }
 
-// ✅ Updated: Await params in generateMetadata
+
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const { slug } = await params  // ← Await params here
+  const { slug } = await params
   const product = await getProductBySlug(slug)
+
 
   if (!product) {
     return {
-      title: 'Product not found | Amraj',
-      description: 'The product you are looking for is unavailable.',
+      title: 'Product not found | Caishen United',
+      description: 'The premium phone accessory you are looking for is unavailable.',
       robots: { index: false, follow: false },
     }
   }
 
+
   const slugLower = String(product.slug || '').toLowerCase()
+
 
   const baseKeywords = [
     product.name,
@@ -73,61 +81,85 @@ export async function generateMetadata(
     'price',
     'reviews',
     'India',
+    'Caishen United',
   ]
 
-  let intentKeywords: string[] = []
-  let catchyBenefit = 'Premium Nutrition'
-  let description =
-    'High-quality nutrition supplement formulated for real results, rigorous quality, and everyday wellness support.'
 
-  if (slugLower.includes('prostate')) {
+  let intentKeywords: string[] = []
+  let catchyBenefit = 'Premium Phone Accessories'
+  let description =
+    'Premium quality phone cases and accessories with military-grade protection, elegant design, and perfect fit. Shop authentic products with fast delivery across India.'
+
+
+  // Phone Case specific keywords
+  if (slugLower.includes('case') || slugLower.includes('cover')) {
     intentKeywords = [
-      'prostate care capsules',
-      'prostate health supplement',
-      'urinary support',
-      'enlarged prostate support',
-      'mens health',
+      'phone case India',
+      'mobile cover online',
+      'protective phone case',
+      'slim phone case',
+      'shockproof cover',
+      'premium phone case',
+      'designer phone cover',
     ]
-    catchyBenefit = 'Prostate Relief & Urinary Support'
+    catchyBenefit = 'Premium Protection & Style'
     description =
-      'Targeted prostate care capsules supporting urinary flow, reduced night-time urgency, and healthy prostate function. Non-GMO, quality assured.'
-  } else if (slugLower.includes('weight') || slugLower.includes('fat') || slugLower.includes('slim')) {
+      'Military-grade protection meets elegant design. Premium phone cases with shockproof technology, raised edges for camera protection, and precise cutouts. Authentic quality guaranteed.'
+  } else if (slugLower.includes('screen') || slugLower.includes('protector') || slugLower.includes('guard')) {
     intentKeywords = [
-      'weight management capsules',
-      'fat burner supplement',
-      'metabolism support',
-      'appetite control',
-      'green coffee extract',
+      'screen protector',
+      'tempered glass',
+      'screen guard India',
+      '9H hardness',
+      'anti-scratch protector',
+      'bubble-free installation',
     ]
-    catchyBenefit = 'Faster Metabolism & Fat Loss'
+    catchyBenefit = 'Crystal Clear Protection'
     description =
-      'Advanced weight management formula to support fat metabolism, curb cravings, and maintain steady energy. Non-GMO, trusted quality.'
-  } else if (slugLower.includes('liver') || slugLower.includes('detox')) {
+      '9H tempered glass screen protector with bubble-free installation, oleophobic coating, and ultra-clear transparency. Military-grade protection for your phone screen.'
+  } else if (slugLower.includes('charger') || slugLower.includes('cable') || slugLower.includes('adapter')) {
     intentKeywords = [
-      'liver detox capsules',
-      'liver cleanse supplement',
-      'milk thistle alternative',
-      'liver support',
-      'detox and cleanse',
+      'fast charger India',
+      'USB cable',
+      'phone charger online',
+      'quick charge adapter',
+      'type-c cable',
+      'lightning cable',
     ]
-    catchyBenefit = 'Liver Cleanse & Support'
+    catchyBenefit = 'Fast & Reliable Charging'
     description =
-      'Comprehensive liver detox capsules formulated to support natural detoxification, healthy enzymes, and digestive comfort. Non-GMO, quality assured.'
+      'Premium fast charging cables and adapters with durable construction, tangle-free design, and intelligent charging technology. Certified safe and efficient.'
+  } else if (slugLower.includes('stand') || slugLower.includes('holder') || slugLower.includes('mount')) {
+    intentKeywords = [
+      'phone stand India',
+      'mobile holder',
+      'desk stand',
+      'car mount',
+      'adjustable phone stand',
+    ]
+    catchyBenefit = 'Hands-Free Convenience'
+    description =
+      'Premium phone stands and holders with adjustable angles, stable grip, and elegant design. Perfect for desk, car, or bedside use.'
   }
+
 
   const keywords = Array.from(new Set([...baseKeywords, ...intentKeywords]))
 
-  const brand = 'Amraj'
+
+  const brand = 'Caishen United'
   const title = `${product.name} – ${catchyBenefit} | ${brand}`
 
-  const canonical = new URL(`/products/${product.slug}`, 'https://www.amraj.in')
+
+  const canonical = new URL(`/products/${product.slug}`, 'https://www.caishenunited.com')
   const imageUrl =
     product.images?.[0]?.src
-      ? new URL(product.images[0].src, 'https://www.amraj.in').toString()
-      : 'https://www.amraj.in/amraj-logo.jpg'
+      ? new URL(product.images[0].src, 'https://www.caishenunited.com').toString()
+      : 'https://www.caishenunited.com/logo.png'
+
 
   const previous = await parent
   const previousOgImages = previous.openGraph?.images ?? []
+
 
   return {
     title,
@@ -152,19 +184,24 @@ export async function generateMetadata(
       images: [imageUrl],
     },
     robots: { index: true, follow: true },
-    metadataBase: new URL('https://www.amraj.in'),
+    metadataBase: new URL('https://www.caishenunited.com'),
   }
 }
 
-// ✅ Updated: Await params in Page component
+
 export default async function Page({ params }: Props) {
-  const { slug } = await params  // ← Await params here
+  const { slug } = await params
   const product = await getProductBySlug(slug)
   const products = await getAllProducts()
+
+  // ✅ Cast to WCProduct to fix TypeScript error
+  const productForClient = product as unknown as WCProduct | undefined
+  const productsForClient = products as unknown as WCProduct[]
+
   return (
     <ProductClient
-      initialProduct={product}
-      allProductsInitial={products}
+      initialProduct={productForClient}
+      allProductsInitial={productsForClient}
       slug={slug}
     />
   )
