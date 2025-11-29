@@ -491,7 +491,7 @@ export default function Homepage() {
 </section>
 
 
-      {/* MagSafe & Drop Protection GIF Section */}
+      {/* MagSafe, Drop Protection & Waterproof GIF Section */}
       <section className="py-16 px-4 bg-black">
         <div className="max-w-7xl mx-auto space-y-12">
           {/* Row 1 - MagSafe */}
@@ -522,6 +522,7 @@ export default function Homepage() {
             </div>
           </div>
 
+
           {/* Row 2 - Drop Protection */}
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <div className="text-left md:pr-4 order-2 md:order-1">
@@ -549,8 +550,38 @@ export default function Homepage() {
               />
             </div>
           </div>
+
+
+          {/* Row 3 - Waterproof Protection */}
+          <div className="grid md:grid-cols-2 gap-10 items-center">
+            <div className="relative rounded-3xl overflow-hidden border border-[#9e734d]/30 bg-[#0a0a0a]">
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#9e734d]/20 via-transparent to-transparent pointer-events-none" />
+              <img
+                src="https://cms.caishenunited.com/wp-content/uploads/2025/11/waterproof.gif"
+                alt="Waterproof protection demonstration"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="text-left md:pl-4">
+              <p className="text-xs uppercase tracking-[0.25em] text-[#9e734d] mb-3">
+                Water Resistant
+              </p>
+              <h2 className="text-2xl md:text-3xl font-light text-white mb-4">
+                Splash & Spill <span className="text-[#9e734d]">Defense</span>
+              </h2>
+              <p className="text-sm text-gray-300 mb-4 max-w-md">
+                Advanced water-resistant coating shields your device from accidental splashes, rain, and everyday liquid exposure.
+              </p>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li>• Hydrophobic nano-coating repels water instantly</li>
+                <li>• Sealed ports and buttons for complete protection</li>
+                <li>• Perfect for outdoor adventures and daily commutes</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </section>
+
 
       {/* Stats Section */}
       <section 

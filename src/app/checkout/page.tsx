@@ -91,7 +91,6 @@ declare global {
   }
 }
 
-// Razorpay script dynamic loader (EDA logic style)
 const loadRazorpayScript = (): Promise<boolean> => {
   return new Promise((resolve) => {
     if (typeof window !== "undefined" && window.Razorpay) {
@@ -781,13 +780,13 @@ export default function Checkout(): React.ReactElement {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-black">
+      <div className="min-h-screen bg-white">
         <div className="max-w-lg mx-auto text-center py-24 px-4">
-          <div className="border border-[#9e734d]/20 p-12 rounded-lg bg-black">
-            <h2 className="text-2xl font-light text-white mb-3 tracking-wide">
+          <div className="border border-gray-200 p-12 rounded-lg bg-white">
+            <h2 className="text-2xl font-light text-gray-900 mb-3 tracking-wide">
               Your Cart is Empty
             </h2>
-            <p className="text-gray-400 text-sm mb-8 font-light">
+            <p className="text-gray-600 text-sm mb-8 font-light">
               Add phone cases and accessories to get started
             </p>
             <button
@@ -802,46 +801,46 @@ export default function Checkout(): React.ReactElement {
     );
   }
 
-  // Caishen black + gold design
+  // White background design with gold accents
   return (
     <React.Fragment>
-      <div className="min-h-screen bg-black pb-10">
+      <div className="min-h-screen bg-white pb-10">
         <div className="max-w-2xl mx-auto py-12 px-4">
           {/* Header */}
-          <div className="text-center mb-12 pb-8 border-b border-[#9e734d]/20">
-            <h1 className="text-3xl lg:text-4xl font-light text-white mb-2 tracking-wide">
+          <div className="text-center mb-12 pb-8 border-b border-gray-200">
+            <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-2 tracking-wide">
               Checkout
             </h1>
-            <p className="text-gray-400 text-sm font-light">
+            <p className="text-gray-600 text-sm font-light">
               Complete your premium accessory purchase securely
             </p>
           </div>
 
           {/* Order Summary */}
-          <div className="border border-[#9e734d]/20 p-6 mb-6 rounded-lg bg-black">
-            <h2 className="text-base font-light text-white mb-6 uppercase tracking-widest text-xs">
+          <div className="border border-gray-200 p-6 mb-6 rounded-lg bg-white shadow-sm">
+            <h2 className="text-base font-light text-gray-900 mb-6 uppercase tracking-widest text-xs">
               Order Summary
             </h2>
             <div className="space-y-3">
               {items.map((item) => (
                 <div
                   key={item.id}
-                  className="flex justify-between items-center py-2 border-b border-gray-800"
+                  className="flex justify-between items-center py-2 border-b border-gray-100"
                 >
                   <div>
-                    <span className="font-light text-sm text-white">
+                    <span className="font-light text-sm text-gray-900">
                       {item.name}
                     </span>
-                    <span className="text-gray-400 text-xs ml-2">
+                    <span className="text-gray-500 text-xs ml-2">
                       ×{item.quantity}
                     </span>
                   </div>
-                  <span className="font-light text-sm text-white">
+                  <span className="font-light text-sm text-gray-900">
                     ₹{(parseFloat(item.price) * item.quantity).toFixed(2)}
                   </span>
                 </div>
               ))}
-              <div className="flex justify-between text-sm text-white items-center py-2 font-light">
+              <div className="flex justify-between text-sm text-gray-900 items-center py-2 font-light">
                 <span>Subtotal</span>
                 <span>₹{total.toFixed(2)}</span>
               </div>
@@ -861,11 +860,11 @@ export default function Checkout(): React.ReactElement {
                 </div>
               )}
 
-              <div className="flex justify-between text-sm text-white items-center py-2 font-light">
+              <div className="flex justify-between text-sm text-gray-900 items-center py-2 font-light">
                 <div>
                   <span>Delivery</span>
                   {total >= 500 && (
-                    <span className="text-gray-400 text-xs ml-1">
+                    <span className="text-gray-500 text-xs ml-1">
                       (Free above ₹500)
                     </span>
                   )}
@@ -874,11 +873,11 @@ export default function Checkout(): React.ReactElement {
                   {deliveryCharges === 0 ? "Free" : `₹${deliveryCharges}`}
                 </span>
               </div>
-              <div className="flex justify-between items-center py-3 border-t border-[#9e734d]/20">
-                <span className="text-sm text-white font-light uppercase tracking-widest">
+              <div className="flex justify-between items-center py-3 border-t border-gray-200">
+                <span className="text-sm text-gray-900 font-light uppercase tracking-widest">
                   Total
                 </span>
-                <span className="text-lg font-light text-white">
+                <span className="text-lg font-light text-gray-900">
                   ₹{finalTotal.toFixed(2)}
                 </span>
               </div>
@@ -886,8 +885,8 @@ export default function Checkout(): React.ReactElement {
           </div>
 
           {/* Coupon Section */}
-          <div className="border border-[#9e734d]/20 p-6 mb-6 rounded-lg bg-black">
-            <h2 className="text-base font-light text-white mb-4 uppercase tracking-widest text-xs">
+          <div className="border border-gray-200 p-6 mb-6 rounded-lg bg-white shadow-sm">
+            <h2 className="text-base font-light text-gray-900 mb-4 uppercase tracking-widest text-xs">
               Coupon Code
             </h2>
             <div className="flex flex-col sm:flex-row gap-3">
@@ -900,7 +899,7 @@ export default function Checkout(): React.ReactElement {
                     setCouponCode(e.target.value);
                     setCouponError("");
                   }}
-                  className="w-full p-3 border border-gray-700 focus:border-[#9e734d] focus:outline-none transition-colors text-sm font-light text-white bg-black placeholder-gray-500"
+                  className="w-full p-3 border border-gray-300 focus:border-[#9e734d] focus:outline-none transition-colors text-sm font-light text-gray-900 bg-white placeholder-gray-400"
                   disabled={!!appliedCoupon}
                 />
                 {couponError && (
@@ -919,7 +918,7 @@ export default function Checkout(): React.ReactElement {
                 disabled={isApplyingCoupon}
                 className={`px-6 py-3 text-xs font-light tracking-widest uppercase transition-all duration-300 rounded-md ${
                   appliedCoupon
-                    ? "bg-gray-800 hover:bg-gray-700 text-white"
+                    ? "bg-gray-200 hover:bg-gray-300 text-gray-900"
                     : "bg-gradient-to-r from-[#9e734d] to-[#8a6342] hover:from-[#8a6342] hover:to-[#9e734d] text-white shadow-md"
                 } ${isApplyingCoupon ? "opacity-60 cursor-not-allowed" : ""}`}
               >
@@ -935,24 +934,24 @@ export default function Checkout(): React.ReactElement {
           {/* Form */}
           <form
             onSubmit={handleCheckout}
-            className="border border-[#9e734d]/20 p-8 rounded-lg bg-black"
+            className="border border-gray-200 p-8 rounded-lg bg-white shadow-sm"
           >
-            <h2 className="text-base font-light text-white mb-8 uppercase tracking-widest text-xs">
+            <h2 className="text-base font-light text-gray-900 mb-8 uppercase tracking-widest text-xs">
               Delivery Information
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
-                <label className="block text-xs font-light text-gray-400 mb-2 uppercase tracking-widest">
+                <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">
                   Name *
                 </label>
                 <input
                   name="name"
                   required
-                  className={`w-full p-3 border text-sm font-light text-white transition-colors focus:outline-none bg-black placeholder-gray-500 ${
+                  className={`w-full p-3 border text-sm font-light text-gray-900 transition-colors focus:outline-none bg-white placeholder-gray-400 ${
                     errors.name
-                      ? "border-red-500 focus:border-red-400"
-                      : "border-gray-700 focus:border-[#9e734d]"
+                      ? "border-red-300 focus:border-red-500"
+                      : "border-gray-300 focus:border-[#9e734d]"
                   }`}
                   placeholder="Full name"
                   value={form.name}
@@ -966,17 +965,17 @@ export default function Checkout(): React.ReactElement {
               </div>
 
               <div>
-                <label className="block text-xs font-light text-gray-400 mb-2 uppercase tracking-widest">
+                <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">
                   Email *
                 </label>
                 <input
                   name="email"
                   type="email"
                   required
-                  className={`w-full p-3 border text-sm font-light text-white transition-colors focus:outline-none bg-black placeholder-gray-500 ${
+                  className={`w-full p-3 border text-sm font-light text-gray-900 transition-colors focus:outline-none bg-white placeholder-gray-400 ${
                     errors.email
-                      ? "border-red-500 focus:border-red-400"
-                      : "border-gray-700 focus:border-[#9e734d]"
+                      ? "border-red-300 focus:border-red-500"
+                      : "border-gray-300 focus:border-[#9e734d]"
                   }`}
                   placeholder="your@email.com"
                   value={form.email}
@@ -990,7 +989,7 @@ export default function Checkout(): React.ReactElement {
               </div>
 
               <div>
-                <label className="block text-xs font-light text-gray-400 mb-2 uppercase tracking-widest">
+                <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">
                   Phone *
                 </label>
                 <input
@@ -998,10 +997,10 @@ export default function Checkout(): React.ReactElement {
                   type="tel"
                   pattern="[0-9]{10}"
                   required
-                  className={`w-full p-3 border text-sm font-light text-white transition-colors focus:outline-none bg-black placeholder-gray-500 ${
+                  className={`w-full p-3 border text-sm font-light text-gray-900 transition-colors focus:outline-none bg-white placeholder-gray-400 ${
                     errors.phone
-                      ? "border-red-500 focus:border-red-400"
-                      : "border-gray-700 focus:border-[#9e734d]"
+                      ? "border-red-300 focus:border-red-500"
+                      : "border-gray-300 focus:border-[#9e734d]"
                   }`}
                   placeholder="10-digit number"
                   value={form.phone}
@@ -1015,7 +1014,7 @@ export default function Checkout(): React.ReactElement {
               </div>
 
               <div>
-                <label className="block text-xs font-light text-gray-400 mb-2 uppercase tracking-widest">
+                <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">
                   WhatsApp *{" "}
                   <button
                     type="button"
@@ -1030,10 +1029,10 @@ export default function Checkout(): React.ReactElement {
                   type="tel"
                   pattern="[0-9]{10}"
                   required
-                  className={`w-full p-3 border text-sm font-light text-white transition-colors focus:outline-none bg-black placeholder-gray-500 ${
+                  className={`w-full p-3 border text-sm font-light text-gray-900 transition-colors focus:outline-none bg-white placeholder-gray-400 ${
                     errors.whatsapp
-                      ? "border-red-500 focus:border-red-400"
-                      : "border-gray-700 focus:border-[#9e734d]"
+                      ? "border-red-300 focus:border-red-500"
+                      : "border-gray-300 focus:border-[#9e734d]"
                   }`}
                   placeholder="WhatsApp number"
                   value={form.whatsapp}
@@ -1048,17 +1047,17 @@ export default function Checkout(): React.ReactElement {
             </div>
 
             <div className="mb-6">
-              <label className="block text-xs font-light text-gray-400 mb-2 uppercase tracking-widest">
+              <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">
                 Address *
               </label>
               <textarea
                 name="address"
                 rows={3}
                 required
-                className={`w-full p-3 border text-sm font-light text-white transition-colors focus:outline-none resize-none bg-black placeholder-gray-500 ${
+                className={`w-full p-3 border text-sm font-light text-gray-900 transition-colors focus:outline-none resize-none bg-white placeholder-gray-400 ${
                   errors.address
-                    ? "border-red-500 focus:border-red-400"
-                    : "border-gray-700 focus:border-[#9e734d]"
+                    ? "border-red-300 focus:border-red-500"
+                    : "border-gray-300 focus:border-[#9e734d]"
                 }`}
                 placeholder="Complete address"
                 value={form.address}
@@ -1073,7 +1072,7 @@ export default function Checkout(): React.ReactElement {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               <div>
-                <label className="block text-xs font-light text-gray-400 mb-2 uppercase tracking-widest">
+                <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">
                   Pincode *
                 </label>
                 <input
@@ -1081,10 +1080,10 @@ export default function Checkout(): React.ReactElement {
                   type="text"
                   pattern="[0-9]{6}"
                   required
-                  className={`w-full p-3 border text-sm font-light text-white transition-colors focus:outline-none bg-black placeholder-gray-500 ${
+                  className={`w-full p-3 border text-sm font-light text-gray-900 transition-colors focus:outline-none bg-white placeholder-gray-400 ${
                     errors.pincode
-                      ? "border-red-500 focus:border-red-400"
-                      : "border-gray-700 focus:border-[#9e734d]"
+                      ? "border-red-300 focus:border-red-500"
+                      : "border-gray-300 focus:border-[#9e734d]"
                   }`}
                   placeholder="6-digit"
                   value={form.pincode}
@@ -1098,16 +1097,16 @@ export default function Checkout(): React.ReactElement {
               </div>
 
               <div>
-                <label className="block text-xs font-light text-gray-400 mb-2 uppercase tracking-widest">
+                <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">
                   City *
                 </label>
                 <input
                   name="city"
                   required
-                  className={`w-full p-3 border text-sm font-light text-white transition-colors focus:outline-none bg-black placeholder-gray-500 ${
+                  className={`w-full p-3 border text-sm font-light text-gray-900 transition-colors focus:outline-none bg-white placeholder-gray-400 ${
                     errors.city
-                      ? "border-red-500 focus:border-red-400"
-                      : "border-gray-700 focus:border-[#9e734d]"
+                      ? "border-red-300 focus:border-red-500"
+                      : "border-gray-300 focus:border-[#9e734d]"
                   }`}
                   placeholder="City"
                   value={form.city}
@@ -1121,16 +1120,16 @@ export default function Checkout(): React.ReactElement {
               </div>
 
               <div>
-                <label className="block text-xs font-light text-gray-400 mb-2 uppercase tracking-widest">
+                <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">
                   State *
                 </label>
                 <select
                   name="state"
                   required
-                  className={`w-full p-3 border text-sm font-light text-white transition-colors focus:outline-none bg-black ${
+                  className={`w-full p-3 border text-sm font-light text-gray-900 transition-colors focus:outline-none bg-white ${
                     errors.state
-                      ? "border-red-500 focus:border-red-400"
-                      : "border-gray-700 focus:border-[#9e734d]"
+                      ? "border-red-300 focus:border-red-500"
+                      : "border-gray-300 focus:border-[#9e734d]"
                   }`}
                   value={form.state}
                   onChange={onChange}
@@ -1171,13 +1170,13 @@ export default function Checkout(): React.ReactElement {
             </div>
 
             <div className="mb-8">
-              <label className="block text-xs font-light text-gray-400 mb-2 uppercase tracking-widest">
+              <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">
                 Notes
               </label>
               <textarea
                 name="notes"
                 rows={2}
-                className="w-full p-3 border border-gray-700 focus:border-[#9e734d] focus:outline-none transition-colors text-sm font-light text-white resize-none bg-black placeholder-gray-500"
+                className="w-full p-3 border border-gray-300 focus:border-[#9e734d] focus:outline-none transition-colors text-sm font-light text-gray-900 resize-none bg-white placeholder-gray-400"
                 placeholder="Special instructions"
                 value={form.notes}
                 onChange={onChange}
@@ -1185,8 +1184,8 @@ export default function Checkout(): React.ReactElement {
             </div>
 
             {/* Payment Method */}
-            <div className="bg-[#9e734d]/5 p-6 mb-8 border border-[#9e734d]/20 rounded-lg">
-              <h3 className="text-xs font-light text-gray-300 mb-3 uppercase tracking-widest">
+            <div className="bg-gray-50 p-6 mb-8 border border-gray-200 rounded-lg">
+              <h3 className="text-xs font-light text-gray-600 mb-3 uppercase tracking-widest">
                 Payment Method
               </h3>
               <div className="flex gap-3">
@@ -1196,7 +1195,7 @@ export default function Checkout(): React.ReactElement {
                   className={`flex-1 p-3 border text-xs font-light uppercase tracking-widest transition-colors rounded ${
                     paymentMethod === "razorpay"
                       ? "bg-gradient-to-r from-[#9e734d] to-[#8a6342] text-white border-transparent shadow-md"
-                      : "bg-black text-gray-200 border-gray-700 hover:border-[#9e734d]"
+                      : "bg-white text-gray-900 border-gray-300 hover:border-[#9e734d]"
                   }`}
                 >
                   Online Payment
@@ -1207,7 +1206,7 @@ export default function Checkout(): React.ReactElement {
                   className={`flex-1 p-3 border text-xs font-light uppercase tracking-widest transition-colors rounded ${
                     paymentMethod === "cod"
                       ? "bg-gradient-to-r from-[#9e734d] to-[#8a6342] text-white border-transparent shadow-md"
-                      : "bg-black text-gray-200 border-gray-700 hover:border-[#9e734d]"
+                      : "bg-white text-gray-900 border-gray-300 hover:border-[#9e734d]"
                   }`}
                 >
                   Cash on Delivery
@@ -1216,13 +1215,13 @@ export default function Checkout(): React.ReactElement {
             </div>
 
             {/* Amount */}
-            <div className="bg-[#9e734d]/5 p-6 mb-8 border border-[#9e734d]/20 rounded-lg">
+            <div className="bg-gray-50 p-6 mb-8 border border-gray-200 rounded-lg">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-white font-light uppercase tracking-widest">
+                <span className="text-sm text-gray-900 font-light uppercase tracking-widest">
                   Amount
                 </span>
                 <div className="text-right">
-                  <span className="text-xl font-light text-white">
+                  <span className="text-xl font-light text-gray-900">
                     ₹{finalTotal.toFixed(2)}
                   </span>
                   {appliedCoupon && (
@@ -1236,32 +1235,33 @@ export default function Checkout(): React.ReactElement {
 
             {/* Payment Button */}
             <button
-              type="submit"
-              className={`w-full bg-gradient-to-r from-[#9e734d] to-[#8a6342] hover:from-[#8a6342] hover:to-[#9e734d] text-white py-4 text-xs font-light tracking-widest uppercase transition-all duration-300 rounded-md shadow-lg ${
-                loading || step === "processing"
-                  ? "opacity-60 pointer-events-none"
-                  : ""
-              }`}
-              disabled={loading || step === "processing"}
-            >
-              {loading || step === "processing" ? (
-                <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                  {paymentMethod === "cod"
-                    ? "Creating your order..."
-                    : "Processing..."}
-                </div>
-              ) : paymentMethod === "cod" ? (
-                `Place Order (COD ₹${finalTotal.toFixed(2)})`
-              ) : (
-                `Pay ₹${finalTotal.toFixed(2)} Securely`
-              )}
-            </button>
+  type="submit"
+  className={`w-full bg-gradient-to-r from-[#9e734d] to-[#8a6342] hover:from-[#8a6342] hover:to-[#9e734d] text-white py-4 text-xs font-light tracking-widest uppercase transition-all duration-300 rounded-md shadow-lg ${
+    loading || step === "processing"
+      ? "opacity-60 pointer-events-none"
+      : ""
+  }`}
+  disabled={loading || step === "processing"}
+>
+  {loading || step === "processing" ? (
+    <div className="flex items-center justify-center">
+      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+      {paymentMethod === "cod"
+        ? "Creating your order..."
+        : "Processing..."}
+    </div>
+  ) : paymentMethod === "cod" ? (
+    `Place Order (COD ₹${finalTotal.toFixed(2)})`
+  ) : (
+    `Pay ₹${finalTotal.toFixed(2)} Securely`
+  )}
+</button>
+
           </form>
 
           {/* Trust Signals */}
           <div className="mt-8 text-center">
-            <div className="flex items-center justify-center space-x-6 text-gray-400 text-xs font-light">
+            <div className="flex items-center justify-center space-x-6 text-gray-500 text-xs font-light">
               <span>• SSL Secured</span>
               <span>• Encrypted Payments</span>
               <span>• Fast Delivery</span>
