@@ -33,7 +33,7 @@ export default function Footer() {
             <div className="flex gap-3">
               <Link 
                 target="_blank"
-                href="https://www.facebook.com/caishenunited" 
+                href="https://www.facebook.com/share/17grUhKw4R/?mibextid=wwXIfr" 
                 className="p-2.5 border border-gray-700 hover:border-[#1877F2] hover:bg-[#1877F2] hover:text-white transition-all duration-300 rounded"
                 aria-label="Facebook"
               >
@@ -41,7 +41,7 @@ export default function Footer() {
               </Link>
               <Link 
                 target="_blank"
-                href="https://www.instagram.com/caishenunited" 
+                href="https://www.instagram.com/caishencases?igsh=MWk4bTltaHF1NnQyNQ%3D%3D&utm_source=qr" 
                 className="p-2.5 border border-gray-700 hover:border-[#E4405F] hover:bg-gradient-to-br hover:from-[#833AB4] hover:via-[#E4405F] hover:to-[#F77737] hover:text-white transition-all duration-300 rounded"
                 aria-label="Instagram"
               >

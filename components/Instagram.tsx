@@ -4,7 +4,7 @@
 import { IconBrandInstagram } from "@tabler/icons-react";
 import Link from "next/link";
 
-const INSTAGRAM_URL = "https://www.instagram.com/caishenunited"; // Replace with your Instagram handle
+const INSTAGRAM_URL = "https://www.instagram.com/caishencases?igsh=MWk4bTltaHF1NnQyNQ%3D%3D&utm_source=qr"; // Replace with your Instagram handle
 
 export default function Instagram() {
   return (
