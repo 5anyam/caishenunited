@@ -119,11 +119,6 @@ export default function Header() {
 
   return (
     <>
-      {/* Top Info Bar */}
-      <div className="bg-black text-white text-xs py-2 px-4 text-center">
-        <p>Buy 2 Get 10% Off | Buy 3 Get 15% - Discount Auto-applied at checkout</p>
-      </div>
-
       {/* Main Header - Narrow with Rounded Edges */}
       <header className="sticky top-0 z-50 bg-white">
         <div className="max-w-[95%] lg:max-w-6xl mx-auto">

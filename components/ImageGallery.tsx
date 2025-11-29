@@ -2,23 +2,11 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { usePathname } from 'next/navigation';
-import { ChevronLeft, ChevronRight, ZoomIn, X, Maximize2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 
 // --- Types and Interfaces ---
 
 type Image = { src: string; alt?: string };
-
-interface ExtendedDocument extends Document {
-  webkitFullscreenElement?: Element;
-  msFullscreenElement?: Element;
-  webkitExitFullscreen?: () => Promise<void>;
-  msExitFullscreen?: () => Promise<void>;
-}
-
-interface ExtendedHTMLElement extends HTMLElement {
-  webkitRequestFullscreen?: () => Promise<void>;
-  msRequestFullscreen?: () => Promise<void>;
-}
 
 // --- MAIN COMPONENT ---
 
@@ -35,7 +23,6 @@ export default function ImageGallery({ images }: { images: Image[] }) {
 
   const [active, setActive] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
@@ -44,7 +31,6 @@ export default function ImageGallery({ images }: { images: Image[] }) {
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const fullscreenRef = useRef<HTMLDivElement>(null);
   const DRAG_THRESHOLD = 80;
   const VELOCITY_THRESHOLD = 0.5;
 
@@ -95,7 +81,7 @@ export default function ImageGallery({ images }: { images: Image[] }) {
     setIsZoomed(false);
   };
 
-  // -- Touch/Drag handlers (main area & fullscreen mobile)
+  // -- Touch/Drag handlers
   const handleTouchStart = (e: React.TouchEvent) => {
     if (isZoomed) return;
     const touch = e.touches[0];
@@ -168,64 +154,6 @@ export default function ImageGallery({ images }: { images: Image[] }) {
     setCurrentX(0);
   };
 
-  // --- Keyboard Navigation ---
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (!isFullscreen) return;
-    if (e.key === 'ArrowLeft') handlePrevious();
-    if (e.key === 'ArrowRight') handleNext();
-    if (e.key === 'Escape') {
-      setIsFullscreen(false);
-      setIsZoomed(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-    // eslint-disable-next-line
-  }, [isFullscreen, active]);
-
-  // --- Fullscreen logic ---
-  const enterFullscreen = () => {
-    setIsFullscreen(true);
-    setIsZoomed(false); // Don't zoom on entry
-    if (fullscreenRef.current) {
-      const element = fullscreenRef.current as ExtendedHTMLElement;
-      if (element.requestFullscreen) element.requestFullscreen().catch(()=>{});
-      else if (element.webkitRequestFullscreen) element.webkitRequestFullscreen().catch(()=>{});
-      else if (element.msRequestFullscreen) element.msRequestFullscreen().catch(()=>{});
-    }
-  };
-
-  const exitFullscreen = () => {
-    setIsFullscreen(false);
-    setIsZoomed(false);
-    const doc = document as ExtendedDocument;
-    if (document.fullscreenElement) document.exitFullscreen().catch(()=>{});
-    else if (doc.webkitFullscreenElement) doc.webkitExitFullscreen?.().catch(()=>{});
-    else if (doc.msFullscreenElement) doc.msExitFullscreen?.().catch(()=>{});
-  };
-
-  useEffect(() => {
-    // Clean up on native fullscreen exit (escape, android nav, etc)
-    const handleFullscreenChange = () => {
-      const doc = document as ExtendedDocument;
-      if (!document.fullscreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-        setIsFullscreen(false);
-        setIsZoomed(false);
-      }
-    };
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-    document.addEventListener('msfullscreenchange', handleFullscreenChange);
-
-    return () => {
-      document.removeEventListener('fullscreenchange', handleFullscreenChange);
-      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
-      document.removeEventListener('msfullscreenchange', handleFullscreenChange);
-    };
-  }, []);
-
   if (!displayImages || displayImages.length === 0) return null;
 
   // --- UI RETURN ---
@@ -293,9 +221,12 @@ export default function ImageGallery({ images }: { images: Image[] }) {
                       : "cursor-pointer hover:scale-105"
                   }`}
                   onClick={() => {
-                    setActive(i);
-                    setIsZoomed(false);
-                    enterFullscreen();
+                    if (i === active) {
+                      setIsZoomed(!isZoomed);
+                    } else {
+                      setActive(i);
+                      setIsZoomed(false);
+                    }
                   }}
                   onLoad={() => i === active && setIsLoading(false)}
                   onDragStart={(e) => e.preventDefault()}
@@ -330,7 +261,7 @@ export default function ImageGallery({ images }: { images: Image[] }) {
             </>
           )}
 
-          {/* Action Buttons (Zoom, Fullscreen) */}
+          {/* Zoom Button */}
           <div className="absolute top-4 right-4 flex gap-2 z-30">
             <button
               onClick={() => setIsZoomed(!isZoomed)}
@@ -340,14 +271,6 @@ export default function ImageGallery({ images }: { images: Image[] }) {
             >
               <ZoomIn className="w-4 h-4" />
             </button>
-            <button
-              onClick={enterFullscreen}
-              className="bg-white/90 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg backdrop-blur-sm hover:scale-110 transition-all duration-200 border border-gray-200/50 opacity-100 md:opacity-0 md:group-hover:opacity-100"
-              aria-label="View fullscreen"
-              tabIndex={-1}
-            >
-              <Maximize2 className="w-4 h-4" />
-            </button>
           </div>
 
           {/* Drag Indicator */}
@@ -356,9 +279,6 @@ export default function ImageGallery({ images }: { images: Image[] }) {
               {Math.abs(dragOffset) > DRAG_THRESHOLD ? "Release to slide" : "Drag to slide"}
             </div>
           )}
-
-          {/* Improved Image Counter (bottom, spacing) */}
-    
         </div>
       </div>
 
@@ -409,82 +329,6 @@ export default function ImageGallery({ images }: { images: Image[] }) {
               aria-label={`Go to image ${i + 1}`}
             />
           ))}
-        </div>
-      )}
-
-      {/* ----- FULLSCREEN MODAL ----- */}
-      {isFullscreen && (
-        <div
-          ref={fullscreenRef}
-          className="fixed inset-0 bg-white z-[9999] flex flex-col items-center justify-center p-4"
-          style={{ width: "100vw", height: "100vh" }}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-        >
-         
-
-          {/* Close Button */}
-          <button
-            onClick={exitFullscreen}
-            className="absolute top-4 right-4 text-white hover:text-gray-300 p-2 z-40 rounded-full bg-black/70 hover:bg-black/80 transition-all duration-200 border border-white/20 focus:outline-none"
-            aria-label="Close fullscreen"
-          >
-            <X className="w-7 h-7" />
-          </button>
-
-          {/* Fullscreen Image */}
-          <div className="relative w-full flex-1 flex items-center justify-center">
-            <img
-              src={displayImages[active].src}
-              alt={displayImages[active].alt || `Product image ${active + 1}`}
-              className={`max-w-[98vw] max-h-[75vh] sm:max-h-[80vh] object-contain transition-transform duration-300 mx-auto rounded-2xl shadow-2xl ${
-                isZoomed ? "scale-150 cursor-zoom-out" : "cursor-zoom-in"
-              }`}
-              onClick={() => setIsZoomed(!isZoomed)}
-              onDragStart={(e) => e.preventDefault()}
-              style={{
-                width: isZoomed ? "auto" : "auto",
-                height: isZoomed ? "auto" : "auto"
-              }}
-            />
-          </div>
-
-          {/* Fullscreen Slider and Thumbs */}
-          {displayImages.length > 1 && (
-            <div className="w-full max-w-4xl px-1 sm:px-8 pb-8">
-              <div className="bg-black/40 backdrop-blur-lg rounded-2xl p-5 border border-white/10 shadow-2xl">
-                {/* Counter */}
-                <div className="text-center text-white/90 mb-5 text-lg font-semibold tracking-wide">
-                  {active + 1} / {displayImages.length}
-                </div>
-                {/* Range Slider */}
-                
-                {/* Thumbnails Row */}
-                <div className="flex justify-center gap-3 mt-2 overflow-x-auto pb-1">
-                  {displayImages.map((img, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setActive(i)}
-                      className={`flex-shrink-0 transition-all duration-300 focus:outline-none ${
-                        i === active
-                          ? "ring-2 ring-blue-400 ring-offset-2 ring-offset-transparent scale-110"
-                          : "opacity-60 hover:opacity-100 hover:scale-105"
-                      }`}
-                    >
-                      <div className="w-12 h-12 rounded-lg overflow-hidden shadow border border-white/10">
-                        <img
-                          src={img.src}
-                          alt={img.alt || `Thumbnail ${i + 1}`}
-                          className="object-cover w-full h-full"
-                        />
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       )}
     </>
