@@ -19,7 +19,7 @@ const navItems: NavItem[] = [
   { name: "HOME", to: "/" },
   { 
     name: "PHONE COVERS", 
-    to: "/device/covers",
+    to: "/shop/covers",
     submenu: [
       { name: "iPhone Covers", to: "/shop/iphone-covers" },
       { name: "Samsung Covers", to: "/shop/samsung-covers" },
@@ -28,12 +28,12 @@ const navItems: NavItem[] = [
   },
   { 
     name: "ACCESSORIES", 
-    to: "/device/accessories",
+    to: "/shop/accessories",
     submenu: [
       { name: "Chargers", to: "/shop/chargers" },
       { name: "Charger Covers", to: "/shop/charger-covers" },
       { name: "Cables", to: "/shop/cables" },
-      { name: "Sticky Pad", to: "/shop/sticky-pad" },
+      { name: "Other Accessories", to: "/shop/other-accessories" },
     ]
   },
   { name: "COLLECTIONS", to: "/collections" },

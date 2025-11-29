@@ -1,101 +1,159 @@
-'use client';
-import React, { useContext, createContext, useReducer, useEffect, useState } from "react";
+'use client'
+
+import React, {
+  useContext,
+  createContext,
+  useReducer,
+  useEffect,
+  useState,
+} from 'react'
+import type { VariationAttribute } from './woocommerceApi' // type-only import, safe [web:50]
 
 export type Product = {
-  id: number;
-  name: string;
-  price: string;
-  regular_price: string;
-  images: { src: string }[];
-};
+  id: number
+  name: string
+  price: string
+  regular_price: string
+  images: { src: string; alt?: string }[]
+  variationId?: number
+  attributes?: VariationAttribute[]
+}
 
-export type CartItem = Product & { quantity: number };
-export type CartState = { items: CartItem[] };
+export type CartItem = Product & { quantity: number }
+export type CartState = { items: CartItem[] }
+
 export type CartAction =
-  | { type: "add"; product: Product }
-  | { type: "remove"; id: number }
-  | { type: "increment"; id: number }
-  | { type: "decrement"; id: number }
-  | { type: "clear" }
-  | { type: "load"; items: CartItem[] };
+  | { type: 'add'; product: Product }
+  | { type: 'remove'; id: number; variationId?: number }
+  | { type: 'increment'; id: number; variationId?: number }
+  | { type: 'decrement'; id: number; variationId?: number }
+  | { type: 'clear' }
+  | { type: 'load'; items: CartItem[] }
 
-const CartContext = createContext<
-  (CartState & {
-    isCartOpen: boolean;
-    setIsCartOpen: (open: boolean) => void;
-    addToCart: (product: Product) => void;
-    removeFromCart: (id: number) => void;
-    increment: (id: number) => void;
-    decrement: (id: number) => void;
-    clear: () => void;
-  }) | undefined
->(undefined);
+type CartContextValue = CartState & {
+  isCartOpen: boolean
+  setIsCartOpen: (open: boolean) => void
+  addToCart: (product: Product) => void
+  removeFromCart: (id: number, variationId?: number) => void
+  increment: (id: number, variationId?: number) => void
+  decrement: (id: number, variationId?: number) => void
+  clear: () => void
+}
+
+const CartContext = createContext<CartContextValue | undefined>(undefined)
+
+// Helper: compare by id + variationId
+function isSameItem(item: CartItem, id: number, variationId?: number): boolean {
+  if (variationId !== undefined) {
+    return item.id === id && item.variationId === variationId
+  }
+  // simple product (no variation)
+  return item.id === id && item.variationId === undefined
+}
+
+// Helper: compare with product
+function isSameProduct(item: CartItem, product: Product): boolean {
+  if (product.variationId !== undefined) {
+    return item.id === product.id && item.variationId === product.variationId
+  }
+  return item.id === product.id && item.variationId === undefined
+}
 
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
-    case "add": {
-      const exists = state.items.find((i) => i.id === action.product.id);
+    case 'add': {
+      const exists = state.items.find((i) => isSameProduct(i, action.product))
       if (exists) {
         return {
           items: state.items.map((i) =>
-            i.id === action.product.id ? { ...i, quantity: i.quantity + 1 } : i
+            isSameProduct(i, action.product)
+              ? { ...i, quantity: i.quantity + 1 }
+              : i,
           ),
-        };
+        }
       }
-      return { items: [...state.items, { ...action.product, quantity: 1 }] };
+      return { items: [...state.items, { ...action.product, quantity: 1 }] }
     }
-    case "remove":
-      return { items: state.items.filter((i) => i.id !== action.id) };
-    case "increment":
+
+    case 'remove':
+      return {
+        items: state.items.filter(
+          (i) => !isSameItem(i, action.id, action.variationId),
+        ),
+      }
+
+    case 'increment':
       return {
         items: state.items.map((i) =>
-          i.id === action.id ? { ...i, quantity: i.quantity + 1 } : i
+          isSameItem(i, action.id, action.variationId)
+            ? { ...i, quantity: i.quantity + 1 }
+            : i,
         ),
-      };
-    case "decrement":
+      }
+
+    case 'decrement':
       return {
         items: state.items
           .map((i) =>
-            i.id === action.id ? { ...i, quantity: Math.max(i.quantity - 1, 1) } : i
+            isSameItem(i, action.id, action.variationId)
+              ? { ...i, quantity: Math.max(i.quantity - 1, 1) }
+              : i,
           )
           .filter((i) => i.quantity > 0),
-      };
-    case "clear":
-      return { items: [] };
-    case "load":
-      return { items: action.items };
-    default:
-      return state;
+      }
+
+    case 'clear':
+      return { items: [] }
+
+    case 'load':
+      return { items: action.items }
   }
 }
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [state, dispatch] = useReducer(cartReducer, { items: [] });
-  const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
+  const [state, dispatch] = useReducer(cartReducer, { items: [] })
+  const [isCartOpen, setIsCartOpen] = useState(false)
 
   // Load from localStorage
   useEffect(() => {
-    const stored = localStorage.getItem("cart");
+    const stored = typeof window !== 'undefined' ? localStorage.getItem('cart') : null
     if (stored) {
-      dispatch({ type: "load", items: JSON.parse(stored) });
+      try {
+        const items = JSON.parse(stored) as CartItem[]
+        dispatch({ type: 'load', items })
+      } catch (error) {
+        console.error('Failed to load cart from localStorage:', error)
+        localStorage.removeItem('cart')
+      }
     }
-  }, []);
+  }, [])
 
   // Save to localStorage
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(state.items));
-  }, [state.items]);
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('cart', JSON.stringify(state.items))
+      }
+    } catch (error) {
+      console.error('Failed to save cart to localStorage:', error)
+    }
+  }, [state.items])
 
   const addToCart = (product: Product) => {
-    dispatch({ type: "add", product });
-    // Auto-open cart when item is added
-    setIsCartOpen(true);
-  };
-  
-  const removeFromCart = (id: number) => dispatch({ type: "remove", id });
-  const increment = (id: number) => dispatch({ type: "increment", id });
-  const decrement = (id: number) => dispatch({ type: "decrement", id });
-  const clear = () => dispatch({ type: "clear" });
+    dispatch({ type: 'add', product })
+    setIsCartOpen(true)
+  }
+
+  const removeFromCart = (id: number, variationId?: number) =>
+    dispatch({ type: 'remove', id, variationId })
+
+  const increment = (id: number, variationId?: number) =>
+    dispatch({ type: 'increment', id, variationId })
+
+  const decrement = (id: number, variationId?: number) =>
+    dispatch({ type: 'decrement', id, variationId })
+
+  const clear = () => dispatch({ type: 'clear' })
 
   return (
     <CartContext.Provider
@@ -112,13 +170,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     >
       {children}
     </CartContext.Provider>
-  );
+  )
 }
 
 export function useCart() {
-  const ctx = useContext(CartContext);
+  const ctx = useContext(CartContext)
   if (!ctx) {
-    throw new Error("useCart must be used within a CartProvider");
+    throw new Error('useCart must be used within a CartProvider')
   }
-  return ctx;
+  return ctx
 }

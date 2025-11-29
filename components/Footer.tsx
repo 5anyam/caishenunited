@@ -88,7 +88,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/shop/chargers" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
+                <Link href="/shop/other-accessories" className="text-xs text-gray-600 hover:text-black transition-colors font-light">
                   Accessories
                 </Link>
               </li>

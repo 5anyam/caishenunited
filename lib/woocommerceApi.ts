@@ -2,7 +2,6 @@ const API_BASE = "https://cms.caishenunited.com/wp-json/wc/v3";
 const CONSUMER_KEY = process.env.CONSUMER_KEY || "ck_9a1fbb9afa025bbe8591eb4322c3e1c68e1b1002";
 const CONSUMER_SECRET = process.env.CONSUMER_SECRET || "cs_42d947c7a1acb0c0ca89ca17b35629a530097e44";
 
-
 export interface WCImage {
   id?: number;
   src: string;
@@ -15,6 +14,47 @@ export interface WCCategoryRef {
   slug?: string;
 }
 
+export interface VariationAttribute {
+  id: number;
+  name: string;
+  option: string;
+}
+
+export interface ProductVariation {
+  id: number;
+  date_created: string;
+  date_modified: string;
+  description: string;
+  permalink: string;
+  sku: string;
+  price: string;
+  regular_price: string;
+  sale_price: string;
+  on_sale: boolean;
+  purchasable: boolean;
+  stock_status: 'instock' | 'outofstock' | 'onbackorder';
+  stock_quantity: number | null;
+  manage_stock: boolean;
+  image?: WCImage;
+  attributes: VariationAttribute[];
+  weight: string;
+  dimensions: {
+    length: string;
+    width: string;
+    height: string;
+  };
+}
+
+export interface ProductAttribute {
+  id: number;
+  name: string;
+  position: number;
+  visible: boolean;
+  variation: boolean;
+  options: string[];
+}
+
+// ⭐ FIXED: Updated Product interface
 export interface Product {
   id: number;
   name: string;
@@ -24,7 +64,9 @@ export interface Product {
   description?: string;
   short_description?: string;
   images?: WCImage[];
-  attributes?: { option: string }[];
+  attributes?: ProductAttribute[];  // ⭐ FIXED: Changed from { option: string }[]
+  type?: 'simple' | 'variable' | 'grouped' | 'external';  // ⭐ ADDED
+  variations?: number[];  // ⭐ ADDED
   categories?: WCCategoryRef[];
 }
 
@@ -76,6 +118,7 @@ export interface ReviewPayload {
 
 export interface LineItem {
   product_id: number;
+  variation_id?: number;  // ⭐ ADDED for variations support
   quantity: number;
   name?: string;
   price?: string;
@@ -120,7 +163,6 @@ export interface OrderPayload {
   coupon_discount?: number;
   applied_coupon?: string;
 }
-
 
 /* Utils */
 const qs = (params: Record<string, string | number | boolean | undefined>): string =>
@@ -228,7 +270,6 @@ export async function fetchComboProducts(page = 1, perPage = 12): Promise<Produc
       status: 'publish',
     });
   }
-  // Fallback by name/category matching
   const list = await fetchProducts(page, perPage, undefined, {
     order: 'desc',
     orderby: 'date',
@@ -243,6 +284,55 @@ export async function fetchProduct(id: string | number): Promise<Product> {
   if (!res.ok) throw new Error(`Failed to fetch product: ${res.status} ${res.statusText}`);
   const data: unknown = await res.json();
   return data as Product;
+}
+
+// ⭐ NEW: Fetch Product Variations
+export async function fetchProductVariations(
+  productId: number,
+  page = 1,
+  perPage = 100
+): Promise<ProductVariation[]> {
+  const url = `${API_BASE}/products/${productId}/variations?${qs({
+    ...authParams,
+    per_page: perPage,
+    page,
+  })}`;
+
+  try {
+    const res = await fetch(url, { 
+      headers: { 'Content-Type': 'application/json' },
+    });
+    
+    if (!res.ok) {
+      if (res.status === 404) return [];
+      throw new Error(`Failed to fetch variations: ${res.status} ${res.statusText}`);
+    }
+    
+    const data: unknown = await res.json();
+    return isArray<ProductVariation>(data) ? data : [];
+  } catch (error) {
+    console.error('Error fetching variations:', error);
+    return [];
+  }
+}
+
+// ⭐ NEW: Fetch Single Variation
+export async function fetchProductVariation(
+  productId: number,
+  variationId: number
+): Promise<ProductVariation> {
+  const url = `${API_BASE}/products/${productId}/variations/${variationId}?${qs(authParams)}`;
+  
+  const res = await fetch(url, {
+    headers: { 'Content-Type': 'application/json' },
+  });
+  
+  if (!res.ok) {
+    throw new Error(`Failed to fetch variation: ${res.status} ${res.statusText}`);
+  }
+  
+  const data: unknown = await res.json();
+  return data as ProductVariation;
 }
 
 /* Reviews */
@@ -370,8 +460,10 @@ export async function createOrder(payload: OrderPayload): Promise<unknown> {
       postcode: payload.shipping_address.postcode ?? '',
       country: 'IN',
     },
+    // ⭐ UPDATED: Support variation_id
     line_items: payload.lineItems.map((li) => ({
       product_id: li.product_id,
+      variation_id: li.variation_id || 0,
       quantity: li.quantity,
       name: li.name,
       price: li.price,
