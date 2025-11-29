@@ -15,7 +15,7 @@ export default function Footer() {
               <img className="h-14 sm:h-16 md:h-18" src="/logo.png" alt="Caishen United" />
             </div>
             <div className="mb-6">
-              <h3 className="font-light text-sm text-white mb-3 tracking-[0.12em] uppercase">
+              <h3 className="font-bold text-sm text-white mb-3 tracking-[0.12em] uppercase">
                 Caishen United
               </h3>
               <p className="text-xs leading-relaxed text-gray-400 font-light mb-6">
@@ -26,7 +26,7 @@ export default function Footer() {
             {/* Trust Badge */}
             <div className="flex items-center gap-2 mb-6 text-[#9e734d]">
               <Shield className="w-4 h-4" />
-              <span className="text-[10px] uppercase tracking-wider font-medium">Lifetime Warranty</span>
+              <span className="text-[10px] uppercase tracking-wider font-bold">Sheild Your Device</span>
             </div>
             
             {/* Social Media Icons */}
@@ -68,7 +68,7 @@ export default function Footer() {
 
           {/* Column 2: Shop Links */}
           <div className="lg:col-span-1">
-            <h4 className="text-[10px] font-medium text-gray-400 mb-4 sm:mb-6 uppercase tracking-[0.2em]">
+            <h4 className="text-[10px] font-bold text-[#9e734d] mb-4 sm:mb-6 uppercase tracking-[0.2em]">
               Shop
             </h4>
             <ul className="space-y-2 sm:space-y-3">
@@ -102,7 +102,7 @@ export default function Footer() {
 
           {/* Column 3: Customer Service Links */}
           <div className="lg:col-span-1">
-            <h4 className="text-[10px] font-medium text-gray-400 mb-4 sm:mb-6 uppercase tracking-[0.2em]">
+            <h4 className="text-[10px] font-bold text-[#9e734d] mb-4 sm:mb-6 uppercase tracking-[0.2em]">
               Customer Service
             </h4>
             <ul className="space-y-2 sm:space-y-3">
@@ -136,7 +136,7 @@ export default function Footer() {
 
           {/* Column 4: Policies (Separate Column) */}
           <div className="lg:col-span-1">
-            <h4 className="text-[10px] font-medium text-gray-400 mb-4 sm:mb-6 uppercase tracking-[0.2em]">
+            <h4 className="text-[10px] font-bold text-[#9e734d] mb-4 sm:mb-6 uppercase tracking-[0.2em]">
               Legal & Policies
             </h4>
             <ul className="space-y-2 sm:space-y-3">
@@ -165,7 +165,7 @@ export default function Footer() {
 
           {/* Column 5: Contact Section */}
           <div className="lg:col-span-1">
-            <h4 className="text-[10px] font-medium text-gray-400 mb-4 sm:mb-6 uppercase tracking-[0.2em]">
+            <h4 className="text-[10px] font-bold text-[#9e734d] mb-4 sm:mb-6 uppercase tracking-[0.2em]">
               Get in Touch
             </h4>
             <ul className="space-y-3 sm:space-y-4">
@@ -203,7 +203,7 @@ export default function Footer() {
         {/* Newsletter Section */}
         <div className="mt-12 sm:mt-16 pt-8 sm:pt-12 border-t border-gray-800">
           <div className="max-w-2xl mx-auto text-center">
-            <h4 className="text-sm font-light text-white mb-3 tracking-wide uppercase">
+            <h4 className="text-sm font-bold text-white mb-3 tracking-wide uppercase">
               Stay Updated
             </h4>
             <p className="text-xs text-gray-400 font-light mb-6">

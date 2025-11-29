@@ -97,7 +97,7 @@ export default function ContactPage() {
             <div className="text-center">
               <address className="text-xs text-gray-900 not-italic font-light leading-relaxed">
                 Sector 15, Rohini<br/>
-                New Delhi, Delhi 110085<br/>
+                New Delhi, Delhi 110089<br/>
                 India
               </address>
             </div>
