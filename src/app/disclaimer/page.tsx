@@ -180,7 +180,7 @@ export default function DisclaimerPage() {
                   <div>
                     <p className="font-medium text-gray-900 dark:text-white">Phone:</p>
                     <a href="tel:+919818400981" className="text-[#9e734d] hover:text-[#8a6342] font-medium">
-                      +91 98184 00981
+                      +91 99116 36888
                     </a>
                   </div>
                 </div>
