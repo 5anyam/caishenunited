@@ -1,7 +1,7 @@
 // components/Whatsapp.tsx
 "use client";
 
-import { IconBrandWhatsapp } from "@tabler/icons-react";
+import { IconBrandWhatsapp, IconPhone } from "@tabler/icons-react";
 import Link from "next/link";
 import { useMemo } from "react";
 
@@ -16,45 +16,81 @@ function buildWaLink(baseMsg: string) {
 
 export default function Whatsapp() {
   const href = useMemo(
-    () => buildWaLink(encodeURIComponent("Hello Caishen United – I’d like to know more about: ")),
+    () => buildWaLink(encodeURIComponent("Hello Caishen United – I'd like to know more about: ")),
     []
   );
 
   return (
-    <div
-      className="fixed z-40"
-      style={{ bottom: 110, right: 24 }}
-      aria-live="polite"
-    >
-      <Link
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Chat on WhatsApp"
-        title="Chat on WhatsApp"
-        // Optional tracking hooks
-        data-cta="whatsapp-fab"
-        data-channel="whatsapp"
-        className="group relative inline-flex items-center justify-center"
+    <>
+      {/* WhatsApp Button */}
+      <div
+        className="fixed z-40"
+        style={{ bottom: 110, right: 24 }}
+        aria-live="polite"
       >
-        {/* Ping ring */}
-        <span className="absolute inset-0 rounded-xl ring-2 ring-emerald-300/50 animate-ping" />
-
-        {/* Button */}
-        <span
-          className="
-            relative inline-flex h-12 w-12 items-center justify-center rounded-xl
-            bg-emerald-500 text-white shadow-lg shadow-emerald-500/20
-            transition-all duration-300
-            hover:translate-y-[-2px] hover:shadow-xl hover:shadow-emerald-500/30
-            active:translate-y-0
-            focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2
-            dark:shadow-emerald-400/10 dark:hover:shadow-emerald-400/20
-          "
+        <Link
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Chat on WhatsApp"
+          title="Chat on WhatsApp"
+          data-cta="whatsapp-fab"
+          data-channel="whatsapp"
+          className="group relative inline-flex items-center justify-center"
         >
-          <IconBrandWhatsapp className="h-6 w-6" aria-hidden="true" />
-        </span>
-      </Link>
-    </div>
+          {/* Ping ring */}
+          <span className="absolute inset-0 rounded-xl ring-2 ring-emerald-300/50 animate-ping" />
+
+          {/* Button */}
+          <span
+            className="
+              relative inline-flex h-12 w-12 items-center justify-center rounded-xl
+              bg-emerald-500 text-white shadow-lg shadow-emerald-500/20
+              transition-all duration-300
+              hover:translate-y-[-2px] hover:shadow-xl hover:shadow-emerald-500/30
+              active:translate-y-0
+              focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2
+              dark:shadow-emerald-400/10 dark:hover:shadow-emerald-400/20
+            "
+          >
+            <IconBrandWhatsapp className="h-6 w-6" aria-hidden="true" />
+          </span>
+        </Link>
+      </div>
+
+      {/* Call Button - Mobile Only */}
+      <div
+        className="fixed z-40 md:hidden"
+        style={{ bottom: 45, right: 24 }}
+        aria-live="polite"
+      >
+        <a
+          href={`tel:${PHONE}`}
+          aria-label="Call us"
+          title="Call us"
+          data-cta="call-fab"
+          data-channel="phone"
+          className="group relative inline-flex items-center justify-center"
+        >
+          {/* Ping ring */}
+          <span className="absolute inset-0 rounded-xl ring-2 ring-blue-300/50 animate-ping" />
+
+          {/* Button */}
+          <span
+            className="
+              relative inline-flex h-12 w-12 items-center justify-center rounded-xl
+              bg-blue-500 text-white shadow-lg shadow-blue-500/20
+              transition-all duration-300
+              hover:translate-y-[-2px] hover:shadow-xl hover:shadow-blue-500/30
+              active:translate-y-0
+              focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2
+              dark:shadow-blue-400/10 dark:hover:shadow-blue-400/20
+            "
+          >
+            <IconPhone className="h-6 w-6" aria-hidden="true" />
+          </span>
+        </a>
+      </div>
+    </>
   );
 }
