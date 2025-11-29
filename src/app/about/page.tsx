@@ -107,10 +107,10 @@ export default function AboutPage() {
         </section>
         
         {/* Who Are We */}
-        <section className="grid md:grid-cols-2 gap-16 items-center">
+        <section className="grid md:grid-cols-2 gap-8 items-center">
           <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-amber-50/20 via-transparent to-transparent"></div>
-            <div className="text-center p-8 relative z-10">
+            <div className="text-center p-6 relative z-10">
               <Smartphone className="w-20 h-20 text-gray-400 mx-auto mb-4" />
               <h3 className="text-2xl font-light text-gray-900 tracking-wide">Who We Are</h3>
             </div>
@@ -133,7 +133,7 @@ export default function AboutPage() {
 
         {/* What We Offer */}
         <section className="border-t border-b border-gray-100 py-20">
-          <div className="text-center mb-16">
+          <div className="text-center mb-8">
             <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-4 font-medium">
               Our Products
             </p>
@@ -235,7 +235,7 @@ export default function AboutPage() {
           </div>
           <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-amber-50/20 via-transparent to-transparent"></div>
-            <div className="text-center p-8 relative z-10">
+            <div className="text-center p-6 relative z-10">
               <Crown className="w-20 h-20 text-gray-400 mx-auto mb-4" />
               <h3 className="text-2xl font-light text-gray-900 tracking-wide">Premium Quality</h3>
             </div>
