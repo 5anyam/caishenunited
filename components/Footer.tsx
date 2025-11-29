@@ -230,7 +230,7 @@ export default function Footer() {
       {/* Footer Bottom */}
       <div className="border-t border-gray-100 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:py-6">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 text-[10px] text-gray-600 font-light">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 text-[14px] text-gray-600 font-light">
             <div className="text-center sm:text-left">
               © {new Date().getFullYear()} Caishen United. All rights reserved. Crafted by{" "}
               <Link href="https://www.proshala.com" className="text-black hover:underline transition-colors font-medium">
