@@ -234,7 +234,7 @@ export default function ContactPage() {
                     <address className="text-xs text-gray-600 not-italic leading-relaxed font-light">
                       Caishen United<br />
                       Sector 15, Rohini<br />
-                      New Delhi, Delhi 110085<br />
+                      New Delhi, Delhi 110089<br />
                       India
                     </address>
                   </div>

@@ -620,13 +620,13 @@ export default function Homepage() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 px-4 bg-[#0a0a0a]">
+      <section className="py-20 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-light text-white mb-4">
+            <h2 className="text-4xl md:text-5xl font-light text-black mb-4">
               Why Choose Caishen
             </h2>
-            <p className="text-gray-400">Premium quality meets exceptional service</p>
+            <p className="text-gray-800">Premium quality meets exceptional service</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -651,15 +651,15 @@ export default function Homepage() {
               return (
                 <div
                   key={i}
-                  className="text-center p-8 bg-black/50 border border-[#9e734d]/20 rounded-2xl hover:border-[#9e734d]/50 transition-all duration-300 group"
+                  className="text-center p-8 bg-gray-100 border border-[#9e734d]/20 rounded-2xl hover:border-[#9e734d]/50 transition-all duration-300 group"
                 >
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-[#9e734d]/10 rounded-full mb-6 group-hover:bg-[#9e734d]/20 transition-colors">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-300 rounded-full mb-6 group-hover:bg-[#9e734d]/20 transition-colors">
                     <Icon className="w-8 h-8 text-[#9e734d]" />
                   </div>
-                  <h3 className="text-xl font-medium text-white mb-3">
+                  <h3 className="text-xl font-medium text-black mb-3">
                     {item.title}
                   </h3>
-                  <p className="text-gray-400 leading-relaxed">
+                  <p className="text-gray-800 leading-relaxed">
                     {item.desc}
                   </p>
                 </div>
