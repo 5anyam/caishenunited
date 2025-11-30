@@ -7,7 +7,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 import { BiChevronDown } from "react-icons/bi";
-import { Phone, User, LogOut, LogIn } from "lucide-react";
+import { Phone, UserCircle2, LogOut } from "lucide-react";
 
 interface NavItem {
   name: string;
@@ -21,18 +21,23 @@ const navItems: NavItem[] = [
     name: "PHONE COVERS", 
     to: "/shop/covers",
     submenu: [
+      { name: "Google Covers", to: "/shop/google-covers" },
       { name: "iPhone Covers", to: "/shop/iphone-covers" },
-      { name: "Samsung Covers", to: "/shop/samsung-covers" },
+      { name: "Motorola Covers", to: "/shop/motorola-covers" },
+      { name: "Nothing Covers", to: "/shop/nothing-covers" },
       { name: "OnePlus Covers", to: "/shop/oneplus-covers" },
+      { name: "Redmi Covers", to: "/shop/redmi-covers" },
+      { name: "Samsung Covers", to: "/shop/samsung-covers" },
+      { name: "Vivo Covers", to: "/shop/vivo-covers" },
     ]
   },
   { 
     name: "ACCESSORIES", 
     to: "/shop/accessories",
     submenu: [
-      { name: "Chargers", to: "/shop/chargers" },
-      { name: "Charger Covers", to: "/shop/charger-covers" },
       { name: "Cables", to: "/shop/cables" },
+      { name: "Charger Covers", to: "/shop/charger-covers" },
+      { name: "Chargers", to: "/shop/chargers" },
       { name: "Other Accessories", to: "/shop/other-accessories" },
     ]
   },
@@ -65,7 +70,7 @@ export default function Header() {
     const email = localStorage.getItem("userEmail");
     setIsAuthenticated(auth === "true");
     setUserEmail(email || "");
-  }, [location]); // Re-check on route change
+  }, [location]);
 
   // Clear search input when URL changes
   useEffect(() => {
@@ -165,11 +170,11 @@ export default function Header() {
 
   return (
     <>
-      {/* Main Header - Narrow with Rounded Edges */}
-      <header className="sticky top-0 z-50 bg-white">
+      {/* Main Header - With Brand Colors */}
+      <header className="sticky top-0 z-50 bg-gradient-to-r from-[#1a1a1a] via-[#2d2d2d] to-[#1a1a1a]">
         <div className="max-w-[95%] lg:max-w-6xl mx-auto">
           {/* Top Bar with Logo and Icons */}
-          <div className="px-4 border-b border-gray-200">
+          <div className="px-4 border-b border-white/10">
             <div className="flex items-center justify-between h-20">
               {/* Left Side - Menu/Search */}
               <div className="flex items-center gap-2">
@@ -177,26 +182,26 @@ export default function Header() {
                   <>
                     <button
                       onClick={() => setMobileMenuOpen(true)}
-                      className="p-2"
+                      className="p-2 hover:bg-white/10 rounded-full transition-colors"
                       aria-label="Open menu"
                     >
-                      <HiOutlineMenuAlt3 className="text-2xl text-gray-700" />
+                      <HiOutlineMenuAlt3 className="text-2xl text-white" />
                     </button>
                     <button 
                       onClick={() => setShowMobileSearch(true)}
-                      className="p-2"
+                      className="p-2 hover:bg-white/10 rounded-full transition-colors"
                       aria-label="Search"
                     >
-                      <FiSearch className="w-5 h-5 text-gray-700" />
+                      <FiSearch className="w-5 h-5 text-white" />
                     </button>
                   </>
                 ) : (
                   <button 
                     onClick={() => setShowDesktopSearch(!showDesktopSearch)}
-                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                    className="p-2 hover:bg-white/10 rounded-full transition-colors"
                     aria-label="Search"
                   >
-                    <FiSearch className="w-5 h-5 text-gray-700" />
+                    <FiSearch className="w-5 h-5 text-white" />
                   </button>
                 )}
               </div>
@@ -206,7 +211,7 @@ export default function Header() {
                 <img 
                   src="/logo.png" 
                   alt="Caishen United"
-                  className="h-12 md:h-16 w-auto object-contain"
+                  className="h-12 md:h-16 w-auto object-contain brightness-0 invert"
                 />
               </Link>
 
@@ -219,10 +224,10 @@ export default function Header() {
                       <>
                         <button
                           onClick={() => setShowUserMenu(!showUserMenu)}
-                          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                          className="p-2 hover:bg-white/10 rounded-full transition-colors"
                           aria-label="User menu"
                         >
-                          <User className="w-5 h-5 text-gray-700" />
+                          <UserCircle2 className="w-5 h-5 text-white" />
                         </button>
 
                         {/* User Dropdown */}
@@ -247,10 +252,11 @@ export default function Header() {
                     ) : (
                       <Link
                         href="/login"
-                        className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-white text-black hover:bg-gray-100 rounded-full transition-colors text-xs font-semibold"
                         aria-label="Login"
                       >
-                        <LogIn className="w-5 h-5 text-gray-700" />
+                        <UserCircle2 className="w-4 h-4" />
+                        <span>Login</span>
                       </Link>
                     )}
                   </div>
@@ -263,7 +269,7 @@ export default function Header() {
 
           {/* Desktop Search Bar - Below Logo */}
           {!isMobile && showDesktopSearch && (
-            <div className="px-4 py-3 border-b border-gray-200 bg-gray-50">
+            <div className="px-4 py-3 border-b border-white/10 bg-black/20">
               <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
                 <div className="relative">
                   <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -273,7 +279,7 @@ export default function Header() {
                     placeholder="Search for products..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-full focus:outline-none focus:border-black focus:ring-2 focus:ring-black/10 text-gray-900 text-sm"
+                    className="w-full pl-12 pr-12 py-3 bg-white border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-white/50 text-gray-900 text-sm"
                   />
                   <button
                     type="button"
@@ -293,7 +299,7 @@ export default function Header() {
 
           {/* Desktop Navigation - Rounded Edges */}
           <nav className="hidden lg:block" ref={menuRef}>
-            <div className="bg-white rounded-b-2xl shadow-sm">
+            <div className="bg-gradient-to-r from-[#2d2d2d] to-[#1a1a1a] rounded-b-2xl shadow-lg">
               <div className="flex items-center justify-center">
                 {navItems.map((item) => (
                   <div key={item.name} className="relative">
@@ -306,8 +312,8 @@ export default function Header() {
                         <button
                           className={`px-6 py-4 text-xs font-medium tracking-wider transition-colors flex items-center gap-1 ${
                             location.startsWith(item.to) 
-                              ? "text-black" 
-                              : "text-gray-700 hover:text-black"
+                              ? "text-white" 
+                              : "text-gray-300 hover:text-white"
                           }`}
                         >
                           {item.name}
@@ -315,7 +321,7 @@ export default function Header() {
                         </button>
                         
                         {/* Dropdown */}
-                        <div className={`absolute top-full left-0 mt-0 bg-white border border-gray-200 min-w-[220px] shadow-lg transition-all duration-300 rounded-lg ${
+                        <div className={`absolute top-full left-0 mt-0 bg-white border border-gray-200 min-w-[220px] shadow-xl transition-all duration-300 rounded-lg ${
                           activeSubmenu === item.name ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
                         }`}>
                           <div className="py-2">
@@ -325,7 +331,7 @@ export default function Header() {
                                 href={subItem.to}
                                 className={`block px-5 py-2.5 text-sm transition-all duration-200 ${
                                   location === subItem.to 
-                                    ? 'text-black bg-gray-50 font-medium' 
+                                    ? 'text-black bg-gray-100 font-semibold' 
                                     : 'text-gray-700 hover:text-black hover:bg-gray-50'
                                 }`}
                               >
@@ -340,8 +346,8 @@ export default function Header() {
                         href={item.to}
                         className={`block px-6 py-4 text-xs font-medium tracking-wider transition-colors ${
                           location === item.to 
-                            ? "text-black" 
-                            : "text-gray-700 hover:text-black"
+                            ? "text-white" 
+                            : "text-gray-300 hover:text-white"
                         }`}
                       >
                         {item.name}
@@ -392,54 +398,54 @@ export default function Header() {
             className="fixed inset-0 bg-black/60 z-40 lg:hidden"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="fixed top-0 left-0 h-full w-80 max-w-[85vw] bg-white z-50 overflow-y-auto shadow-2xl rounded-r-2xl">
-            <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-              <img src="/logo.png" alt="Logo" className="h-12" />
+          <div className="fixed top-0 left-0 h-full w-80 max-w-[85vw] bg-gradient-to-b from-[#1a1a1a] to-[#2d2d2d] z-50 overflow-y-auto shadow-2xl rounded-r-2xl">
+            <div className="p-6 border-b border-white/10 flex items-center justify-between">
+              <img src="/logo.png" alt="Logo" className="h-12 brightness-0 invert" />
               <button onClick={() => setMobileMenuOpen(false)} aria-label="Close menu">
-                <HiOutlineX className="text-2xl text-gray-900" />
+                <HiOutlineX className="text-2xl text-white" />
               </button>
             </div>
             
             {/* Mobile User Section */}
             {isAuthenticated ? (
-              <div className="p-4 border-b border-gray-100">
+              <div className="p-4 border-b border-white/10">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <User className="w-4 h-4 text-gray-700" />
+                    <UserCircle2 className="w-5 h-5 text-white" />
                     <div>
-                      <p className="text-xs text-gray-500">Signed in as</p>
-                      <p className="text-sm font-semibold text-gray-900 truncate max-w-[200px]">
+                      <p className="text-xs text-gray-400">Signed in as</p>
+                      <p className="text-sm font-semibold text-white truncate max-w-[180px]">
                         {userEmail}
                       </p>
                     </div>
                   </div>
                   <button
                     onClick={handleLogout}
-                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                    className="p-2 hover:bg-white/10 rounded-full transition-colors"
                     aria-label="Logout"
                   >
-                    <LogOut className="w-4 h-4 text-gray-700" />
+                    <LogOut className="w-4 h-4 text-white" />
                   </button>
                 </div>
               </div>
             ) : (
-              <div className="p-4 border-b border-gray-100">
+              <div className="p-4 border-b border-white/10">
                 <Link
                   href="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-white text-black rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors"
                 >
-                  <LogIn className="w-4 h-4" />
+                  <UserCircle2 className="w-4 h-4" />
                   <span>Login</span>
                 </Link>
               </div>
             )}
 
             {/* Mobile Phone Number */}
-            <div className="p-4 border-b border-gray-100">
+            <div className="p-4 border-b border-white/10">
               <a 
                 href="tel:+919911636888" 
-                className="flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors"
+                className="flex items-center gap-2 text-sm font-medium text-white hover:text-gray-300 transition-colors"
               >
                 <Phone className="w-4 h-4" />
                 <span>+91 9911636888</span>
@@ -448,22 +454,22 @@ export default function Header() {
 
             <nav className="p-4">
               {navItems.map((item) => (
-                <div key={item.name} className="border-b border-gray-100">
+                <div key={item.name} className="border-b border-white/10">
                   {item.submenu ? (
                     <div>
                       <button
-                        className="w-full flex items-center justify-between py-4 text-sm font-medium text-gray-900"
+                        className="w-full flex items-center justify-between py-4 text-sm font-medium text-white"
                         onClick={() => setMobileActiveSubmenu(mobileActiveSubmenu === item.name ? null : item.name)}
                       >
                         {item.name}
                         <BiChevronDown className={`transition-transform ${mobileActiveSubmenu === item.name ? 'rotate-180' : ''}`} />
                       </button>
-                      <div className={`overflow-hidden transition-all ${mobileActiveSubmenu === item.name ? 'max-h-96' : 'max-h-0'}`}>
+                      <div className={`overflow-hidden transition-all ${mobileActiveSubmenu === item.name ? 'max-h-[500px]' : 'max-h-0'}`}>
                         {item.submenu.map((subItem) => (
                           <Link
                             key={subItem.name}
                             href={subItem.to}
-                            className="block py-2 pl-4 text-sm text-gray-600 hover:text-black transition-colors"
+                            className="block py-2 pl-4 text-sm text-gray-300 hover:text-white transition-colors"
                             onClick={() => setMobileMenuOpen(false)}
                           >
                             {subItem.name}
@@ -474,7 +480,7 @@ export default function Header() {
                   ) : (
                     <Link
                       href={item.to}
-                      className="block py-4 text-sm font-medium text-gray-900"
+                      className="block py-4 text-sm font-medium text-white"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {item.name}
