@@ -596,11 +596,13 @@ export default function Homepage() {
       <p className="text-gray-400 text-sm">Real reviews from real people</p>
     </div>
 
+
     {/* Scrolling Container */}
     <div className="relative">
-      {/* Gradient Overlays - Extended */}
-      <div className="absolute left-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-r from-black via-black/90 to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-l from-black via-black/90 to-transparent z-10 pointer-events-none" />
+      {/* Gradient Overlays - Hidden on Mobile, Visible on Desktop */}
+      <div className="hidden md:block absolute left-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-r from-black via-black/90 to-transparent z-10 pointer-events-none" />
+      <div className="hidden md:block absolute right-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-l from-black via-black/90 to-transparent z-10 pointer-events-none" />
+
 
       {/* Row 1 - Scroll Left */}
       <div className="flex gap-6 mb-6 animate-scroll-left hover:pause-animation">
@@ -719,6 +721,7 @@ export default function Homepage() {
           </div>
         ))}
       </div>
+
 
       {/* Row 2 - Scroll Right */}
       <div className="flex gap-6 animate-scroll-right hover:pause-animation">
@@ -839,6 +842,7 @@ export default function Homepage() {
       </div>
     </div>
 
+
     {/* Call to Action */}
     <div className="text-center mt-16 px-4">
       <p className="text-gray-400 text-sm mb-4">Join thousands of satisfied customers</p>
@@ -852,6 +856,7 @@ export default function Homepage() {
     </div>
   </div>
 </section>
+
 
       {/* Stats Section */}
       <section 
@@ -987,11 +992,11 @@ export default function Homepage() {
         }
 
         .animate-scroll-left {
-          animation: scroll-left 40s linear infinite;
+          animation: scroll-left 10s linear infinite;
         }
 
         .animate-scroll-right {
-          animation: scroll-right 40s linear infinite;
+          animation: scroll-right 10s linear infinite;
         }
 
         .hover\:pause-animation:hover {
