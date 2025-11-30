@@ -232,15 +232,12 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 py-4 sm:py-6">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 text-[14px] text-gray-400 font-light">
             <div className="text-center sm:text-left">
-              © {new Date().getFullYear()} Caishen United. All rights reserved. Crafted by{" "}
-              <Link href="https://www.proshala.com" className="text-[#9e734d] hover:text-[#8a6342] transition-colors font-medium">
-                Proshala Tech
-              </Link>
+              © {new Date().getFullYear()} Caishen United. All rights reserved.
             </div>
             <div className="flex items-center gap-4 sm:gap-6">
               <span className="text-[10px] uppercase tracking-wider">We Accept</span>
               <div className="flex items-center gap-2 opacity-60">
-                <img className="h-5 sm:h-6" src="/badges.png" alt="Payment methods" />
+                <img className="h-5 sm:h-6 rounded-xl" src="/badges.webp" alt="Payment methods" />
               </div>
             </div>
           </div>
