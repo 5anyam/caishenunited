@@ -1,5 +1,5 @@
 'use client';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Link from "next/link";
 import CartIcon from "./CartIcon";
 import { useIsMobile } from "../hooks/use-mobile";
@@ -7,7 +7,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 import { BiChevronDown } from "react-icons/bi";
-import { Phone } from "lucide-react";
+import { Phone, User, LogOut, LogIn } from "lucide-react";
 
 interface NavItem {
   name: string;
@@ -42,6 +42,7 @@ const navItems: NavItem[] = [
 
 export default function Header() {
   const location = usePathname();
+  const searchParams = useSearchParams();
   const isMobile = useIsMobile();
   const [search, setSearch] = useState("");
   const [showDesktopSearch, setShowDesktopSearch] = useState(false);
@@ -49,15 +50,35 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
   const [mobileActiveSubmenu, setMobileActiveSubmenu] = useState<string | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Check authentication status
+  useEffect(() => {
+    const auth = localStorage.getItem("isAuthenticated");
+    const email = localStorage.getItem("userEmail");
+    setIsAuthenticated(auth === "true");
+    setUserEmail(email || "");
+  }, [location]); // Re-check on route change
+
+  // Clear search input when URL changes
+  useEffect(() => {
+    setSearch("");
+  }, [searchParams]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setActiveSubmenu(null);
+      }
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setShowUserMenu(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -70,6 +91,7 @@ export default function Header() {
         if (mobileMenuOpen) setMobileMenuOpen(false);
         if (showDesktopSearch) setShowDesktopSearch(false);
         if (showMobileSearch) setShowMobileSearch(false);
+        if (showUserMenu) setShowUserMenu(false);
       }
     };
     
@@ -84,9 +106,8 @@ export default function Header() {
       document.removeEventListener('keydown', handleEscapeKey);
       document.body.style.overflow = 'unset';
     };
-  }, [mobileMenuOpen, showDesktopSearch, showMobileSearch]);
+  }, [mobileMenuOpen, showDesktopSearch, showMobileSearch, showUserMenu]);
 
-  // Focus search input when opened
   useEffect(() => {
     if (showDesktopSearch && searchInputRef.current) {
       searchInputRef.current.focus();
@@ -96,13 +117,38 @@ export default function Header() {
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
     const trimmedSearch = search.trim();
+    
     if (trimmedSearch) {
-      router.push(`/search?q=${encodeURIComponent(trimmedSearch)}`);
-      setSearch("");
       setShowDesktopSearch(false);
       setShowMobileSearch(false);
+      const searchUrl = `/search?q=${encodeURIComponent(trimmedSearch)}`;
+      
+      if (location === '/search') {
+        window.location.href = searchUrl;
+      } else {
+        router.push(searchUrl);
+      }
+      
+      setTimeout(() => {
+        setSearch("");
+      }, 100);
     }
   }
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+      localStorage.removeItem("isAuthenticated");
+      localStorage.removeItem("userEmail");
+      setIsAuthenticated(false);
+      setUserEmail("");
+      setShowUserMenu(false);
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   const handleSubmenuMouseEnter = (menuName: string) => {
     if (timeoutRef.current) {
@@ -166,6 +212,50 @@ export default function Header() {
 
               {/* Right Icons */}
               <div className="flex items-center gap-2">
+                {/* User Menu - Desktop */}
+                {!isMobile && (
+                  <div className="relative" ref={userMenuRef}>
+                    {isAuthenticated ? (
+                      <>
+                        <button
+                          onClick={() => setShowUserMenu(!showUserMenu)}
+                          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                          aria-label="User menu"
+                        >
+                          <User className="w-5 h-5 text-gray-700" />
+                        </button>
+
+                        {/* User Dropdown */}
+                        {showUserMenu && (
+                          <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg py-2">
+                            <div className="px-4 py-2 border-b border-gray-100">
+                              <p className="text-xs text-gray-500">Signed in as</p>
+                              <p className="text-sm font-semibold text-gray-900 truncate">
+                                {userEmail}
+                              </p>
+                            </div>
+                            <button
+                              onClick={handleLogout}
+                              className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2"
+                            >
+                              <LogOut className="w-4 h-4" />
+                              Logout
+                            </button>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <Link
+                        href="/login"
+                        className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                        aria-label="Login"
+                      >
+                        <LogIn className="w-5 h-5 text-gray-700" />
+                      </Link>
+                    )}
+                  </div>
+                )}
+
                 <CartIcon />
               </div>
             </div>
@@ -187,7 +277,10 @@ export default function Header() {
                   />
                   <button
                     type="button"
-                    onClick={() => setShowDesktopSearch(false)}
+                    onClick={() => {
+                      setShowDesktopSearch(false);
+                      setSearch("");
+                    }}
                     className="absolute right-4 top-1/2 -translate-y-1/2 hover:bg-gray-200 rounded-full p-1 transition-colors"
                     aria-label="Close search"
                   >
@@ -278,7 +371,10 @@ export default function Header() {
               />
               <button
                 type="button"
-                onClick={() => setShowMobileSearch(false)}
+                onClick={() => {
+                  setShowMobileSearch(false);
+                  setSearch("");
+                }}
                 className="absolute right-4 top-1/2 -translate-y-1/2"
                 aria-label="Close search"
               >
@@ -304,6 +400,41 @@ export default function Header() {
               </button>
             </div>
             
+            {/* Mobile User Section */}
+            {isAuthenticated ? (
+              <div className="p-4 border-b border-gray-100">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <User className="w-4 h-4 text-gray-700" />
+                    <div>
+                      <p className="text-xs text-gray-500">Signed in as</p>
+                      <p className="text-sm font-semibold text-gray-900 truncate max-w-[200px]">
+                        {userEmail}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                    aria-label="Logout"
+                  >
+                    <LogOut className="w-4 h-4 text-gray-700" />
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="p-4 border-b border-gray-100">
+                <Link
+                  href="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors"
+                >
+                  <LogIn className="w-4 h-4" />
+                  <span>Login</span>
+                </Link>
+              </div>
+            )}
+
             {/* Mobile Phone Number */}
             <div className="p-4 border-b border-gray-100">
               <a 
