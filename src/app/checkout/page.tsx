@@ -206,7 +206,11 @@ export default function Checkout(): React.ReactElement {
     (sum, i) => sum + parseFloat(i.price) * i.quantity,
     0
   );
-  const deliveryCharges = total >= 500 ? 0 : 50;
+  
+  // ✅ Always Free Delivery
+  const deliveryCharges = 0;
+  // ✅ COD Charges - ₹100 for COD
+  const codCharges = paymentMethod === "cod" ? 100 : 0;
 
   const [couponCode, setCouponCode] = useState<string>("");
   const [appliedCoupon, setAppliedCoupon] = useState<string>("");
@@ -215,7 +219,7 @@ export default function Checkout(): React.ReactElement {
   const [isApplyingCoupon, setIsApplyingCoupon] = useState<boolean>(false);
 
   const subtotalAfterCoupon = total - couponDiscount;
-  const finalTotal = subtotalAfterCoupon + deliveryCharges;
+  const finalTotal = subtotalAfterCoupon + deliveryCharges + codCharges;
 
   const [form, setForm] = useState<FormData>({
     name: "",
@@ -315,7 +319,7 @@ export default function Checkout(): React.ReactElement {
     if (!form.name.trim()) newErrors.name = "Name is required";
     if (!form.email.trim()) newErrors.email = "Email is required";
     if (
-      !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(form.email)
+      !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(form.email)
     ) {
       newErrors.email = "Please enter a valid email";
     }
@@ -388,9 +392,20 @@ export default function Checkout(): React.ReactElement {
 
     try {
       const fullAddress = `${form.address}, ${form.city}, ${form.state} - ${form.pincode}`;
+      
+      // Add COD charges as shipping line
+      const shippingLines = [];
+      if (codCharges > 0) {
+        shippingLines.push({
+          method_id: "cod",
+          method_title: "COD Handling Charges",
+          total: codCharges.toString(),
+        });
+      }
+
       const orderData = {
         payment_method: "cod",
-        payment_method_title: "Cash on Delivery (COD)",
+        payment_method_title: "Cash on Delivery (COD) - ₹100 Extra",
         status: "processing",
         billing: {
           first_name: form.name,
@@ -418,16 +433,7 @@ export default function Checkout(): React.ReactElement {
           product_id: parseInt(String(item.id), 10),
           quantity: item.quantity,
         })),
-        shipping_lines:
-          deliveryCharges > 0
-            ? [
-                {
-                  method_id: "flat_rate",
-                  method_title: "Premium Delivery",
-                  total: deliveryCharges.toString(),
-                },
-              ]
-            : [],
+        shipping_lines: shippingLines,
         coupon_lines: appliedCoupon
           ? [
               {
@@ -441,6 +447,7 @@ export default function Checkout(): React.ReactElement {
           (form.notes ? "\n\n" : "") +
           `WhatsApp: ${form.whatsapp}\n` +
           `Full Address: ${fullAddress}` +
+          `\nCOD Charges: ₹${codCharges}` +
           (appliedCoupon
             ? `\nCoupon Applied: ${appliedCoupon} (₹${couponDiscount} discount)`
             : ""),
@@ -448,7 +455,8 @@ export default function Checkout(): React.ReactElement {
           { key: "whatsapp_number", value: form.whatsapp },
           { key: "full_address", value: fullAddress },
           { key: "original_subtotal", value: total.toString() },
-          { key: "delivery_charges", value: deliveryCharges.toString() },
+          { key: "delivery_charges", value: "0" },
+          { key: "cod_charges", value: codCharges.toString() },
           { key: "final_total", value: finalTotal.toString() },
           { key: "payment_method", value: "cod" },
           ...(appliedCoupon
@@ -477,7 +485,7 @@ export default function Checkout(): React.ReactElement {
 
       toast({
         title: "Order Placed Successfully!",
-        description: `Order #${wooOrder.id} confirmed. Pay cash on delivery.`,
+        description: `Order #${wooOrder.id} confirmed. Pay ₹${finalTotal.toFixed(2)} cash on delivery.`,
       });
 
       setTimeout(() => {
@@ -676,16 +684,7 @@ export default function Checkout(): React.ReactElement {
           product_id: parseInt(String(item.id), 10),
           quantity: item.quantity,
         })),
-        shipping_lines:
-          deliveryCharges > 0
-            ? [
-                {
-                  method_id: "flat_rate",
-                  method_title: "Premium Delivery",
-                  total: deliveryCharges.toString(),
-                },
-              ]
-            : [],
+        shipping_lines: [],
         coupon_lines: appliedCoupon
           ? [
               {
@@ -706,7 +705,7 @@ export default function Checkout(): React.ReactElement {
           { key: "whatsapp_number", value: form.whatsapp },
           { key: "full_address", value: fullAddress },
           { key: "original_subtotal", value: total.toString() },
-          { key: "delivery_charges", value: deliveryCharges.toString() },
+          { key: "delivery_charges", value: "0" },
           { key: "final_total", value: finalTotal.toString() },
           ...(appliedCoupon
             ? [
@@ -801,7 +800,6 @@ export default function Checkout(): React.ReactElement {
     );
   }
 
-  // White background design with gold accents
   return (
     <React.Fragment>
       <div className="min-h-screen bg-white pb-10">
@@ -860,19 +858,20 @@ export default function Checkout(): React.ReactElement {
                 </div>
               )}
 
+              {/* ✅ Always Free Delivery */}
               <div className="flex justify-between text-sm text-gray-900 items-center py-2 font-light">
-                <div>
-                  <span>Delivery</span>
-                  {total >= 500 && (
-                    <span className="text-gray-500 text-xs ml-1">
-                      (Free above ₹500)
-                    </span>
-                  )}
-                </div>
-                <span>
-                  {deliveryCharges === 0 ? "Free" : `₹${deliveryCharges}`}
-                </span>
+                <span>Delivery</span>
+                <span className="text-green-600 font-medium">Free</span>
               </div>
+
+              {/* COD Charges Display */}
+              {codCharges > 0 && (
+                <div className="flex justify-between text-sm text-orange-600 items-center py-2 font-light">
+                  <span>COD Charges</span>
+                  <span>₹{codCharges}</span>
+                </div>
+              )}
+
               <div className="flex justify-between items-center py-3 border-t border-gray-200">
                 <span className="text-sm text-gray-900 font-light uppercase tracking-widest">
                   Total
@@ -1209,16 +1208,21 @@ export default function Checkout(): React.ReactElement {
                       : "bg-white text-gray-900 border-gray-300 hover:border-[#9e734d]"
                   }`}
                 >
-                  Cash on Delivery
+                  Cash on Delivery (+₹100)
                 </button>
               </div>
+              {paymentMethod === "cod" && (
+                <p className="text-xs text-orange-600 mt-2 font-light text-center">
+                  ₹100 extra charges for COD orders
+                </p>
+              )}
             </div>
 
             {/* Amount */}
             <div className="bg-gray-50 p-6 mb-8 border border-gray-200 rounded-lg">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-900 font-light uppercase tracking-widest">
-                  Amount
+                  Amount to Pay
                 </span>
                 <div className="text-right">
                   <span className="text-xl font-light text-gray-900">
@@ -1229,34 +1233,38 @@ export default function Checkout(): React.ReactElement {
                       Saved ₹{couponDiscount}
                     </p>
                   )}
+                  {codCharges > 0 && (
+                    <p className="text-xs text-orange-600 mt-1 font-light">
+                      Includes ₹{codCharges} COD charges
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
 
             {/* Payment Button */}
             <button
-  type="submit"
-  className={`w-full bg-gradient-to-r from-[#9e734d] to-[#8a6342] hover:from-[#8a6342] hover:to-[#9e734d] text-white py-4 text-xs font-light tracking-widest uppercase transition-all duration-300 rounded-md shadow-lg ${
-    loading || step === "processing"
-      ? "opacity-60 pointer-events-none"
-      : ""
-  }`}
-  disabled={loading || step === "processing"}
->
-  {loading || step === "processing" ? (
-    <div className="flex items-center justify-center">
-      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-      {paymentMethod === "cod"
-        ? "Creating your order..."
-        : "Processing..."}
-    </div>
-  ) : paymentMethod === "cod" ? (
-    `Place Order (COD ₹${finalTotal.toFixed(2)})`
-  ) : (
-    `Pay ₹${finalTotal.toFixed(2)} Securely`
-  )}
-</button>
-
+              type="submit"
+              className={`w-full bg-gradient-to-r from-[#9e734d] to-[#8a6342] hover:from-[#8a6342] hover:to-[#9e734d] text-white py-4 text-xs font-light tracking-widest uppercase transition-all duration-300 rounded-md shadow-lg ${
+                loading || step === "processing"
+                  ? "opacity-60 pointer-events-none"
+                  : ""
+              }`}
+              disabled={loading || step === "processing"}
+            >
+              {loading || step === "processing" ? (
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                  {paymentMethod === "cod"
+                    ? "Creating your order..."
+                    : "Processing..."}
+                </div>
+              ) : paymentMethod === "cod" ? (
+                `Place COD Order (₹${finalTotal.toFixed(2)})`
+              ) : (
+                `Pay ₹${finalTotal.toFixed(2)} Securely`
+              )}
+            </button>
           </form>
 
           {/* Trust Signals */}
@@ -1264,7 +1272,7 @@ export default function Checkout(): React.ReactElement {
             <div className="flex items-center justify-center space-x-6 text-gray-500 text-xs font-light">
               <span>• SSL Secured</span>
               <span>• Encrypted Payments</span>
-              <span>• Fast Delivery</span>
+              <span>• Free Delivery</span>
             </div>
           </div>
         </div>
