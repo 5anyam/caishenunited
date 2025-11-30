@@ -581,6 +581,279 @@ export default function Homepage() {
           </div>
         </div>
       </section>
+{/* Premium Testimonials Section - Fixed Black Background */}
+<section className="relative py-20 px-0 bg-black overflow-hidden">
+  {/* Full width black background wrapper */}
+  <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0a] to-black" />
+  
+  <div className="relative z-10 max-w-full">
+    <div className="text-center mb-16 px-4">
+      <p className="text-xs uppercase tracking-[0.25em] text-[#9e734d] mb-3">
+        Customer Stories
+      </p>
+      <h2 className="text-3xl md:text-5xl font-light text-white mb-4">
+        Loved by <span className="text-[#9e734d]">50,000+</span> Customers
+      </h2>
+      <p className="text-gray-400 text-sm">Real reviews from real people</p>
+    </div>
+
+    {/* Scrolling Container */}
+    <div className="relative">
+      {/* Gradient Overlays - Extended */}
+      <div className="absolute left-0 top-0 bottom-0 w-40 md:w-64 bg-gradient-to-r from-black via-black/90 to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-40 md:w-64 bg-gradient-to-l from-black via-black/90 to-transparent z-10 pointer-events-none" />
+
+      {/* Row 1 - Scroll Left */}
+      <div className="flex gap-6 mb-6 animate-scroll-left hover:pause-animation">
+        {[
+          {
+            name: "Arjun Sharma",
+            location: "Mumbai",
+            rating: 5,
+            text: "Premium quality case! MagSafe works perfectly and the protection is top-notch.",
+            product: "iPhone 16 Pro Case"
+          },
+          {
+            name: "Priya Patel",
+            location: "Delhi",
+            rating: 5,
+            text: "Absolutely love the design! Fits perfectly and feels so premium in hand.",
+            product: "Samsung S24 Ultra"
+          },
+          {
+            name: "Rahul Verma",
+            location: "Bangalore",
+            rating: 5,
+            text: "Best phone case I've ever used. Drop protection is amazing!",
+            product: "OnePlus 12"
+          },
+          {
+            name: "Sneha Reddy",
+            location: "Hyderabad",
+            rating: 5,
+            text: "Sleek design with excellent grip. Worth every penny!",
+            product: "Pixel 9 Pro"
+          },
+          {
+            name: "Vikram Singh",
+            location: "Pune",
+            rating: 5,
+            text: "Fast delivery and premium packaging. Very impressed!",
+            product: "Nothing Phone 2"
+          },
+          {
+            name: "Ananya Iyer",
+            location: "Chennai",
+            rating: 5,
+            text: "Beautiful case! The quality exceeded my expectations.",
+            product: "iPhone 15 Pro Max"
+          },
+        ].map((review, i) => (
+          <div
+            key={i}
+            className="min-w-[320px] bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#9e734d]/20 rounded-2xl p-6 hover:border-[#9e734d]/40 transition-all duration-300"
+          >
+            <div className="flex items-center gap-1 mb-3">
+              {[...Array(review.rating)].map((_, starIdx) => (
+                <Star key={starIdx} className="w-4 h-4 fill-[#9e734d] text-[#9e734d]" />
+              ))}
+            </div>
+            <p className="text-gray-300 text-sm mb-4 leading-relaxed">
+              {review.text}
+            </p>
+            <div className="flex items-center justify-between pt-4 border-t border-[#9e734d]/10">
+              <div>
+                <p className="text-white font-medium text-sm">{review.name}</p>
+                <p className="text-gray-500 text-xs">{review.location}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-[#9e734d] text-xs font-medium">{review.product}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+        {/* Duplicate for seamless loop */}
+        {[
+          {
+            name: "Arjun Sharma",
+            location: "Mumbai",
+            rating: 5,
+            text: "Premium quality case! MagSafe works perfectly and the protection is top-notch.",
+            product: "iPhone 16 Pro Case"
+          },
+          {
+            name: "Priya Patel",
+            location: "Delhi",
+            rating: 5,
+            text: "Absolutely love the design! Fits perfectly and feels so premium in hand.",
+            product: "Samsung S24 Ultra"
+          },
+          {
+            name: "Rahul Verma",
+            location: "Bangalore",
+            rating: 5,
+            text: "Best phone case I've ever used. Drop protection is amazing!",
+            product: "OnePlus 12"
+          },
+        ].map((review, i) => (
+          <div
+            key={`dup1-${i}`}
+            className="min-w-[320px] bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#9e734d]/20 rounded-2xl p-6 hover:border-[#9e734d]/40 transition-all duration-300"
+          >
+            <div className="flex items-center gap-1 mb-3">
+              {[...Array(review.rating)].map((_, starIdx) => (
+                <Star key={starIdx} className="w-4 h-4 fill-[#9e734d] text-[#9e734d]" />
+              ))}
+            </div>
+            <p className="text-gray-300 text-sm mb-4 leading-relaxed">
+              {review.text}
+            </p>
+            <div className="flex items-center justify-between pt-4 border-t border-[#9e734d]/10">
+              <div>
+                <p className="text-white font-medium text-sm">{review.name}</p>
+                <p className="text-gray-500 text-xs">{review.location}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-[#9e734d] text-xs font-medium">{review.product}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Row 2 - Scroll Right */}
+      <div className="flex gap-6 animate-scroll-right hover:pause-animation">
+        {[
+          {
+            name: "Karan Malhotra",
+            location: "Jaipur",
+            rating: 5,
+            text: "Excellent build quality. The case feels solid and protects really well.",
+            product: "Vivo X100 Pro"
+          },
+          {
+            name: "Neha Gupta",
+            location: "Kolkata",
+            rating: 5,
+            text: "Super slim yet protective. Love the minimalist design!",
+            product: "Redmi Note 13"
+          },
+          {
+            name: "Siddharth Roy",
+            location: "Ahmedabad",
+            rating: 5,
+            text: "Premium feel at an affordable price. Highly recommended!",
+            product: "Motorola Edge 50"
+          },
+          {
+            name: "Divya Nair",
+            location: "Kochi",
+            rating: 5,
+            text: "Perfect fit and finish. Camera protection is excellent!",
+            product: "iPhone 14 Pro"
+          },
+          {
+            name: "Aditya Joshi",
+            location: "Lucknow",
+            rating: 5,
+            text: "Outstanding quality! The grip is comfortable for long use.",
+            product: "Samsung S23 FE"
+          },
+          {
+            name: "Ishita Das",
+            location: "Guwahati",
+            rating: 5,
+            text: "Love the premium packaging and the case quality is superb!",
+            product: "OnePlus 11R"
+          },
+        ].map((review, i) => (
+          <div
+            key={i}
+            className="min-w-[320px] bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#9e734d]/20 rounded-2xl p-6 hover:border-[#9e734d]/40 transition-all duration-300"
+          >
+            <div className="flex items-center gap-1 mb-3">
+              {[...Array(review.rating)].map((_, starIdx) => (
+                <Star key={starIdx} className="w-4 h-4 fill-[#9e734d] text-[#9e734d]" />
+              ))}
+            </div>
+            <p className="text-gray-300 text-sm mb-4 leading-relaxed">
+              {review.text}
+            </p>
+            <div className="flex items-center justify-between pt-4 border-t border-[#9e734d]/10">
+              <div>
+                <p className="text-white font-medium text-sm">{review.name}</p>
+                <p className="text-gray-500 text-xs">{review.location}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-[#9e734d] text-xs font-medium">{review.product}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+        {/* Duplicate for seamless loop */}
+        {[
+          {
+            name: "Karan Malhotra",
+            location: "Jaipur",
+            rating: 5,
+            text: "Excellent build quality. The case feels solid and protects really well.",
+            product: "Vivo X100 Pro"
+          },
+          {
+            name: "Neha Gupta",
+            location: "Kolkata",
+            rating: 5,
+            text: "Super slim yet protective. Love the minimalist design!",
+            product: "Redmi Note 13"
+          },
+          {
+            name: "Siddharth Roy",
+            location: "Ahmedabad",
+            rating: 5,
+            text: "Premium feel at an affordable price. Highly recommended!",
+            product: "Motorola Edge 50"
+          },
+        ].map((review, i) => (
+          <div
+            key={`dup2-${i}`}
+            className="min-w-[320px] bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#9e734d]/20 rounded-2xl p-6 hover:border-[#9e734d]/40 transition-all duration-300"
+          >
+            <div className="flex items-center gap-1 mb-3">
+              {[...Array(review.rating)].map((_, starIdx) => (
+                <Star key={starIdx} className="w-4 h-4 fill-[#9e734d] text-[#9e734d]" />
+              ))}
+            </div>
+            <p className="text-gray-300 text-sm mb-4 leading-relaxed">
+              {review.text}
+            </p>
+            <div className="flex items-center justify-between pt-4 border-t border-[#9e734d]/10">
+              <div>
+                <p className="text-white font-medium text-sm">{review.name}</p>
+                <p className="text-gray-500 text-xs">{review.location}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-[#9e734d] text-xs font-medium">{review.product}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Call to Action */}
+    <div className="text-center mt-16 px-4">
+      <p className="text-gray-400 text-sm mb-4">Join thousands of satisfied customers</p>
+      <Link
+        href="/collections"
+        className="inline-flex items-center gap-2 px-8 py-3 bg-[#9e734d] text-white rounded-full hover:bg-[#9e734d]/90 transition-all duration-300 font-medium shadow-lg hover:shadow-xl"
+      >
+        Shop Now
+        <ChevronRight className="w-5 h-5" />
+      </Link>
+    </div>
+  </div>
+</section>
+
 
 
       {/* Stats Section */}
@@ -643,7 +916,7 @@ export default function Homepage() {
               },
               {
                 icon: Award,
-                title: "Lifetime Warranty",
+                title: "Premium Quality",
                 desc: "We stand behind our products with comprehensive warranty coverage"
               }
             ].map((item, i) => {
@@ -705,6 +978,29 @@ export default function Homepage() {
           0%, 100% { opacity: 0.4; }
           50% { opacity: 0.8; }
         }
+
+        @keyframes scroll-left {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+
+        @keyframes scroll-right {
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
+        }
+
+        .animate-scroll-left {
+          animation: scroll-left 40s linear infinite;
+        }
+
+        .animate-scroll-right {
+          animation: scroll-right 40s linear infinite;
+        }
+
+        .hover\:pause-animation:hover {
+          animation-play-state: paused;
+        }
+
         
         .animate-shimmer {
           animation: shimmer 3s infinite;
