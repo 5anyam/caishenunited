@@ -237,7 +237,7 @@ export default function Footer() {
             <div className="flex items-center gap-4 sm:gap-6">
               <span className="text-[10px] uppercase tracking-wider">We Accept</span>
               <div className="flex items-center gap-2 opacity-60">
-                <img className="h-6 sm:h-8 rounded-xl" src="/badges.webp" alt="Payment methods" />
+                <img className="h-8 sm:h-10 rounded-xl" src="/badges.webp" alt="Payment methods" />
               </div>
             </div>
           </div>

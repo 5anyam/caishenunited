@@ -551,7 +551,6 @@ export default function Homepage() {
             </div>
           </div>
 
-
           {/* Row 3 - Waterproof Protection */}
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <div className="relative rounded-3xl overflow-hidden border border-[#9e734d]/30 bg-[#0a0a0a]">
@@ -600,8 +599,8 @@ export default function Homepage() {
     {/* Scrolling Container */}
     <div className="relative">
       {/* Gradient Overlays - Extended */}
-      <div className="absolute left-0 top-0 bottom-0 w-40 md:w-64 bg-gradient-to-r from-black via-black/90 to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-40 md:w-64 bg-gradient-to-l from-black via-black/90 to-transparent z-10 pointer-events-none" />
+      <div className="absolute left-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-r from-black via-black/90 to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-l from-black via-black/90 to-transparent z-10 pointer-events-none" />
 
       {/* Row 1 - Scroll Left */}
       <div className="flex gap-6 mb-6 animate-scroll-left hover:pause-animation">
@@ -853,8 +852,6 @@ export default function Homepage() {
     </div>
   </div>
 </section>
-
-
 
       {/* Stats Section */}
       <section 
