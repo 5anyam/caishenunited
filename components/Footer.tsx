@@ -170,7 +170,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3 sm:space-y-4">
               <li className="flex items-start gap-3">
-                <Mail className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                <Mail className="w-4 h-4 text-[#9e734d] mt-0.5 flex-shrink-0" />
                 <a 
                   href="mailto:support@caishenunited.com"
                   className="text-xs text-gray-400 hover:text-[#9e734d] transition-colors font-light break-all"
@@ -179,7 +179,7 @@ export default function Footer() {
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <Phone className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                <Phone className="w-4 h-4 text-[#9e734d] mt-0.5 flex-shrink-0" />
                 <a 
                   href="tel:+919911636888"
                   className="text-xs text-gray-400 hover:text-[#9e734d] transition-colors font-light"
@@ -188,7 +188,7 @@ export default function Footer() {
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                <MapPin className="w-4 h-4 text-[#9e734d] mt-0.5 flex-shrink-0" />
                 <span className="text-xs text-gray-400 font-light leading-relaxed">
                   Caishen United<br />
                   Sector 15, Rohini<br />
