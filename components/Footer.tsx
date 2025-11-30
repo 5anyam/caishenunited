@@ -26,7 +26,7 @@ export default function Footer() {
             {/* Trust Badge */}
             <div className="flex items-center gap-2 mb-6 text-[#9e734d]">
               <Shield className="w-4 h-4" />
-              <span className="text-[10px] uppercase tracking-wider font-bold">Sheild Your Device</span>
+              <span className="text-[14px] uppercase tracking-wider font-bold">Sheild Your Device</span>
             </div>
             
             {/* Social Media Icons */}
@@ -68,7 +68,7 @@ export default function Footer() {
 
           {/* Column 2: Shop Links */}
           <div className="lg:col-span-1">
-            <h4 className="text-[10px] font-bold text-[#9e734d] mb-4 sm:mb-6 uppercase tracking-[0.2em]">
+            <h4 className="text-[12px] font-bold text-[#9e734d] mb-4 sm:mb-6 uppercase tracking-[0.2em]">
               Shop
             </h4>
             <ul className="space-y-2 sm:space-y-3">
@@ -102,7 +102,7 @@ export default function Footer() {
 
           {/* Column 3: Customer Service Links */}
           <div className="lg:col-span-1">
-            <h4 className="text-[10px] font-bold text-[#9e734d] mb-4 sm:mb-6 uppercase tracking-[0.2em]">
+            <h4 className="text-[12px] font-bold text-[#9e734d] mb-4 sm:mb-6 uppercase tracking-[0.2em]">
               Customer Service
             </h4>
             <ul className="space-y-2 sm:space-y-3">
@@ -136,7 +136,7 @@ export default function Footer() {
 
           {/* Column 4: Policies (Separate Column) */}
           <div className="lg:col-span-1">
-            <h4 className="text-[10px] font-bold text-[#9e734d] mb-4 sm:mb-6 uppercase tracking-[0.2em]">
+            <h4 className="text-[12px] font-bold text-[#9e734d] mb-4 sm:mb-6 uppercase tracking-[0.2em]">
               Legal & Policies
             </h4>
             <ul className="space-y-2 sm:space-y-3">
@@ -165,7 +165,7 @@ export default function Footer() {
 
           {/* Column 5: Contact Section */}
           <div className="lg:col-span-1">
-            <h4 className="text-[10px] font-bold text-[#9e734d] mb-4 sm:mb-6 uppercase tracking-[0.2em]">
+            <h4 className="text-[12px] font-bold text-[#9e734d] mb-4 sm:mb-6 uppercase tracking-[0.2em]">
               Get in Touch
             </h4>
             <ul className="space-y-3 sm:space-y-4">
