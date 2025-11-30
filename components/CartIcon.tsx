@@ -4,6 +4,7 @@ import { useCart } from "../lib/cart";
 import { Trash2, Minus, Plus, Package, X, ShoppingBag, CheckCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 
+
 interface CartItem {
   id: number | string;
   name: string;
@@ -13,6 +14,7 @@ interface CartItem {
   images?: Array<{ src: string }>;
 }
 
+
 export default function CartDrawer() {
   const { items, increment, decrement, removeFromCart, isCartOpen, setIsCartOpen } = useCart();
   const [showAddedNotification, setShowAddedNotification] = useState<boolean>(false);
@@ -20,13 +22,16 @@ export default function CartDrawer() {
   const total: number = items.reduce((sum: number, i: CartItem) => sum + parseFloat(i.price) * i.quantity, 0);
   const totalItems: number = items.reduce((sum: number, i: CartItem) => sum + i.quantity, 0);
 
+
   const mrpTotal: number = items.reduce((sum: number, item: CartItem) => {
     const regularPrice = item.regular_price;
     const originalPrice = regularPrice ? parseFloat(regularPrice) : parseFloat(item.price);
     return sum + originalPrice * item.quantity;
   }, 0);
 
+
   const discountAmount: number = mrpTotal - total;
+
 
   // Show notification when cart opens with items
   useEffect(() => {
@@ -39,12 +44,13 @@ export default function CartDrawer() {
     }
   }, [items.length, isCartOpen]);
 
+
   return (
     <>
       {/* Cart Button */}
       <button
         onClick={() => setIsCartOpen(true)}
-        className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
+        className="relative p-2 hover:bg-gray-100 rounded-full transition-colors touch-manipulation"
         aria-label="Open shopping cart"
       >
         <ShoppingBag className="w-5 h-5 text-gray-700" />
@@ -55,6 +61,7 @@ export default function CartDrawer() {
         )}
       </button>
 
+
       {/* Overlay */}
       {isCartOpen && (
         <div 
@@ -63,6 +70,7 @@ export default function CartDrawer() {
           aria-hidden="true"
         />
       )}
+
 
       {/* Cart Drawer - 80% width on mobile, 480px on desktop */}
       <div className={`fixed top-0 right-0 h-full w-[80%] sm:w-[480px] max-w-[480px] bg-white z-50 shadow-2xl transform transition-transform duration-300 ${
@@ -78,12 +86,13 @@ export default function CartDrawer() {
           </div>
           <button
             onClick={() => setIsCartOpen(false)}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors touch-manipulation"
             aria-label="Close cart"
           >
             <X className="w-5 h-5 text-gray-700" />
           </button>
         </div>
+
 
         {/* Added Notification */}
         {showAddedNotification && (
@@ -92,6 +101,7 @@ export default function CartDrawer() {
             <span className="text-xs sm:text-sm text-green-800 font-medium">Item added to cart!</span>
           </div>
         )}
+
 
         {/* Cart Content */}
         <div className="flex flex-col h-full">
@@ -107,7 +117,7 @@ export default function CartDrawer() {
                 <p className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6">Start shopping to add items</p>
                 <button
                   onClick={() => setIsCartOpen(false)}
-                  className="px-5 sm:px-6 py-2 bg-black text-white text-xs sm:text-sm font-medium hover:bg-gray-800 transition-colors rounded"
+                  className="px-5 sm:px-6 py-2 bg-black text-white text-xs sm:text-sm font-medium hover:bg-gray-800 transition-colors rounded touch-manipulation"
                 >
                   Continue Shopping
                 </button>
@@ -133,6 +143,7 @@ export default function CartDrawer() {
                           </div>
                         </div>
 
+
                         {/* Details */}
                         <div className="flex-1 min-w-0">
                           <div className="flex justify-between mb-2">
@@ -140,13 +151,19 @@ export default function CartDrawer() {
                               {item.name}
                             </h3>
                             <button
-                              onClick={() => removeFromCart(item.id as number)}
-                              className="text-gray-400 hover:text-red-600 transition-colors flex-shrink-0"
+                              type="button"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                removeFromCart(item.id as number);
+                              }}
+                              className="text-gray-400 hover:text-red-600 active:text-red-700 transition-colors flex-shrink-0 p-1 touch-manipulation"
                               aria-label="Remove item"
                             >
-                              <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                              <Trash2 className="w-4 h-4 sm:w-4 sm:h-4" />
                             </button>
                           </div>
+
 
                           {/* Price */}
                           <div className="flex items-center gap-2 mb-2 sm:mb-3">
@@ -160,29 +177,42 @@ export default function CartDrawer() {
                             )}
                           </div>
 
-                          {/* Quantity Controls */}
+
+                          {/* Quantity Controls - Mobile Optimized */}
                           <div className="flex items-center gap-2 sm:gap-3">
-                            <div className="flex items-center border border-gray-300 rounded">
+                            <div className="flex items-center border border-gray-300 rounded overflow-hidden">
                               <button
-                                onClick={() => decrement(item.id as number)}
+                                type="button"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  if (item.quantity > 1) {
+                                    decrement(item.id as number);
+                                  }
+                                }}
                                 disabled={item.quantity <= 1}
-                                className="p-1 sm:p-1.5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="p-2 sm:p-2 active:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
                                 aria-label="Decrease quantity"
                               >
-                                <Minus className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-600" />
+                                <Minus className="w-3.5 h-3.5 sm:w-3.5 sm:h-3.5 text-gray-600" />
                               </button>
-                              <span className="w-8 sm:w-10 text-center text-xs sm:text-sm font-medium text-gray-900">
+                              <span className="w-10 sm:w-10 text-center text-xs sm:text-sm font-medium text-gray-900 px-1">
                                 {item.quantity}
                               </span>
                               <button
-                                onClick={() => increment(item.id as number)}
-                                className="p-1 sm:p-1.5 transition-colors"
+                                type="button"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  increment(item.id as number);
+                                }}
+                                className="p-2 sm:p-2 active:bg-gray-200 transition-colors touch-manipulation"
                                 aria-label="Increase quantity"
                               >
-                                <Plus className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-600" />
+                                <Plus className="w-3.5 h-3.5 sm:w-3.5 sm:h-3.5 text-gray-600" />
                               </button>
                             </div>
-                            <span className="text-xs sm:text-sm text-gray-600">
+                            <span className="text-xs sm:text-sm text-gray-600 font-medium">
                               ₹{(parseFloat(item.price) * item.quantity).toLocaleString()}
                             </span>
                           </div>
@@ -194,6 +224,7 @@ export default function CartDrawer() {
               </div>
             )}
           </div>
+
 
           {/* Footer - Summary & Checkout */}
           {items.length > 0 && (
@@ -218,17 +249,19 @@ export default function CartDrawer() {
                   <span className="text-green-600 font-medium">Free</span>
                 </div>
 
+
                 <div className="flex justify-between pt-2 sm:pt-3 border-t border-gray-200">
                   <span className="text-sm sm:text-base font-semibold text-gray-900">Total</span>
                   <span className="text-base sm:text-lg font-bold text-gray-900">₹{total.toLocaleString()}</span>
                 </div>
               </div>
 
+
               {/* Buttons */}
               <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-2 sm:space-y-3">
                 <Link
                   href="/checkout"
-                  className="block w-full bg-black text-white text-center py-2.5 sm:py-3 text-sm font-medium transition-colors rounded"
+                  className="block w-full bg-black text-white text-center py-3 sm:py-3 text-sm font-medium hover:bg-gray-800 transition-colors rounded touch-manipulation"
                   onClick={() => setIsCartOpen(false)}
                 >
                   Proceed to Checkout
@@ -236,11 +269,12 @@ export default function CartDrawer() {
                 
                 <button
                   onClick={() => setIsCartOpen(false)}
-                  className="w-full border border-gray-300 text-gray-700 py-2.5 sm:py-3 text-sm font-medium transition-colors rounded"
+                  className="w-full border border-gray-300 text-gray-700 py-3 sm:py-3 text-sm font-medium hover:bg-gray-50 transition-colors rounded touch-manipulation"
                 >
                   Continue Shopping
                 </button>
               </div>
+
 
               {/* Trust Badges */}
               <div className="px-4 sm:px-6 pb-4 sm:pb-6 pt-2 sm:pt-3 border-t border-gray-100">

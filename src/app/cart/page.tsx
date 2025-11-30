@@ -3,10 +3,12 @@ import Link from "next/link";
 import { useCart } from "../../../lib/cart";
 import { Trash2, Minus, Plus, Package, Star } from "lucide-react";
 
+
 export default function CartPage() {
   const { items, increment, decrement, removeFromCart } = useCart();
   const total = items.reduce((sum, i) => sum + parseFloat(i.price) * i.quantity, 0);
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
+
 
   const mrpTotal = items.reduce((sum, item) => {
     const regularPrice = item.regular_price;
@@ -14,7 +16,9 @@ export default function CartPage() {
     return sum + originalPrice * item.quantity;
   }, 0);
 
+
   const discountAmount = mrpTotal - total;
+
 
   return (
     <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
@@ -28,6 +32,7 @@ export default function CartPage() {
           <span className="text-[#9e734d] dark:text-[#9e734d]">Shopping Cart</span>
         </div>
 
+
         {/* Header */}
         <div className="mb-12 pb-8 border-b border-gray-200 dark:border-[#9e734d]/20">
           <h1 className="text-3xl lg:text-4xl font-light text-gray-900 dark:text-white mb-2 tracking-wide">
@@ -37,6 +42,7 @@ export default function CartPage() {
             {items.length === 0 ? "Your cart is empty" : `${totalItems} item${totalItems !== 1 ? 's' : ''} in your cart`}
           </p>
         </div>
+
 
         {items.length === 0 ? (
           /* Empty Cart */
@@ -74,10 +80,10 @@ export default function CartPage() {
                     const hasDiscount = itemRegularPrice && parseFloat(itemRegularPrice) > parseFloat(item.price);
                     
                     return (
-                      <div key={item.id} className="p-6 hover:bg-gray-50 dark:hover:bg-[#9e734d]/5 transition-colors">
-                        <div className="flex gap-6">
+                      <div key={item.id} className="p-4 sm:p-6 hover:bg-gray-50 dark:hover:bg-[#9e734d]/5 transition-colors">
+                        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                           {/* Image */}
-                          <div className="flex-shrink-0">
+                          <div className="flex-shrink-0 mx-auto sm:mx-0">
                             <div className="w-24 h-24 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
                               <img
                                 src={item.images?.[0]?.src}
@@ -86,6 +92,7 @@ export default function CartPage() {
                               />
                             </div>
                           </div>
+
 
                           {/* Details */}
                           <div className="flex-1 space-y-3">
@@ -101,51 +108,75 @@ export default function CartPage() {
                               </div>
                             </div>
 
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                              {/* Price */}
-                              <div className="flex flex-col">
-                                <div className="text-base font-light text-gray-900 dark:text-white">
-                                  ₹{parseFloat(item.price).toLocaleString()}
-                                </div>
-                                {hasDiscount && (
-                                  <div className="flex items-center gap-2">
-                                    <span className="text-xs text-gray-500 dark:text-gray-400 line-through font-light">
-                                      ₹{parseFloat(itemRegularPrice).toLocaleString()}
-                                    </span>
-                                  </div>
-                                )}
+
+                            {/* Price */}
+                            <div className="flex flex-col">
+                              <div className="text-base font-light text-gray-900 dark:text-white">
+                                ₹{parseFloat(item.price).toLocaleString()}
                               </div>
-
-                              {/* Quantity */}
-                              <div className="flex items-center gap-4">
-                                <div className="flex items-center border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded">
-                                  <button
-                                    onClick={() => decrement(item.id)}
-                                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                                    disabled={item.quantity <= 1}
-                                  >
-                                    <Minus className="h-3 w-3 text-gray-600 dark:text-gray-400" />
-                                  </button>
-                                  <span className="w-12 text-center font-light text-gray-900 dark:text-white text-sm">
-                                    {item.quantity}
+                              {hasDiscount && (
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs text-gray-500 dark:text-gray-400 line-through font-light">
+                                    ₹{parseFloat(itemRegularPrice).toLocaleString()}
                                   </span>
-                                  <button
-                                    onClick={() => increment(item.id)}
-                                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                                  >
-                                    <Plus className="h-3 w-3 text-gray-600 dark:text-gray-400" />
-                                  </button>
                                 </div>
+                              )}
+                            </div>
 
+
+                            {/* Quantity & Delete - Mobile Optimized */}
+                            <div className="flex items-center justify-between gap-4 pt-2">
+                              {/* Quantity Controls */}
+                              <div className="flex items-center border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
                                 <button
-                                  onClick={() => removeFromCart(item.id)}
-                                  className="p-2 text-gray-400 dark:text-gray-500 hover:text-[#9e734d] dark:hover:text-[#9e734d] transition-colors"
-                                  title="Remove"
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    if (item.quantity > 1) {
+                                      decrement(item.id);
+                                    }
+                                  }}
+                                  disabled={item.quantity <= 1}
+                                  className="p-3 touch-manipulation active:bg-gray-200 dark:active:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                  aria-label="Decrease quantity"
                                 >
-                                  <Trash2 className="h-4 w-4" />
+                                  <Minus className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                                </button>
+                                <span className="w-12 text-center font-light text-gray-900 dark:text-white text-sm px-2">
+                                  {item.quantity}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    increment(item.id);
+                                  }}
+                                  className="p-3 touch-manipulation active:bg-gray-200 dark:active:bg-gray-700 transition-colors"
+                                  aria-label="Increase quantity"
+                                >
+                                  <Plus className="h-4 w-4 text-gray-600 dark:text-gray-400" />
                                 </button>
                               </div>
+
+
+                              {/* Delete Button */}
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  removeFromCart(item.id);
+                                }}
+                                className="p-3 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 active:text-red-600 transition-colors border border-gray-300 dark:border-gray-700 rounded-lg touch-manipulation"
+                                title="Remove item"
+                                aria-label="Remove item from cart"
+                              >
+                                <Trash2 className="h-5 w-5" />
+                              </button>
                             </div>
+
 
                             {/* Subtotal */}
                             <div className="pt-3 border-t border-gray-100 dark:border-gray-800">
@@ -165,6 +196,7 @@ export default function CartPage() {
               </div>
             </div>
 
+
             {/* Order Summary */}
             <div className="lg:col-span-1">
               <div className="border border-gray-200 dark:border-[#9e734d]/20 sticky top-8 rounded-lg overflow-hidden">
@@ -183,10 +215,12 @@ export default function CartPage() {
                       </div>
                     )}
 
+
                     <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 font-light">
                       <span>Subtotal</span>
                       <span>₹{total.toLocaleString()}</span>
                     </div>
+
 
                     {discountAmount > 0 && (
                       <div className="flex justify-between text-sm text-[#9e734d] dark:text-[#9e734d]/80 font-light">
@@ -195,16 +229,19 @@ export default function CartPage() {
                       </div>
                     )}
 
+
                     <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 font-light">
                       <span>Shipping</span>
-                      <span>Free</span>
+                      <span className="text-green-600 font-medium">Free</span>
                     </div>
                   </div>
+
 
                   <div className="flex justify-between mb-8">
                     <span className="text-sm font-light text-gray-900 dark:text-white uppercase tracking-widest">Total</span>
                     <span className="text-lg font-light text-gray-900 dark:text-white">₹{total.toLocaleString()}</span>
                   </div>
+
 
                   <div className="space-y-3">
                     <Link
@@ -214,6 +251,7 @@ export default function CartPage() {
                       Checkout
                     </Link>
 
+
                     <Link
                       href="/"
                       className="w-full border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white font-light py-3 text-xs tracking-widest uppercase hover:bg-gray-50 dark:hover:bg-[#9e734d]/5 transition-colors text-center block rounded-md"
@@ -221,6 +259,7 @@ export default function CartPage() {
                       Continue Shopping
                     </Link>
                   </div>
+
 
                   {/* Trust Info */}
                   <div className="mt-8 pt-8 border-t border-gray-200 dark:border-[#9e734d]/20">
