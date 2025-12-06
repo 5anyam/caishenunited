@@ -67,7 +67,6 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const fbPixelId = 'YOUR_FB_PIXEL_ID';
   const gtagId = 'AW-XXXXXXXXX';
 
   return (
@@ -245,7 +244,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
 
-        {/* Facebook Pixel Script */}
+        {/* Meta Pixel Code */}
         <Script id="facebook-pixel" strategy="afterInteractive">
           {`
             !function(f,b,e,v,n,t,s)
@@ -256,16 +255,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '${fbPixelId}');
+            fbq('init', '1944720636112584');
             fbq('track', 'PageView');
-            
-            // Track premium brand specific events
-            fbq('trackCustom', 'ViewPremiumBrand', {
-              brand: 'Caishen United',
-              category: 'Premium Phone Accessories'
-            });
           `}
         </Script>
+
+        {/* Meta Pixel noscript fallback */}
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: 'none' }}
+            src="https://www.facebook.com/tr?id=1944720636112584&ev=PageView&noscript=1"
+            alt="facebook pixel"
+          />
+        </noscript>
 
         {/* Google Analytics */}
         <Script 
@@ -315,17 +319,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             })(window,document,'script','dataLayer','GTM-XXXXXXX');
           `}
         </Script>
-
-        {/* Facebook Pixel noscript fallback */}
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: 'none' }}
-            src={`https://www.facebook.com/tr?id=${fbPixelId}&ev=PageView&noscript=1`}
-            alt="facebook pixel"
-          />
-        </noscript>
       </head>
       <body className="overflow-x-hidden overflow-y-scroll antialiased bg-white dark:bg-black transition-colors duration-300">
         {/* Google Tag Manager (noscript) */}
