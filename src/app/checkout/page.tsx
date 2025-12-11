@@ -377,6 +377,20 @@ export default function Checkout(): React.ReactElement {
     }
   }
 
+  // Helper to generate fee lines for coupon
+  const getFeeLines = () => {
+    if (appliedCoupon && couponDiscount > 0) {
+      return [
+        {
+          name: `Discount (${appliedCoupon})`,
+          total: (-couponDiscount).toString(),
+          tax_status: 'none'
+        }
+      ];
+    }
+    return [];
+  };
+
   const handleCODSubmit = async (): Promise<void> => {
     if (!validateForm()) {
       toast({
@@ -393,7 +407,6 @@ export default function Checkout(): React.ReactElement {
     try {
       const fullAddress = `${form.address}, ${form.city}, ${form.state} - ${form.pincode}`;
       
-      // Add COD charges as shipping line
       const shippingLines = [];
       if (codCharges > 0) {
         shippingLines.push({
@@ -434,14 +447,8 @@ export default function Checkout(): React.ReactElement {
           quantity: item.quantity,
         })),
         shipping_lines: shippingLines,
-        coupon_lines: appliedCoupon
-          ? [
-              {
-                code: appliedCoupon.toLowerCase(),
-                discount: couponDiscount.toString(),
-              },
-            ]
-          : [],
+        fee_lines: getFeeLines(), // ✅ Fixed: Using fee_lines instead of coupon_lines
+        coupon_lines: [], // ✅ Fixed: Empty to avoid API validation errors
         customer_note:
           form.notes +
           (form.notes ? "\n\n" : "") +
@@ -685,14 +692,8 @@ export default function Checkout(): React.ReactElement {
           quantity: item.quantity,
         })),
         shipping_lines: [],
-        coupon_lines: appliedCoupon
-          ? [
-              {
-                code: appliedCoupon.toLowerCase(),
-                discount: couponDiscount.toString(),
-              },
-            ]
-          : [],
+        fee_lines: getFeeLines(), // ✅ Fixed: Using fee_lines logic here too
+        coupon_lines: [], // ✅ Fixed: Empty to avoid API validation errors
         customer_note:
           form.notes +
           (form.notes ? "\n\n" : "") +
@@ -777,6 +778,7 @@ export default function Checkout(): React.ReactElement {
     }
   }
 
+  // ... (Rest of the JSX render code remains the same as in your original file)
   if (items.length === 0) {
     return (
       <div className="min-h-screen bg-white">
@@ -857,7 +859,6 @@ export default function Checkout(): React.ReactElement {
                   <span>-₹{couponDiscount.toFixed(2)}</span>
                 </div>
               )}
-
               {/* ✅ Always Free Delivery */}
               <div className="flex justify-between text-sm text-gray-900 items-center py-2 font-light">
                 <span>Delivery</span>
