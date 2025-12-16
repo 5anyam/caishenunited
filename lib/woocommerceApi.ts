@@ -266,6 +266,7 @@ export async function cancelOrder(orderId: number) {
   }
 }
 
+
 // Get customer details
 export async function getCustomerDetails(customerId: number) {
   try {
