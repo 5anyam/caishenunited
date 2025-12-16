@@ -3,9 +3,11 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "../../../lib/cart";
+import { useAuth } from "../../../lib/AuthContext"; // ✅ Auth integration
 import { toast } from "../../../hooks/use-toast";
 import { useFacebookPixel } from "../../../hooks/useFacebookPixel";
 import type { CartItem } from "../../../lib/facebook-pixel";
+import Link from "next/link";
 
 // Caishen WooCommerce
 const WOOCOMMERCE_CONFIG = {
@@ -195,6 +197,7 @@ const updateWooCommerceOrderStatus = async (
 export default function Checkout(): React.ReactElement {
   const { items, clear } = useCart();
   const router = useRouter();
+  const { user } = useAuth(); // ✅ Get logged-in user
   const { trackInitiateCheckout, trackAddPaymentInfo, trackPurchase } =
     useFacebookPixel();
 
@@ -206,10 +209,8 @@ export default function Checkout(): React.ReactElement {
     (sum, i) => sum + parseFloat(i.price) * i.quantity,
     0
   );
-  
-  // ✅ Always Free Delivery
+
   const deliveryCharges = 0;
-  // ✅ COD Charges - ₹100 for COD
   const codCharges = paymentMethod === "cod" ? 100 : 0;
 
   const [couponCode, setCouponCode] = useState<string>("");
@@ -235,6 +236,19 @@ export default function Checkout(): React.ReactElement {
   const [loading, setLoading] = useState<boolean>(false);
   const [step, setStep] = useState<"form" | "processing">("form");
   const [errors, setErrors] = useState<Partial<FormData>>({});
+
+  // ✅ Auto-fill form if user is logged in
+  useEffect(() => {
+    if (user) {
+      setForm((prev) => ({
+        ...prev,
+        name: user.first_name && user.last_name 
+          ? `${user.first_name} ${user.last_name}`.trim() 
+          : user.first_name || user.username,
+        email: user.email || "",
+      }));
+    }
+  }, [user]);
 
   useEffect(() => {
     if (items.length > 0) {
@@ -377,15 +391,14 @@ export default function Checkout(): React.ReactElement {
     }
   }
 
-  // Helper to generate fee lines for coupon
   const getFeeLines = () => {
     if (appliedCoupon && couponDiscount > 0) {
       return [
         {
           name: `Discount (${appliedCoupon})`,
           total: (-couponDiscount).toString(),
-          tax_status: 'none'
-        }
+          tax_status: "none",
+        },
       ];
     }
     return [];
@@ -406,7 +419,7 @@ export default function Checkout(): React.ReactElement {
 
     try {
       const fullAddress = `${form.address}, ${form.city}, ${form.state} - ${form.pincode}`;
-      
+
       const shippingLines = [];
       if (codCharges > 0) {
         shippingLines.push({
@@ -416,10 +429,11 @@ export default function Checkout(): React.ReactElement {
         });
       }
 
-      const orderData = {
+      const orderData: Record<string, unknown> = {
         payment_method: "cod",
         payment_method_title: "Cash on Delivery (COD) - ₹100 Extra",
         status: "processing",
+        customer_id: user ? user.id : 0, // ✅ Link to user account if logged in
         billing: {
           first_name: form.name,
           last_name: "",
@@ -447,8 +461,8 @@ export default function Checkout(): React.ReactElement {
           quantity: item.quantity,
         })),
         shipping_lines: shippingLines,
-        fee_lines: getFeeLines(), // ✅ Fixed: Using fee_lines instead of coupon_lines
-        coupon_lines: [], // ✅ Fixed: Empty to avoid API validation errors
+        fee_lines: getFeeLines(),
+        coupon_lines: [],
         customer_note:
           form.notes +
           (form.notes ? "\n\n" : "") +
@@ -466,6 +480,7 @@ export default function Checkout(): React.ReactElement {
           { key: "cod_charges", value: codCharges.toString() },
           { key: "final_total", value: finalTotal.toString() },
           { key: "payment_method", value: "cod" },
+          { key: "user_type", value: user ? "registered" : "guest" }, // ✅ Track user type
           ...(appliedCoupon
             ? [
                 { key: "coupon_code", value: appliedCoupon },
@@ -496,7 +511,12 @@ export default function Checkout(): React.ReactElement {
       });
 
       setTimeout(() => {
-        router.push(`/order-confirmation?wcOrderId=${wooOrder.id}&cod=true`);
+        // ✅ Redirect based on user status
+        if (user) {
+          router.push(`/dashboard/orders/${wooOrder.id}`);
+        } else {
+          router.push(`/order-confirmation?wcOrderId=${wooOrder.id}&cod=true`);
+        }
       }, 1000);
     } catch (error) {
       toast({
@@ -534,9 +554,14 @@ export default function Checkout(): React.ReactElement {
       });
 
       setTimeout(() => {
-        router.push(
-          `/order-confirmation?orderId=${response.razorpay_payment_id}&wcOrderId=${wooOrder.id}`
-        );
+        // ✅ Redirect based on user status
+        if (user) {
+          router.push(`/dashboard/orders/${wooOrder.id}`);
+        } else {
+          router.push(
+            `/order-confirmation?orderId=${response.razorpay_payment_id}&wcOrderId=${wooOrder.id}`
+          );
+        }
       }, 1000);
     } catch (error) {
       console.error("Error updating order:", error);
@@ -660,11 +685,12 @@ export default function Checkout(): React.ReactElement {
 
       const fullAddress = `${form.address}, ${form.city}, ${form.state} - ${form.pincode}`;
 
-      const orderData = {
+      const orderData: Record<string, unknown> = {
         payment_method: "razorpay",
         payment_method_title:
           "Razorpay (Credit Card/Debit Card/NetBanking/UPI)",
         status: "pending",
+        customer_id: user ? user.id : 0, // ✅ Link to user account if logged in
         billing: {
           first_name: form.name,
           last_name: "",
@@ -692,8 +718,8 @@ export default function Checkout(): React.ReactElement {
           quantity: item.quantity,
         })),
         shipping_lines: [],
-        fee_lines: getFeeLines(), // ✅ Fixed: Using fee_lines logic here too
-        coupon_lines: [], // ✅ Fixed: Empty to avoid API validation errors
+        fee_lines: getFeeLines(),
+        coupon_lines: [],
         customer_note:
           form.notes +
           (form.notes ? "\n\n" : "") +
@@ -708,6 +734,7 @@ export default function Checkout(): React.ReactElement {
           { key: "original_subtotal", value: total.toString() },
           { key: "delivery_charges", value: "0" },
           { key: "final_total", value: finalTotal.toString() },
+          { key: "user_type", value: user ? "registered" : "guest" }, // ✅ Track user type
           ...(appliedCoupon
             ? [
                 { key: "coupon_code", value: appliedCoupon },
@@ -778,7 +805,6 @@ export default function Checkout(): React.ReactElement {
     }
   }
 
-  // ... (Rest of the JSX render code remains the same as in your original file)
   if (items.length === 0) {
     return (
       <div className="min-h-screen bg-white">
@@ -815,6 +841,31 @@ export default function Checkout(): React.ReactElement {
               Complete your premium accessory purchase securely
             </p>
           </div>
+
+          {/* ✅ Login Prompt for Guest Users */}
+          {!user && (
+            <div className="mb-8 p-4 bg-[#fdf6e9] border border-[#9e734d]/20 rounded-lg">
+              <p className="text-sm text-gray-700 font-light">
+                Already have an account?{" "}
+                <Link
+                  href="/login"
+                  className="text-[#9e734d] font-semibold hover:underline"
+                >
+                  Login here
+                </Link>{" "}
+                to track your orders easily.
+              </p>
+            </div>
+          )}
+
+          {/* ✅ User Welcome Message */}
+          {user && (
+            <div className="mb-8 p-4 bg-green-50 border border-green-200 rounded-lg">
+              <p className="text-sm text-green-800 font-light">
+                Welcome back, <span className="font-semibold">{user.first_name || user.username}</span>! Your order will be saved to your account.
+              </p>
+            </div>
+          )}
 
           {/* Order Summary */}
           <div className="border border-gray-200 p-6 mb-6 rounded-lg bg-white shadow-sm">
@@ -859,13 +910,12 @@ export default function Checkout(): React.ReactElement {
                   <span>-₹{couponDiscount.toFixed(2)}</span>
                 </div>
               )}
-              {/* ✅ Always Free Delivery */}
+
               <div className="flex justify-between text-sm text-gray-900 items-center py-2 font-light">
                 <span>Delivery</span>
                 <span className="text-green-600 font-medium">Free</span>
               </div>
 
-              {/* COD Charges Display */}
               {codCharges > 0 && (
                 <div className="flex justify-between text-sm text-orange-600 items-center py-2 font-light">
                   <span>COD Charges</span>
@@ -966,7 +1016,7 @@ export default function Checkout(): React.ReactElement {
 
               <div>
                 <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">
-                  Email *
+                  Email * {/* ✅ Email mandatory for all users */}
                 </label>
                 <input
                   name="email"
@@ -980,6 +1030,7 @@ export default function Checkout(): React.ReactElement {
                   placeholder="your@email.com"
                   value={form.email}
                   onChange={onChange}
+                  readOnly={!!user} // ✅ Read-only if logged in
                 />
                 {errors.email && (
                   <p className="text-red-500 text-xs mt-1 font-light">
