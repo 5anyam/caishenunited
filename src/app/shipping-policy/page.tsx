@@ -6,21 +6,21 @@ export default function ShippingPolicy() {
   return (
     <div className="min-h-screen bg-white text-gray-900">
       {/* Hero Section */}
-      <section className="relative py-20 px-4 bg-gradient-to-b from-[#FFF8DC] to-white border-b border-[#D4A574]/20">
+      <section className="relative py-20 px-4 bg-gradient-to-b from-[#fdf6e9] to-white border-b border-[#9e734d]/20">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, #D4A574 1px, transparent 0)`,
+            backgroundImage: `radial-gradient(circle at 1px 1px, #9e734d 1px, transparent 0)`,
             backgroundSize: '40px 40px'
           }} />
         </div>
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#D4A574]/10 border border-[#D4A574]/30 rounded-full mb-6">
-            <Truck className="w-4 h-4 text-[#D4A574]" />
-            <span className="text-sm text-[#5D4E37] font-medium">Fast & Secure Delivery</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#9e734d]/10 border border-[#9e734d]/30 rounded-full mb-6">
+            <Truck className="w-4 h-4 text-[#9e734d]" />
+            <span className="text-sm text-[#6b5742] font-medium">Fast & Secure Delivery</span>
           </div>
           
-          <h1 className="text-4xl md:text-6xl font-light text-[#5D4E37] mb-6">
+          <h1 className="text-4xl md:text-6xl font-light text-[#2d2416] mb-6">
             Shipping Policy
           </h1>
           
@@ -34,9 +34,9 @@ export default function ShippingPolicy() {
       <section className="py-16 px-4">
         <div className="max-w-4xl mx-auto">
           {/* Introduction */}
-          <div className="bg-gradient-to-br from-[#FFF8DC] to-[#FFFBF0] border border-[#D4A574]/20 rounded-2xl p-8 md:p-12 mb-12 shadow-sm">
+          <div className="bg-gradient-to-br from-[#fdf6e9] to-[#fefbf3] border border-[#9e734d]/20 rounded-2xl p-8 md:p-12 mb-12 shadow-sm">
             <p className="text-gray-700 leading-relaxed text-lg mb-4">
-              At <span className="text-[#D4A574] font-semibold">Vyadhihar Foods</span>, we understand that a seamless shopping experience extends beyond your purchase—it is about timely, secure, and transparent delivery every step of the way.
+              At <span className="text-[#9e734d] font-semibold">Caishen United</span>, we understand that a seamless shopping experience extends beyond your purchase—it is about timely, secure, and transparent delivery every step of the way.
             </p>
             <p className="text-gray-700 leading-relaxed text-lg">
               Every order we ship reflects our commitment to precision, responsibility, and reliability. Shipping is not the end of the sale—it is the beginning of confidence delivered.
@@ -81,19 +81,19 @@ export default function ShippingPolicy() {
               return (
                 <div
                   key={index}
-                  className="group flex gap-6 p-6 bg-white border border-[#D4A574]/20 rounded-xl hover:border-[#D4A574]/50 hover:shadow-md transition-all duration-300"
+                  className="group flex gap-6 p-6 bg-white border border-[#9e734d]/20 rounded-xl hover:border-[#9e734d]/50 hover:shadow-md transition-all duration-300"
                 >
                   <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-[#D4A574]/10 rounded-full flex items-center justify-center group-hover:bg-[#D4A574]/20 transition-colors">
-                      <Icon className="w-6 h-6 text-[#D4A574]" />
+                    <div className="w-12 h-12 bg-[#9e734d]/10 rounded-full flex items-center justify-center group-hover:bg-[#9e734d]/20 transition-colors">
+                      <Icon className="w-6 h-6 text-[#9e734d]" />
                     </div>
                   </div>
                   <div className="flex-1">
                     <div className="flex items-start justify-between mb-2">
-                      <h3 className="text-xl font-semibold text-[#5D4E37]">
+                      <h3 className="text-xl font-semibold text-[#2d2416]">
                         {item.title}
                       </h3>
-                      <span className="text-xs font-bold text-[#D4A574] bg-[#D4A574]/10 px-3 py-1 rounded-full">
+                      <span className="text-xs font-bold text-[#9e734d] bg-[#9e734d]/10 px-3 py-1 rounded-full">
                         {item.highlight}
                       </span>
                     </div>
@@ -107,19 +107,19 @@ export default function ShippingPolicy() {
           </div>
 
           {/* Closing Statement */}
-          <div className="relative overflow-hidden bg-gradient-to-br from-[#D4A574]/10 to-[#D4A574]/5 border border-[#D4A574]/30 rounded-2xl p-8 md:p-12 mb-12">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#D4A574]/10 rounded-full blur-3xl" />
+          <div className="relative overflow-hidden bg-gradient-to-br from-[#9e734d]/10 to-[#9e734d]/5 border border-[#9e734d]/30 rounded-2xl p-8 md:p-12 mb-12">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#9e734d]/10 rounded-full blur-3xl" />
             <div className="relative z-10">
-              <Package className="w-12 h-12 text-[#D4A574] mb-4" />
+              <Package className="w-12 h-12 text-[#9e734d] mb-4" />
               <p className="text-gray-700 leading-relaxed text-lg italic">
-                At <span className="text-[#D4A574] font-semibold not-italic">Vyadhihar Foods</span>, every shipment is more than a parcel—it is a promise delivered with care.
+                At <span className="text-[#9e734d] font-semibold not-italic">Caishen United</span>, every shipment is more than a parcel—it is a promise delivered with care.
               </p>
             </div>
           </div>
 
           {/* Shipping Coverage Map */}
-          <div className="bg-[#FFF8DC] border border-[#D4A574]/20 rounded-2xl p-8 mb-12">
-            <h3 className="text-2xl font-light text-[#5D4E37] mb-6 text-center">
+          <div className="bg-[#fdf6e9] border border-[#9e734d]/20 rounded-2xl p-8 mb-12">
+            <h3 className="text-2xl font-light text-[#2d2416] mb-6 text-center">
               Nationwide Coverage
             </h3>
             <div className="grid md:grid-cols-3 gap-6">
@@ -130,11 +130,11 @@ export default function ShippingPolicy() {
               ].map((area, index) => (
                 <div
                   key={index}
-                  className="text-center p-6 bg-white rounded-xl border border-[#D4A574]/20 hover:border-[#D4A574]/40 hover:shadow-md transition-all"
+                  className="text-center p-6 bg-white rounded-xl border border-[#9e734d]/20 hover:border-[#9e734d]/40 hover:shadow-md transition-all"
                 >
                   <div className="text-4xl mb-3">{area.icon}</div>
-                  <h4 className="text-[#5D4E37] font-medium mb-2">{area.region}</h4>
-                  <p className="text-sm text-[#D4A574] font-semibold">{area.time}</p>
+                  <h4 className="text-[#2d2416] font-medium mb-2">{area.region}</h4>
+                  <p className="text-sm text-[#9e734d] font-semibold">{area.time}</p>
                 </div>
               ))}
             </div>
@@ -142,13 +142,13 @@ export default function ShippingPolicy() {
 
           {/* Contact CTA */}
           <div className="text-center">
-            <h3 className="text-2xl font-light text-[#5D4E37] mb-6">
+            <h3 className="text-2xl font-light text-[#2d2416] mb-6">
               Have Questions About Your Delivery?
             </h3>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#D4A574] to-[#C19A6B] text-white rounded-full font-semibold hover:shadow-lg hover:shadow-[#D4A574]/30 transition-all hover:scale-105"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#9e734d] to-[#b8834f] text-white rounded-full font-semibold hover:shadow-lg hover:shadow-[#9e734d]/30 transition-all hover:scale-105"
               >
                 <Mail className="w-5 h-5" />
                 Contact Support
@@ -156,7 +156,7 @@ export default function ShippingPolicy() {
               </Link>
               <Link
                 href="/return-policy"
-                className="inline-flex items-center gap-2 px-8 py-4 border-2 border-[#D4A574] text-[#5D4E37] rounded-full hover:bg-[#D4A574]/10 transition-all"
+                className="inline-flex items-center gap-2 px-8 py-4 border-2 border-[#9e734d] text-[#2d2416] rounded-full hover:bg-[#9e734d]/10 transition-all"
               >
                 View Return Policy
               </Link>
@@ -166,9 +166,9 @@ export default function ShippingPolicy() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 px-4 bg-[#FFF8DC] border-t border-[#D4A574]/20">
+      <section className="py-16 px-4 bg-[#fdf6e9] border-t border-[#9e734d]/20">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-light text-center text-[#5D4E37] mb-12">
+          <h2 className="text-3xl md:text-4xl font-light text-center text-[#2d2416] mb-12">
             Shipping FAQs
           </h2>
           
@@ -201,11 +201,11 @@ export default function ShippingPolicy() {
             ].map((faq, index) => (
               <details
                 key={index}
-                className="group bg-white border border-[#D4A574]/20 rounded-xl overflow-hidden hover:border-[#D4A574]/50 hover:shadow-md transition-all"
+                className="group bg-white border border-[#9e734d]/20 rounded-xl overflow-hidden hover:border-[#9e734d]/50 hover:shadow-md transition-all"
               >
-                <summary className="px-6 py-4 cursor-pointer flex items-center justify-between text-[#5D4E37] font-medium">
+                <summary className="px-6 py-4 cursor-pointer flex items-center justify-between text-[#2d2416] font-medium">
                   <span>{faq.question}</span>
-                  <ChevronRight className="w-5 h-5 text-[#D4A574] transform group-open:rotate-90 transition-transform" />
+                  <ChevronRight className="w-5 h-5 text-[#9e734d] transform group-open:rotate-90 transition-transform" />
                 </summary>
                 <div className="px-6 pb-4 text-gray-600">
                   {faq.answer}
@@ -217,7 +217,7 @@ export default function ShippingPolicy() {
       </section>
 
       {/* Trust Badge Section */}
-      <section className="py-12 px-4 bg-white border-t border-[#D4A574]/20">
+      <section className="py-12 px-4 bg-white border-t border-[#9e734d]/20">
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-wrap justify-center items-center gap-8">
             {[
@@ -229,7 +229,7 @@ export default function ShippingPolicy() {
               const Icon = badge.icon;
               return (
                 <div key={i} className="flex items-center gap-2">
-                  <Icon className="w-5 h-5 text-[#D4A574]" />
+                  <Icon className="w-5 h-5 text-[#9e734d]" />
                   <span className="text-sm text-gray-600">{badge.text}</span>
                 </div>
               );
