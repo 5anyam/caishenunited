@@ -164,6 +164,128 @@ export interface OrderPayload {
   applied_coupon?: string;
 }
 
+// Add to your existing woocommerceApi.ts
+
+// Register new customer
+export async function registerCustomer(data: {
+  email: string;
+  username: string;
+  password: string;
+  first_name?: string;
+  last_name?: string;
+}) {
+  try {
+    const response = await fetch(`${API_BASE}/customers`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Basic ${Buffer.from(
+          `${CONSUMER_KEY}:${CONSUMER_SECRET}`
+        ).toString('base64')}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Registration failed');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Registration error:', error);
+    throw error;
+  }
+}
+
+// Login customer (WordPress JWT or custom)
+export async function loginCustomer(username: string, password: string) {
+  try {
+    // Note: WooCommerce doesn't have native login API
+    // You'll need JWT Authentication plugin on WordPress
+    const response = await fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/jwt-auth/v1/token`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Invalid credentials');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Login error:', error);
+    throw error;
+  }
+}
+
+// Get customer orders
+export async function getCustomerOrders(customerId: number) {
+  try {
+    const response = await fetch(
+      `${API_BASE}/orders?customer=${customerId}&per_page=50`,
+      {
+        headers: {
+          Authorization: `Basic ${Buffer.from(
+            `${CONSUMER_KEY}:${CONSUMER_SECRET}`
+          ).toString('base64')}`,
+        },
+      }
+    );
+
+    if (!response.ok) throw new Error('Failed to fetch orders');
+    return await response.json();
+  } catch (error) {
+    console.error('Get orders error:', error);
+    throw error;
+  }
+}
+
+// Cancel order
+export async function cancelOrder(orderId: number) {
+  try {
+    const response = await fetch(`${API_BASE}/orders/${orderId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Basic ${Buffer.from(
+          `${CONSUMER_KEY}:${CONSUMER_SECRET}`
+        ).toString('base64')}`,
+      },
+      body: JSON.stringify({ status: 'cancelled' }),
+    });
+
+    if (!response.ok) throw new Error('Failed to cancel order');
+    return await response.json();
+  } catch (error) {
+    console.error('Cancel order error:', error);
+    throw error;
+  }
+}
+
+// Get customer details
+export async function getCustomerDetails(customerId: number) {
+  try {
+    const response = await fetch(`${API_BASE}/customers/${customerId}`, {
+      headers: {
+        Authorization: `Basic ${Buffer.from(
+          `${CONSUMER_KEY}:${CONSUMER_SECRET}`
+        ).toString('base64')}`,
+      },
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch customer');
+    return await response.json();
+  } catch (error) {
+    console.error('Get customer error:', error);
+    throw error;
+  }
+}
+
+
 /* Utils */
 const qs = (params: Record<string, string | number | boolean | undefined>): string =>
   Object.entries(params)

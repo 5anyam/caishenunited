@@ -3,6 +3,7 @@ import ReactQueryProvider from '../../components/ReactQueryProvider';
 import { CartProvider } from '../../lib/cart';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import { AuthProvider } from '../../lib/AuthContext'; 
 
 import Script from 'next/script';
 import AnnouncementBar from '../../components/anouncement';
@@ -335,6 +336,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider>
           <ReactQueryProvider>
             <CartProvider>
+              <AuthProvider>
               <AnnouncementBar />
               <Header />
               <main role="main" className="min-h-screen">
@@ -343,6 +345,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Footer />
               <Instagram/>
               <Whatsapp/>
+              </AuthProvider>
             </CartProvider>
           </ReactQueryProvider>
         </ThemeProvider>
