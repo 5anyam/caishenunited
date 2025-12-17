@@ -164,8 +164,6 @@ export interface OrderPayload {
   applied_coupon?: string;
 }
 
-// Add to your existing woocommerceApi.ts
-
 // Register new customer
 export async function registerCustomer(data: {
   email: string;
@@ -225,19 +223,29 @@ export async function loginCustomer(username: string, password: string) {
 // Get customer orders
 export async function getCustomerOrders(customerId: number) {
   try {
+    const apiUrl = `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/wc/v3/orders`;
+    const auth = btoa(
+      `${process.env.NEXT_PUBLIC_CONSUMER_KEY}:${process.env.NEXT_PUBLIC_CONSUMER_SECRET}`
+    );
+
     const response = await fetch(
-      `${API_BASE}/orders?customer=${customerId}&per_page=50`,
+      `${apiUrl}?customer=${customerId}&per_page=50&order=desc&orderby=date`,
       {
         headers: {
-          Authorization: `Basic ${Buffer.from(
-            `${CONSUMER_KEY}:${CONSUMER_SECRET}`
-          ).toString('base64')}`,
+          Authorization: `Basic ${auth}`,
         },
+        cache: 'no-store', // ✅ Disable caching for fresh data
       }
     );
 
-    if (!response.ok) throw new Error('Failed to fetch orders');
-    return await response.json();
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null);
+      console.error('API Error:', errorData);
+      throw new Error(errorData?.message || 'Failed to fetch orders');
+    }
+
+    const orders = await response.json();
+    return orders;
   } catch (error) {
     console.error('Get orders error:', error);
     throw error;
