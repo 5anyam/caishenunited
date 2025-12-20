@@ -266,7 +266,7 @@ export default function Checkout(): React.ReactElement {
     code: string
   ): { valid: boolean; discount: number; message: string } => {
     const upperCode = code.toUpperCase().trim();
-    if (upperCode === "FIRST10") {
+    if (upperCode === "NEWBEGIN10") {
       if (total >= 499) {
         return {
           valid: true,
@@ -277,7 +277,7 @@ export default function Checkout(): React.ReactElement {
         return {
           valid: false,
           discount: 0,
-          message: "Minimum order ₹499 required for FIRST10",
+          message: "Minimum order ₹499 required for NEWBEGIN10",
         };
       }
     }
