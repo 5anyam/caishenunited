@@ -30,11 +30,6 @@ export default function AnnouncementBar() {
     </span>
   );
 
-  const handleClose = () => {
-    localStorage.setItem('announcementBarClosed', 'true');
-    setIsVisible(false);
-  };
-
   return (
     <div className="fixed top-0 left-0 right-0 z-[999] bg-gradient-to-r from-black via-gray-900 to-black/90 backdrop-blur-xl border-b border-white/10 shadow-2xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,20 +50,7 @@ export default function AnnouncementBar() {
           </div>
           
           {/* Close Button - Top Right Corner */}
-          <button
-            onClick={handleClose}
-            className="absolute top-2 right-4 w-8 h-8 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full transition-all duration-200 group z-[1000] border border-white/20 hover:border-white/40 hover:scale-105"
-            aria-label="Close announcement"
-          >
-            <svg 
-              className="w-4 h-4 text-white/90 group-hover:text-white group-hover:scale-110 transition-all duration-200" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+
         </div>
       </div>
 

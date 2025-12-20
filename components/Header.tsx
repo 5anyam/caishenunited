@@ -8,6 +8,8 @@ import { FiSearch } from "react-icons/fi";
 import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 import { BiChevronDown } from "react-icons/bi";
 import { Phone, UserCircle2, LogOut } from "lucide-react";
+import AnnouncementBar from './anouncement';
+
 
 interface NavItem {
   name: string;
@@ -170,8 +172,14 @@ export default function Header() {
 
   return (
     <>
-      {/* Main Header - White Background */}
-      <header className="sticky top-0 z-50 bg-white">
+      {/* Existing AnnouncementBar Component - Fixed at top */}
+      <AnnouncementBar />
+      
+      {/* Spacer for AnnouncementBar height */}
+      <div className="h-10 lg:h-12" />
+
+      {/* Main Header - Positioned below AnnouncementBar */}
+      <header className="sticky top-10 lg:top-12 z-40 bg-white">
         <div className="max-w-[95%] lg:max-w-6xl mx-auto">
           {/* Top Bar with Logo and Icons */}
           <div className="px-4 border-b border-gray-200">
@@ -361,9 +369,9 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Mobile Search Modal */}
+      {/* Mobile Search Modal - Adjusted for AnnouncementBar */}
       {showMobileSearch && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center pt-20">
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center pt-32 lg:pt-44">
           <div className="bg-white w-full max-w-2xl mx-4 rounded-xl p-6 shadow-xl">
             <form onSubmit={handleSearch} className="relative">
               <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -391,14 +399,14 @@ export default function Header() {
         </div>
       )}
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Adjusted for AnnouncementBar */}
       {mobileMenuOpen && (
         <>
           <div 
             className="fixed inset-0 bg-black/60 z-40 lg:hidden"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="fixed top-0 left-0 h-full w-80 max-w-[85vw] bg-white z-50 overflow-y-auto shadow-2xl rounded-r-2xl">
+          <div className="fixed top-10 lg:top-12 left-0 h-full w-80 max-w-[85vw] bg-white z-50 overflow-y-auto shadow-2xl rounded-r-2xl">
             <div className="p-6 border-b border-gray-200 flex items-center justify-between">
               <img src="/logo.png" alt="Logo" className="h-12" />
               <button onClick={() => setMobileMenuOpen(false)} aria-label="Close menu">
