@@ -19,7 +19,7 @@ export default function AnnouncementBar() {
   const announcementText = (
     <span className="inline-flex items-center gap-2 whitespace-nowrap px-4 py-2">
       <Tag className="w-4 h-4 text-gray-300 flex-shrink-0" />
-      <span className="text-xs sm:text-sm font-light tracking-wide leading-tight">
+      <span className="text-xs sm:text-sm text-white font-light tracking-wide leading-tight">
         New Customer Offer: Get{' '}
         <span className="font-semibold text-white px-2.5 py-1 bg-white/20 rounded-md shadow-sm">
           10% OFF
