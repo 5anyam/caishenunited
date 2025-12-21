@@ -1,41 +1,62 @@
 'use client';
 
-import React from 'react';
+import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 
-interface LoaderProps {
-  isLoading?: boolean;
-}
+export default function Loader() {
+  const [isLoading, setIsLoading] = useState(false);
+  const pathname = usePathname();
 
-const Loader: React.FC<LoaderProps> = ({ isLoading = false }) => {
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+
+      // Skip some UI interactions
+      if (
+        target.closest('button') ||
+        target.closest('[data-no-loader]') ||
+        target.closest('.no-loader') ||
+        target.closest('.header-internal') ||
+        target.closest('.submenu')
+      ) {
+        return;
+      }
+
+      const link = target.closest('a');
+      if (
+        link &&
+        link.hostname === window.location.hostname &&
+        link.href !== window.location.href
+      ) {
+        setIsLoading(true);
+        // Minimum 400ms show
+        setTimeout(() => setIsLoading(false), 400);
+      }
+    };
+
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
+  }, []);
+
+  // Hide on route change complete
+  useEffect(() => {
+    setIsLoading(false);
+  }, [pathname]);
+
   if (!isLoading) return null;
 
   return (
     <div className="fixed inset-0 bg-white/80 backdrop-blur-sm z-[9999] flex items-center justify-center">
-      <div className="flex flex-col items-center gap-4 p-8 bg-white/95 rounded-2xl shadow-2xl border border-gray-200 max-w-sm mx-4 animate-fade-in">
-        {/* Dual Ring Spinner */}
+      <div className="flex flex-col items-center gap-4 p-8 bg-white/95 rounded-2xl shadow-2xl border border-gray-200 max-w-sm mx-4">
         <div className="relative">
-          <div className="w-16 h-16 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
-          <div className="absolute -inset-1 w-16 h-16 border-4 border-transparent border-t-orange-500 rounded-full animate-ping"></div>
-          <div className="absolute inset-0 w-16 h-16 border-3 border-transparent border-t-emerald-500 rounded-full animate-pulse [animation-duration:1.5s]"></div>
+          <div className="w-16 h-16 border-4 border-gray-200 border-t-black rounded-full animate-spin" />
+          <div className="absolute -inset-1 w-16 h-16 border-4 border-transparent border-t-[#9e734d] rounded-full animate-ping" />
         </div>
-        
-        {/* Loading Text */}
         <div className="text-center">
-          <h3 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-1">
-            Loading...
-          </h3>
-          <p className="text-sm text-gray-500 font-medium">Please wait a moment</p>
-        </div>
-        
-        {/* Progress Dots */}
-        <div className="flex gap-1">
-          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.1s]"></div>
-          <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce"></div>
-          <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce [animation-delay:0.1s]"></div>
+          <h3 className="text-xl font-bold text-gray-900 mb-1">Loading...</h3>
+          <p className="text-sm text-gray-500">Please wait a moment</p>
         </div>
       </div>
     </div>
   );
-};
-
-export default Loader;
+}

@@ -8,7 +8,6 @@ import Script from 'next/script';
 import Whatsapp from '../../components/Whatsapp';
 import { ThemeProvider } from '../../components/ThemeProvider';
 import Instagram from '../../components/Instagram';
-import { Suspense } from 'react';
 import Loader from '../../components/Loader';
 
 export const metadata = {
@@ -331,7 +330,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             style={{ display: 'none', visibility: 'hidden' }}
           ></iframe>
         </noscript>
-
+        <Loader/>
         {/* Wrap everything in ThemeProvider */}
         <ThemeProvider>
           <ReactQueryProvider>
@@ -339,9 +338,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <AuthProvider>
               <Header />
               <main role="main" className="min-h-screen">
-                <Suspense fallback={<Loader/>}>
                                   {children}
-                                </Suspense>
               </main>
               <Footer />
               <Instagram/>
