@@ -935,51 +935,79 @@ export default function Checkout(): React.ReactElement {
           </div>
 
           {/* Coupon Section */}
-          <div className="border border-gray-200 p-6 mb-6 rounded-lg bg-white shadow-sm">
-            <h2 className="text-base font-light text-gray-900 mb-4 uppercase tracking-widest text-xs">
-              Coupon Code
-            </h2>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <div className="flex-1">
-                <input
-                  type="text"
-                  placeholder="Enter coupon code"
-                  value={couponCode}
-                  onChange={(e) => {
-                    setCouponCode(e.target.value);
-                    setCouponError("");
-                  }}
-                  className="w-full p-3 border border-gray-300 focus:border-[#9e734d] focus:outline-none transition-colors text-sm font-light text-gray-900 bg-white placeholder-gray-400"
-                  disabled={!!appliedCoupon}
-                />
-                {couponError && (
-                  <p className="text-red-500 text-xs mt-1 font-light">
-                    {couponError}
-                  </p>
-                )}
-                {appliedCoupon && (
-                  <p className="text-[#9e734d] text-xs mt-1 font-light">
-                    Coupon {appliedCoupon} applied
-                  </p>
-                )}
-              </div>
-              <button
-                onClick={appliedCoupon ? handleRemoveCoupon : handleApplyCoupon}
-                disabled={isApplyingCoupon}
-                className={`px-6 py-3 text-xs font-light tracking-widest uppercase transition-all duration-300 rounded-md ${
-                  appliedCoupon
-                    ? "bg-gray-200 hover:bg-gray-300 text-gray-900"
-                    : "bg-gradient-to-r from-[#9e734d] to-[#8a6342] hover:from-[#8a6342] hover:to-[#9e734d] text-white shadow-md"
-                } ${isApplyingCoupon ? "opacity-60 cursor-not-allowed" : ""}`}
-              >
-                {isApplyingCoupon
-                  ? "Applying..."
-                  : appliedCoupon
-                  ? "Remove"
-                  : "Apply"}
-              </button>
-            </div>
+          <div className="border border-gray-200 rounded-lg bg-white shadow-sm overflow-hidden mb-6">
+  {/* ✨ Promotional Banner */}
+  <div className="bg-gradient-to-r from-[#9e734d] to-[#8a6342] p-4 text-center">
+    <div className="flex items-center justify-center gap-2 mb-1">
+      <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+        <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+      </svg>
+      <h3 className="text-white font-semibold text-sm tracking-wide uppercase">
+        Special Offer
+      </h3>
+    </div>
+    <p className="text-white text-xs font-light leading-relaxed">
+      Use code <span className="font-bold bg-white/20 px-2 py-1 rounded mx-1">NEWBEGIN10</span> and get
+      <span className="font-bold text-yellow-200"> Flat 10% OFF</span>
+    </p>
+    <p className="text-white/80 text-[10px] mt-1 font-light">
+      + More Exciting Offers on Orders Above ₹499
+    </p>
+  </div>
+
+  {/* Coupon Input Section */}
+  <div className="p-6">
+    <h2 className="text-base font-light text-gray-900 mb-4 uppercase tracking-widest text-xs">
+      Apply Coupon Code
+    </h2>
+    <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex-1">
+        <input
+          type="text"
+          placeholder="Enter coupon code"
+          value={couponCode}
+          onChange={(e) => {
+            setCouponCode(e.target.value);
+            setCouponError("");
+          }}
+          className="w-full p-3 border border-gray-300 focus:border-[#9e734d] focus:outline-none transition-colors text-sm font-light text-gray-900 bg-white placeholder-gray-400"
+          disabled={!!appliedCoupon}
+        />
+        {couponError && (
+          <p className="text-red-500 text-xs mt-1 font-light">
+            {couponError}
+          </p>
+        )}
+        {appliedCoupon && (
+          <div className="flex items-center gap-1 mt-1">
+            <svg className="w-3 h-3 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+            </svg>
+            <p className="text-green-600 text-xs font-medium">
+              Coupon {appliedCoupon} applied! You saved ₹{couponDiscount}
+            </p>
           </div>
+        )}
+      </div>
+      <button
+        onClick={appliedCoupon ? handleRemoveCoupon : handleApplyCoupon}
+        disabled={isApplyingCoupon}
+        className={`px-6 py-3 text-xs font-light tracking-widest uppercase transition-all duration-300 rounded-md ${
+          appliedCoupon
+            ? "bg-gray-200 hover:bg-gray-300 text-gray-900"
+            : "bg-gradient-to-r from-[#9e734d] to-[#8a6342] hover:from-[#8a6342] hover:to-[#9e734d] text-white shadow-md"
+        } ${isApplyingCoupon ? "opacity-60 cursor-not-allowed" : ""}`}
+      >
+        {isApplyingCoupon
+          ? "Applying..."
+          : appliedCoupon
+          ? "Remove"
+          : "Apply"}
+      </button>
+    </div>
+  </div>
+</div>
 
           {/* Form */}
           <form

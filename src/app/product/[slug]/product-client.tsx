@@ -422,7 +422,7 @@ export default function ProductClient({
                 <div className="w-8 h-px bg-gradient-to-r from-[#9e734d] to-transparent" />
                 <div className="text-[10px] text-[#9e734d] uppercase tracking-[0.25em] font-medium flex items-center gap-2">
                   <Crown className="w-3 h-3" />
-                  {product.attributes[0]?.options?.[0] || 'Premium Collection'}
+                  Premium Collection
                 </div>
               </div>
             )}
