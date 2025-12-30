@@ -267,19 +267,11 @@ export default function Checkout(): React.ReactElement {
   ): { valid: boolean; discount: number; message: string } => {
     const upperCode = code.toUpperCase().trim();
     if (upperCode === "NEWBEGIN10") {
-      if (total >= 499) {
-        return {
-          valid: true,
-          discount: Math.round(total * 0.1),
-          message: "10% discount applied",
-        };
-      } else {
-        return {
-          valid: false,
-          discount: 0,
-          message: "Minimum order ₹499 required for NEWBEGIN10",
-        };
-      }
+      return {
+        valid: true,
+        discount: Math.round(total * 0.1),
+        message: "10% discount applied",
+      };
     }
     return { valid: false, discount: 0, message: "Invalid coupon code" };
   };
@@ -952,7 +944,7 @@ export default function Checkout(): React.ReactElement {
       <span className="font-bold text-yellow-200"> Flat 10% OFF</span>
     </p>
     <p className="text-white/80 text-[10px] mt-1 font-light">
-      + More Exciting Offers on Orders Above ₹499
+      + More Exciting Offers on All Orders
     </p>
   </div>
 
