@@ -925,6 +925,78 @@ export default function Checkout(): React.ReactElement {
               </div>
             </div>
           </div>
+          {/* ✨ Premium Freebies Section - Add after Order Summary, before Coupon */}
+<div className="border-2 border-dashed border-emerald-300 p-6 mb-6 rounded-lg bg-gradient-to-r from-emerald-50 via-green-50 to-emerald-50 shadow-sm relative overflow-hidden">
+  {/* Decorative elements */}
+  <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-200/20 rounded-full blur-3xl" />
+  <div className="absolute bottom-0 left-0 w-24 h-24 bg-green-200/20 rounded-full blur-2xl" />
+  
+  <div className="relative z-10">
+    {/* Header with Badge */}
+    <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center shadow-lg">
+          <svg className="w-5 h-5 text-white animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 className="text-sm font-bold text-emerald-700 uppercase tracking-wider">
+            🎁 Free Premium Gifts
+          </h3>
+          <p className="text-xs text-gray-600 font-light">
+            Worth ₹250 • Automatically Included
+          </p>
+        </div>
+      </div>
+      <span className="px-3 py-1 bg-gradient-to-r from-emerald-600 to-green-600 text-white text-[10px] font-bold rounded-full shadow-md uppercase tracking-wider">
+        Limited Time
+      </span>
+    </div>
+
+    {/* Gift Items Grid */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {/* Sticky Pad */}
+      <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-lg p-3 border border-emerald-200/50 shadow-sm hover:shadow-md transition-shadow">
+        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-emerald-200">
+          <svg className="w-6 h-6 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+          </svg>
+        </div>
+        <div className="flex-1">
+          <p className="text-sm font-semibold text-gray-900">Premium Sticky Pad</p>
+          <p className="text-[10px] text-gray-500 font-light">High-Quality • Reusable</p>
+          <p className="text-xs text-emerald-600 font-medium mt-0.5">Worth ₹125</p>
+        </div>
+      </div>
+
+      {/* Cable Protector */}
+      <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-lg p-3 border border-emerald-200/50 shadow-sm hover:shadow-md transition-shadow">
+        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-emerald-200">
+          <svg className="w-6 h-6 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+          </svg>
+        </div>
+        <div className="flex-1">
+          <p className="text-sm font-semibold text-gray-900">Cable Protector</p>
+          <p className="text-[10px] text-gray-500 font-light">Durable • Long-lasting</p>
+          <p className="text-xs text-emerald-600 font-medium mt-0.5">Worth ₹125</p>
+        </div>
+      </div>
+    </div>
+
+    {/* Additional Info */}
+    <div className="mt-4 pt-4 border-t border-emerald-200/50">
+      <div className="flex items-center justify-center gap-2 text-xs text-emerald-700 font-medium">
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+        </svg>
+        <span>These gifts will be packed with your order at no extra cost</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 
           {/* Coupon Section */}
           <div className="border border-gray-200 rounded-lg bg-white shadow-sm overflow-hidden mb-6">
