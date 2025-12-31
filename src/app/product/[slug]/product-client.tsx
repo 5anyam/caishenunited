@@ -556,6 +556,64 @@ export default function ProductClient({
               </div>
             </div>
 
+            {/* Premium Freebies Section - Add this after the Price section and before Quantity */}
+<div className="py-6 px-6 -mx-6 bg-gradient-to-r from-emerald-50 via-green-50 to-emerald-50 border-2 border-dashed border-emerald-300 rounded-lg relative overflow-hidden">
+  {/* Decorative elements */}
+  <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-200/20 rounded-full blur-3xl" />
+  <div className="absolute bottom-0 left-0 w-24 h-24 bg-green-200/20 rounded-full blur-2xl" />
+  
+  <div className="relative z-10">
+    <div className="flex items-start gap-4">
+      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center shadow-lg">
+        <Sparkles className="w-6 h-6 text-white animate-pulse" />
+      </div>
+      
+      <div className="flex-1">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-sm font-bold text-emerald-700 uppercase tracking-wider">
+            🎁 Free Gifts Worth ₹250
+          </span>
+          <span className="px-2 py-0.5 bg-emerald-600 text-white text-[10px] font-bold rounded-full">
+            LIMITED TIME
+          </span>
+        </div>
+        
+        <p className="text-xs text-gray-700 font-medium mb-3">
+          Get these premium freebies with your order:
+        </p>
+        
+        <div className="grid grid-cols-2 gap-3">
+          <div className="flex items-center gap-2 bg-white/70 backdrop-blur-sm rounded-lg p-2.5 border border-emerald-200/50">
+            <div className="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-md flex items-center justify-center">
+              <Check className="w-4 h-4 text-emerald-600" />
+            </div>
+            <div>
+              <p className="text-[11px] font-semibold text-gray-900">Sticky Pad</p>
+              <p className="text-[9px] text-gray-500">Premium Quality</p>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-2 bg-white/70 backdrop-blur-sm rounded-lg p-2.5 border border-emerald-200/50">
+            <div className="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-md flex items-center justify-center">
+              <Check className="w-4 h-4 text-emerald-600" />
+            </div>
+            <div>
+              <p className="text-[11px] font-semibold text-gray-900">Cable Protector</p>
+              <p className="text-[9px] text-gray-500">Durable Design</p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="mt-3 flex items-center gap-2 text-[10px] text-emerald-700 font-medium">
+          <Package className="w-3 h-3" />
+          <span>Automatically added to your order • No extra cost</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
             {/* Quantity Selector */}
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-4 uppercase tracking-[0.2em]">
@@ -730,6 +788,14 @@ export default function ProductClient({
               </button>
             </div>
           </div>
+          {/* Add this inside the mobile bottom bar, above the price section */}
+<div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-3 py-2 rounded-lg mb-3 flex items-center justify-center gap-2 shadow-lg">
+  <Sparkles className="w-3 h-3 animate-pulse" />
+  <span className="text-[10px] font-bold uppercase tracking-wider">
+    Free Gifts Worth ₹250 Included
+  </span>
+</div>
+
           <div className="flex gap-3">
             <button
               className="flex-1 bg-gradient-to-r from-[#9e734d] to-[#8a6342] text-white font-bold px-4 py-3.5 text-xs tracking-widest uppercase rounded disabled:opacity-50"
