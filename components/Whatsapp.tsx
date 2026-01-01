@@ -25,7 +25,7 @@ export default function Whatsapp() {
       {/* WhatsApp Button */}
       <div
         className="fixed z-40"
-        style={{ bottom: 430, right: 24 }}
+        style={{ bottom: 390, right: 24 }}
         aria-live="polite"
       >
         <Link
@@ -61,7 +61,7 @@ export default function Whatsapp() {
       {/* Call Button - Mobile Only */}
       <div
         className="fixed z-40 md:hidden"
-        style={{ bottom: 365, right: 24 }}
+        style={{ bottom: 325, right: 24 }}
         aria-live="polite"
       >
         <a
