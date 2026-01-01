@@ -10,7 +10,7 @@ export default function Instagram() {
   return (
     <div
       className="fixed z-40"
-      style={{ bottom: 180, right: 24 }} // 70px above WhatsApp (110 + 70 = 180)
+      style={{ bottom: 500, right: 24 }} // 70px above WhatsApp (110 + 70 = 180)
       aria-live="polite"
     >
       <Link
