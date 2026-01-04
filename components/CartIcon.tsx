@@ -5,6 +5,7 @@ import { Trash2, Minus, Plus, Package, X, ShoppingBag, CheckCircle } from "lucid
 import { useEffect, useState } from "react";
 
 
+
 interface CartItem {
   id: number | string;
   name: string;
@@ -15,12 +16,14 @@ interface CartItem {
 }
 
 
+
 export default function CartDrawer() {
   const { items, increment, decrement, removeFromCart, isCartOpen, setIsCartOpen } = useCart();
   const [showAddedNotification, setShowAddedNotification] = useState<boolean>(false);
-  
+
   const total: number = items.reduce((sum: number, i: CartItem) => sum + parseFloat(i.price) * i.quantity, 0);
   const totalItems: number = items.reduce((sum: number, i: CartItem) => sum + i.quantity, 0);
+
 
 
   const mrpTotal: number = items.reduce((sum: number, item: CartItem) => {
@@ -30,7 +33,9 @@ export default function CartDrawer() {
   }, 0);
 
 
+
   const discountAmount: number = mrpTotal - total;
+
 
 
   // Show notification when cart opens with items
@@ -43,6 +48,7 @@ export default function CartDrawer() {
       return () => clearTimeout(timer);
     }
   }, [items.length, isCartOpen]);
+
 
 
   return (
@@ -62,18 +68,20 @@ export default function CartDrawer() {
       </button>
 
 
-      {/* Overlay */}
+
+      {/* Overlay - Maximum z-index */}
       {isCartOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-50 transition-opacity duration-300"
+          className="fixed inset-0 bg-black/50 z-[9998] transition-opacity duration-300"
           onClick={() => setIsCartOpen(false)}
           aria-hidden="true"
         />
       )}
 
 
-      {/* Cart Drawer - 80% width on mobile, 480px on desktop */}
-      <div className={`fixed top-0 right-0 h-full w-[80%] sm:w-[480px] max-w-[480px] bg-white z-50 shadow-2xl transform transition-transform duration-300 ${
+
+      {/* Cart Drawer - Maximum z-index to stay above all floating elements */}
+      <div className={`fixed top-0 right-0 h-full w-[80%] sm:w-[480px] max-w-[480px] bg-white z-[9999] shadow-2xl transform transition-transform duration-300 ${
         isCartOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
         {/* Header */}
@@ -94,6 +102,7 @@ export default function CartDrawer() {
         </div>
 
 
+
         {/* Added Notification */}
         {showAddedNotification && (
           <div className="bg-green-50 border-b border-green-100 p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
@@ -101,6 +110,7 @@ export default function CartDrawer() {
             <span className="text-xs sm:text-sm text-green-800 font-medium">Item added to cart!</span>
           </div>
         )}
+
 
 
         {/* Cart Content */}
@@ -128,7 +138,7 @@ export default function CartDrawer() {
                 {items.map((item: CartItem) => {
                   const itemRegularPrice = item.regular_price;
                   const hasDiscount: boolean = !!(itemRegularPrice && parseFloat(itemRegularPrice) > parseFloat(item.price));
-                  
+
                   return (
                     <div key={item.id} className="p-3 sm:p-4 hover:bg-gray-50 transition-colors">
                       <div className="flex gap-3 sm:gap-4">
@@ -142,6 +152,7 @@ export default function CartDrawer() {
                             />
                           </div>
                         </div>
+
 
 
                         {/* Details */}
@@ -165,6 +176,7 @@ export default function CartDrawer() {
                           </div>
 
 
+
                           {/* Price */}
                           <div className="flex items-center gap-2 mb-2 sm:mb-3">
                             <span className="text-sm sm:text-base font-medium text-gray-900">
@@ -176,6 +188,7 @@ export default function CartDrawer() {
                               </span>
                             )}
                           </div>
+
 
 
                           {/* Quantity Controls - Mobile Optimized */}
@@ -226,6 +239,7 @@ export default function CartDrawer() {
           </div>
 
 
+
           {/* Footer - Summary & Checkout */}
           {items.length > 0 && (
             <div className="border-t border-gray-200 bg-white">
@@ -243,11 +257,12 @@ export default function CartDrawer() {
                     </div>
                   </>
                 )}
-                
+
                 <div className="flex justify-between text-xs sm:text-sm text-gray-600">
                   <span>Shipping</span>
                   <span className="text-green-600 font-medium">Free</span>
                 </div>
+
 
 
                 <div className="flex justify-between pt-2 sm:pt-3 border-t border-gray-200">
@@ -255,6 +270,7 @@ export default function CartDrawer() {
                   <span className="text-base sm:text-lg font-bold text-gray-900">₹{total.toLocaleString()}</span>
                 </div>
               </div>
+
 
 
               {/* Buttons */}
@@ -266,7 +282,7 @@ export default function CartDrawer() {
                 >
                   Proceed to Checkout
                 </Link>
-                
+
                 <button
                   onClick={() => setIsCartOpen(false)}
                   className="w-full border border-gray-300 text-gray-700 py-3 sm:py-3 text-sm font-medium hover:bg-gray-50 transition-colors rounded touch-manipulation"
@@ -274,6 +290,7 @@ export default function CartDrawer() {
                   Continue Shopping
                 </button>
               </div>
+
 
 
               {/* Trust Badges */}

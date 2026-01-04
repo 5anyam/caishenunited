@@ -1,16 +1,19 @@
 // components/Instagram.tsx
 "use client";
 
+
 import { IconBrandInstagram } from "@tabler/icons-react";
 import Link from "next/link";
 
+
 const INSTAGRAM_URL = "https://www.instagram.com/caishencases?igsh=MWk4bTltaHF1NnQyNQ%3D%3D&utm_source=qr"; // Replace with your Instagram handle
+
 
 export default function Instagram() {
   return (
     <div
-      className="fixed z-40"
-      style={{ bottom: 460, right: 24 }} // 70px above WhatsApp (110 + 70 = 180)
+      className="fixed z-[30]"
+      style={{ bottom: 230, right: 24 }} // 70px above WhatsApp (110 + 70 = 180)
       aria-live="polite"
     >
       <Link
@@ -25,6 +28,7 @@ export default function Instagram() {
       >
         {/* Ping ring */}
         <span className="absolute inset-0 rounded-xl ring-2 ring-pink-300/50 animate-ping" />
+
 
         {/* Button */}
         <span

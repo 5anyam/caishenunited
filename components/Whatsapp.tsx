@@ -1,11 +1,13 @@
-// components/Whatsapp.tsx
 "use client";
+
 
 import { IconBrandWhatsapp, IconPhone } from "@tabler/icons-react";
 import Link from "next/link";
 import { useMemo } from "react";
 
+
 const PHONE = "+919911636888"; // international format, no +, spaces or dashes
+
 
 function buildWaLink(baseMsg: string) {
   // Encode and include current page URL for context
@@ -14,18 +16,20 @@ function buildWaLink(baseMsg: string) {
   return `https://wa.me/${PHONE}?text=${msg}`;
 }
 
+
 export default function Whatsapp() {
   const href = useMemo(
     () => buildWaLink(encodeURIComponent("Hello Caishen United – I'd like to know more about: ")),
     []
   );
 
+
   return (
     <>
-      {/* WhatsApp Button */}
+      {/* WhatsApp Button - Lower z-index to stay behind cart drawer */}
       <div
-        className="fixed z-40"
-        style={{ bottom: 390, right: 24 }}
+        className="fixed z-[30]"
+        style={{ bottom: 160, right: 24 }}
         aria-live="polite"
       >
         <Link
@@ -40,6 +44,7 @@ export default function Whatsapp() {
         >
           {/* Ping ring */}
           <span className="absolute inset-0 rounded-xl ring-2 ring-emerald-300/50 animate-ping" />
+
 
           {/* Button */}
           <span
@@ -58,10 +63,11 @@ export default function Whatsapp() {
         </Link>
       </div>
 
-      {/* Call Button - Mobile Only */}
+
+      {/* Call Button - Mobile Only - Lower z-index to stay behind cart drawer */}
       <div
-        className="fixed z-40 md:hidden"
-        style={{ bottom: 325, right: 24 }}
+        className="fixed z-[30] md:hidden"
+        style={{ bottom: 90, right: 24 }}
         aria-live="polite"
       >
         <a
@@ -74,6 +80,7 @@ export default function Whatsapp() {
         >
           {/* Ping ring */}
           <span className="absolute inset-0 rounded-xl ring-2 ring-blue-300/50 animate-ping" />
+
 
           {/* Button */}
           <span
