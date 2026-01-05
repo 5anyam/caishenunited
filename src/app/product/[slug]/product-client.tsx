@@ -27,6 +27,7 @@ import {
   Award,
   CreditCard,
   Plus,
+  Gift,
   Minus,
   Crown,
   Sparkles,
@@ -555,60 +556,77 @@ export default function ProductClient({
                 )}
               </div>
             </div>
-
-            {/* Premium Freebies Section - Add this after the Price section and before Quantity */}
-<div className="py-6 px-6 -mx-6 bg-gradient-to-r from-emerald-50 via-green-50 to-emerald-50 border-2 border-dashed border-emerald-300 rounded-lg relative overflow-hidden">
+{/* Premium Freebies Section - Mobile Optimized */}
+<div className="py-4 px-4 sm:py-6 sm:px-6 -mx-4 sm:-mx-6 bg-gradient-to-br from-emerald-50 via-green-50 to-emerald-50 border-2 border-dashed border-emerald-300 rounded-lg relative overflow-hidden">
   {/* Decorative elements */}
-  <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-200/20 rounded-full blur-3xl" />
-  <div className="absolute bottom-0 left-0 w-24 h-24 bg-green-200/20 rounded-full blur-2xl" />
-  
+  <div className="absolute top-0 right-0 w-20 h-20 sm:w-32 sm:h-32 bg-emerald-200/20 rounded-full blur-2xl sm:blur-3xl" />
+  <div className="absolute bottom-0 left-0 w-16 h-16 sm:w-24 sm:h-24 bg-green-200/20 rounded-full blur-xl sm:blur-2xl" />
+
   <div className="relative z-10">
-    <div className="flex items-start gap-4">
-      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center shadow-lg">
-        <Sparkles className="w-6 h-6 text-white animate-pulse" />
+    {/* Header Section */}
+    <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+      <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center shadow-lg">
+        <Gift className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
       </div>
-      
-      <div className="flex-1">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-sm font-bold text-emerald-700 uppercase tracking-wider">
+
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-xs sm:text-sm font-bold text-emerald-700 uppercase tracking-wide">
             🎁 Free Gifts Worth ₹250
           </span>
-          <span className="px-2 py-0.5 bg-emerald-600 text-white text-[10px] font-bold rounded-full">
+          <span className="px-1.5 py-0.5 sm:px-2 bg-emerald-600 text-white text-[9px] sm:text-[10px] font-bold rounded-full whitespace-nowrap">
             LIMITED TIME
           </span>
         </div>
-        
-        <p className="text-xs text-gray-700 font-medium mb-3">
-          Get these premium freebies with your order:
+        <p className="text-[10px] sm:text-xs text-gray-600 font-medium mt-1">
+          Get premium freebies with your order
         </p>
-        
-        <div className="grid grid-cols-2 gap-3">
-          <div className="flex items-center gap-2 bg-white/70 backdrop-blur-sm rounded-lg p-2.5 border border-emerald-200/50">
-            <div className="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-md flex items-center justify-center">
-              <Check className="w-4 h-4 text-emerald-600" />
-            </div>
-            <div>
-              <p className="text-[11px] font-semibold text-gray-900">Sticky Pad</p>
-              <p className="text-[9px] text-gray-500">Premium Quality</p>
-            </div>
-          </div>
-          
-          <div className="flex items-center gap-2 bg-white/70 backdrop-blur-sm rounded-lg p-2.5 border border-emerald-200/50">
-            <div className="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-md flex items-center justify-center">
-              <Check className="w-4 h-4 text-emerald-600" />
-            </div>
-            <div>
-              <p className="text-[11px] font-semibold text-gray-900">Cable Protector</p>
-              <p className="text-[9px] text-gray-500">Durable Design</p>
-            </div>
-          </div>
+      </div>
+    </div>
+
+    {/* Gift Items - Mobile Optimized */}
+    <div className="space-y-2 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-3">
+      {/* Sticky Pad */}
+      <div className="flex items-center gap-2 sm:gap-2.5 bg-white/80 backdrop-blur-sm rounded-lg p-2 sm:p-2.5 border border-emerald-200/50 shadow-sm">
+        <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg overflow-hidden flex items-center justify-center border border-emerald-200">
+          <img 
+            src="/sticky.webp" 
+            alt="Premium Sticky Pad"
+            className="w-full h-full object-contain p-1"
+          />
         </div>
-        
-        <div className="mt-3 flex items-center gap-2 text-[10px] text-emerald-700 font-medium">
-          <Package className="w-3 h-3" />
-          <span>Automatically added to your order • No extra cost</span>
+        <div className="flex-1 min-w-0">
+          <p className="text-xs sm:text-sm font-semibold text-gray-900">Premium Sticky Pad</p>
+          <p className="text-[9px] sm:text-[10px] text-gray-500 font-light">High-Quality • Reusable</p>
+        </div>
+        <div className="flex-shrink-0">
+          <Check className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" />
         </div>
       </div>
+
+      {/* Cable Protector */}
+      <div className="flex items-center gap-2 sm:gap-2.5 bg-white/80 backdrop-blur-sm rounded-lg p-2 sm:p-2.5 border border-emerald-200/50 shadow-sm">
+        <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg overflow-hidden flex items-center justify-center border border-emerald-200">
+          <img 
+            src="/wire.webp" 
+            alt="Cable Protector"
+            className="w-full h-full object-contain p-1"
+          />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-xs sm:text-sm font-semibold text-gray-900">Cable Protector</p>
+          <p className="text-[9px] sm:text-[10px] text-gray-500 font-light">Durable • Long-lasting</p>
+        </div>
+        <div className="flex-shrink-0">
+          <Check className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" />
+        </div>
+      </div>
+    </div>
+
+    {/* Footer Message */}
+    <div className="mt-3 flex items-center justify-center gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] text-emerald-700 font-medium bg-white/50 rounded-full px-3 py-1.5 sm:py-2 border border-emerald-200/30">
+      <Package className="w-3 h-3 sm:w-3.5 sm:h-3.5 flex-shrink-0" />
+      <span className="text-center">Added automatically • No extra cost</span>
     </div>
   </div>
 </div>
