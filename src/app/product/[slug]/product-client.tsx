@@ -698,7 +698,7 @@ export default function ProductClient({
                 {
                   icon: <Truck className="w-5 h-5" />,
                   label: 'Free Shipping',
-                  subtitle: 'Orders above ₹999',
+                  subtitle: 'For all orders',
                   gradient: 'from-[#9e734d]/10 to-transparent',
                 },
                 {
