@@ -8,6 +8,7 @@ import { toast } from "../../../hooks/use-toast";
 import { useFacebookPixel } from "../../../hooks/useFacebookPixel";
 import type { CartItem } from "../../../lib/facebook-pixel";
 import Link from "next/link";
+import Image from "next/image";
 
 // Caishen WooCommerce
 const WOOCOMMERCE_CONFIG = {
@@ -954,36 +955,43 @@ export default function Checkout(): React.ReactElement {
       </span>
     </div>
 
-    {/* Gift Items Grid */}
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-      {/* Sticky Pad */}
-      <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-lg p-3 border border-emerald-200/50 shadow-sm hover:shadow-md transition-shadow">
-        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-emerald-200">
-          <svg className="w-6 h-6 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-          </svg>
-        </div>
-        <div className="flex-1">
-          <p className="text-sm font-semibold text-gray-900">Premium Sticky Pad</p>
-          <p className="text-[10px] text-gray-500 font-light">High-Quality • Reusable</p>
-          <p className="text-xs text-emerald-600 font-medium mt-0.5">Worth ₹125</p>
-        </div>
-      </div>
-
-      {/* Cable Protector */}
-      <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-lg p-3 border border-emerald-200/50 shadow-sm hover:shadow-md transition-shadow">
-        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-emerald-200">
-          <svg className="w-6 h-6 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-          </svg>
-        </div>
-        <div className="flex-1">
-          <p className="text-sm font-semibold text-gray-900">Cable Protector</p>
-          <p className="text-[10px] text-gray-500 font-light">Durable • Long-lasting</p>
-          <p className="text-xs text-emerald-600 font-medium mt-0.5">Worth ₹125</p>
-        </div>
-      </div>
+  {/* Sticky Pad */}
+  <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-lg p-3 border border-emerald-200/50 shadow-sm hover:shadow-md transition-shadow">
+    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg overflow-hidden flex items-center justify-center border border-emerald-200">
+      <Image 
+        src="/sticky.webp" 
+        alt="Premium Sticky Pad"
+        width={48}
+        height={48}
+        className="object-contain p-1"
+      />
     </div>
+    <div className="flex-1">
+      <p className="text-sm font-semibold text-gray-900">Premium Sticky Pad</p>
+      <p className="text-[10px] text-gray-500 font-light">High-Quality • Reusable</p>
+      <p className="text-xs text-emerald-600 font-medium mt-0.5">Worth ₹125</p>
+    </div>
+  </div>
+
+  {/* Cable Protector */}
+  <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-lg p-3 border border-emerald-200/50 shadow-sm hover:shadow-md transition-shadow">
+    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg overflow-hidden flex items-center justify-center border border-emerald-200">
+      <Image 
+        src="/wire.webp" 
+        alt="Cable Protector"
+        width={48}
+        height={48}
+        className="object-contain p-1"
+      />
+    </div>
+    <div className="flex-1">
+      <p className="text-sm font-semibold text-gray-900">Cable Protector</p>
+      <p className="text-[10px] text-gray-500 font-light">Durable • Long-lasting</p>
+      <p className="text-xs text-emerald-600 font-medium mt-0.5">Worth ₹125</p>
+    </div>
+  </div>
+</div>
 
     {/* Additional Info */}
     <div className="mt-4 pt-4 border-t border-emerald-200/50">
