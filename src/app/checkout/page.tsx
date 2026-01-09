@@ -3,7 +3,7 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "../../../lib/cart";
-import { useAuth } from "../../../lib/AuthContext"; // ✅ Auth integration
+import { useAuth } from "../../../lib/AuthContext";
 import { toast } from "../../../hooks/use-toast";
 import { useFacebookPixel } from "../../../hooks/useFacebookPixel";
 import type { CartItem } from "../../../lib/facebook-pixel";
@@ -42,6 +42,14 @@ interface WooCommerceOrder {
   status: string;
   total: string;
   payment_url?: string;
+}
+
+interface WordPressUser {
+  id: number;
+  username: string;
+  email: string;
+  first_name: string;
+  last_name: string;
 }
 
 interface RazorpayHandlerResponse {
@@ -107,6 +115,103 @@ const loadRazorpayScript = (): Promise<boolean> => {
     script.onerror = () => resolve(false);
     document.body.appendChild(script);
   });
+};
+
+// ✅ NEW: Create WordPress User Account
+const createWordPressUser = async (
+  email: string,
+  name: string,
+  phone: string
+): Promise<WordPressUser | null> => {
+  try {
+    const apiUrl = `${WOOCOMMERCE_CONFIG.BASE_URL}/wp-json/wp/v2/users`;
+    const auth = btoa(
+      `${WOOCOMMERCE_CONFIG.CONSUMER_KEY}:${WOOCOMMERCE_CONFIG.CONSUMER_SECRET}`
+    );
+
+    const nameParts = name.trim().split(" ");
+    const firstName = nameParts[0] || "";
+    const lastName = nameParts.slice(1).join(" ") || "";
+    const username = email.split("@")[0] + "_" + Date.now();
+    
+    // Generate random password
+    const password = Math.random().toString(36).slice(-10) + Math.random().toString(36).slice(-10).toUpperCase();
+
+    const userData = {
+      username: username,
+      email: email,
+      password: password,
+      first_name: firstName,
+      last_name: lastName,
+      roles: ["customer"],
+      meta: {
+        billing_phone: phone,
+      },
+    };
+
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Basic ${auth}`,
+      },
+      body: JSON.stringify(userData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      
+      // Check if user already exists
+      if (response.status === 400 && 
+          (errorData?.code === "existing_user_email" || 
+           errorData?.code === "existing_user_login")) {
+        // Try to get existing user by email
+        return await getWordPressUserByEmail(email);
+      }
+      
+      console.error("Failed to create WordPress user:", errorData);
+      return null;
+    }
+
+    const user = await response.json();
+    return user as WordPressUser;
+  } catch (error) {
+    console.error("Error creating WordPress user:", error);
+    return null;
+  }
+};
+
+// ✅ NEW: Get existing WordPress user by email
+const getWordPressUserByEmail = async (
+  email: string
+): Promise<WordPressUser | null> => {
+  try {
+    const apiUrl = `${WOOCOMMERCE_CONFIG.BASE_URL}/wp-json/wp/v2/users?search=${encodeURIComponent(email)}`;
+    const auth = btoa(
+      `${WOOCOMMERCE_CONFIG.CONSUMER_KEY}:${WOOCOMMERCE_CONFIG.CONSUMER_SECRET}`
+    );
+
+    const response = await fetch(apiUrl, {
+      method: "GET",
+      headers: {
+        Authorization: `Basic ${auth}`,
+      },
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const users = await response.json();
+    if (users && users.length > 0) {
+      return users[0] as WordPressUser;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error("Error fetching WordPress user:", error);
+    return null;
+  }
 };
 
 const createWooCommerceOrder = async (
@@ -198,7 +303,7 @@ const updateWooCommerceOrderStatus = async (
 export default function Checkout(): React.ReactElement {
   const { items, clear } = useCart();
   const router = useRouter();
-  const { user } = useAuth(); // ✅ Get logged-in user
+  const { user } = useAuth();
   const { trackInitiateCheckout, trackAddPaymentInfo, trackPurchase } =
     useFacebookPixel();
 
@@ -238,7 +343,6 @@ export default function Checkout(): React.ReactElement {
   const [step, setStep] = useState<"form" | "processing">("form");
   const [errors, setErrors] = useState<Partial<FormData>>({});
 
-  // ✅ Auto-fill form if user is logged in
   useEffect(() => {
     if (user) {
       setForm((prev) => ({
@@ -397,6 +501,33 @@ export default function Checkout(): React.ReactElement {
     return [];
   };
 
+  // ✅ UPDATED: Get or create customer ID
+  const getOrCreateCustomerId = async (): Promise<number> => {
+    // If user is logged in, return their ID
+    if (user && user.id) {
+      return user.id;
+    }
+
+    // For guest users, try to create/get WordPress account
+    try {
+      const wpUser = await createWordPressUser(
+        form.email,
+        form.name,
+        form.phone
+      );
+      
+      if (wpUser && wpUser.id) {
+        console.log("WordPress account created/found:", wpUser.id);
+        return wpUser.id;
+      }
+    } catch (error) {
+      console.error("Failed to create WordPress user:", error);
+    }
+
+    // Fallback to 0 (guest)
+    return 0;
+  };
+
   const handleCODSubmit = async (): Promise<void> => {
     if (!validateForm()) {
       toast({
@@ -413,6 +544,9 @@ export default function Checkout(): React.ReactElement {
     try {
       const fullAddress = `${form.address}, ${form.city}, ${form.state} - ${form.pincode}`;
 
+      // ✅ Get or create customer ID
+      const customerId = await getOrCreateCustomerId();
+
       const shippingLines = [];
       if (codCharges > 0) {
         shippingLines.push({
@@ -426,10 +560,10 @@ export default function Checkout(): React.ReactElement {
         payment_method: "cod",
         payment_method_title: "Cash on Delivery (COD) - ₹100 Extra",
         status: "processing",
-        customer_id: user ? user.id : 0, // ✅ Link to user account if logged in
+        customer_id: customerId,
         billing: {
-          first_name: form.name,
-          last_name: "",
+          first_name: form.name.split(" ")[0] || form.name,
+          last_name: form.name.split(" ").slice(1).join(" ") || "",
           address_1: form.address,
           address_2: "",
           city: form.city,
@@ -440,8 +574,8 @@ export default function Checkout(): React.ReactElement {
           phone: form.phone,
         },
         shipping: {
-          first_name: form.name,
-          last_name: "",
+          first_name: form.name.split(" ")[0] || form.name,
+          last_name: form.name.split(" ").slice(1).join(" ") || "",
           address_1: form.address,
           address_2: "",
           city: form.city,
@@ -473,7 +607,8 @@ export default function Checkout(): React.ReactElement {
           { key: "cod_charges", value: codCharges.toString() },
           { key: "final_total", value: finalTotal.toString() },
           { key: "payment_method", value: "cod" },
-          { key: "user_type", value: user ? "registered" : "guest" }, // ✅ Track user type
+          { key: "user_type", value: user ? "registered" : (customerId > 0 ? "auto_registered" : "guest") },
+          { key: "customer_id", value: customerId.toString() },
           ...(appliedCoupon
             ? [
                 { key: "coupon_code", value: appliedCoupon },
@@ -500,12 +635,11 @@ export default function Checkout(): React.ReactElement {
 
       toast({
         title: "Order Placed Successfully!",
-        description: `Order #${wooOrder.id} confirmed. Pay ₹${finalTotal.toFixed(2)} cash on delivery.`,
+        description: `Order #${wooOrder.id} confirmed. ${customerId > 0 && !user ? "Account created! Check your email." : ""}`,
       });
 
       setTimeout(() => {
-        // ✅ Redirect based on user status
-        if (user) {
+        if (user || customerId > 0) {
           router.push(`/dashboard/orders/${wooOrder.id}`);
         } else {
           router.push(`/order-confirmation?wcOrderId=${wooOrder.id}&cod=true`);
@@ -547,7 +681,6 @@ export default function Checkout(): React.ReactElement {
       });
 
       setTimeout(() => {
-        // ✅ Redirect based on user status
         if (user) {
           router.push(`/dashboard/orders/${wooOrder.id}`);
         } else {
@@ -678,15 +811,18 @@ export default function Checkout(): React.ReactElement {
 
       const fullAddress = `${form.address}, ${form.city}, ${form.state} - ${form.pincode}`;
 
+      // ✅ Get or create customer ID
+      const customerId = await getOrCreateCustomerId();
+
       const orderData: Record<string, unknown> = {
         payment_method: "razorpay",
         payment_method_title:
           "Razorpay (Credit Card/Debit Card/NetBanking/UPI)",
         status: "pending",
-        customer_id: user ? user.id : 0, // ✅ Link to user account if logged in
+        customer_id: customerId,
         billing: {
-          first_name: form.name,
-          last_name: "",
+          first_name: form.name.split(" ")[0] || form.name,
+          last_name: form.name.split(" ").slice(1).join(" ") || "",
           address_1: form.address,
           address_2: "",
           city: form.city,
@@ -697,8 +833,8 @@ export default function Checkout(): React.ReactElement {
           phone: form.phone,
         },
         shipping: {
-          first_name: form.name,
-          last_name: "",
+          first_name: form.name.split(" ")[0] || form.name,
+          last_name: form.name.split(" ").slice(1).join(" ") || "",
           address_1: form.address,
           address_2: "",
           city: form.city,
@@ -727,7 +863,8 @@ export default function Checkout(): React.ReactElement {
           { key: "original_subtotal", value: total.toString() },
           { key: "delivery_charges", value: "0" },
           { key: "final_total", value: finalTotal.toString() },
-          { key: "user_type", value: user ? "registered" : "guest" }, // ✅ Track user type
+          { key: "user_type", value: user ? "registered" : (customerId > 0 ? "auto_registered" : "guest") },
+          { key: "customer_id", value: customerId.toString() },
           ...(appliedCoupon
             ? [
                 { key: "coupon_code", value: appliedCoupon },
