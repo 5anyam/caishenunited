@@ -3,7 +3,7 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "../../../lib/cart";
-import { useAuth } from "../../../lib/AuthContext";
+import { useAuth } from "../../../lib/AuthContext"; // âœ… Auth integration
 import { toast } from "../../../hooks/use-toast";
 import { useFacebookPixel } from "../../../hooks/useFacebookPixel";
 import type { CartItem } from "../../../lib/facebook-pixel";
@@ -42,14 +42,6 @@ interface WooCommerceOrder {
   status: string;
   total: string;
   payment_url?: string;
-}
-
-interface WordPressUser {
-  id: number;
-  username: string;
-  email: string;
-  first_name: string;
-  last_name: string;
 }
 
 interface RazorpayHandlerResponse {
@@ -115,103 +107,6 @@ const loadRazorpayScript = (): Promise<boolean> => {
     script.onerror = () => resolve(false);
     document.body.appendChild(script);
   });
-};
-
-// ✅ NEW: Create WordPress User Account
-const createWordPressUser = async (
-  email: string,
-  name: string,
-  phone: string
-): Promise<WordPressUser | null> => {
-  try {
-    const apiUrl = `${WOOCOMMERCE_CONFIG.BASE_URL}/wp-json/wp/v2/users`;
-    const auth = btoa(
-      `${WOOCOMMERCE_CONFIG.CONSUMER_KEY}:${WOOCOMMERCE_CONFIG.CONSUMER_SECRET}`
-    );
-
-    const nameParts = name.trim().split(" ");
-    const firstName = nameParts[0] || "";
-    const lastName = nameParts.slice(1).join(" ") || "";
-    const username = email.split("@")[0] + "_" + Date.now();
-    
-    // Generate random password
-    const password = Math.random().toString(36).slice(-10) + Math.random().toString(36).slice(-10).toUpperCase();
-
-    const userData = {
-      username: username,
-      email: email,
-      password: password,
-      first_name: firstName,
-      last_name: lastName,
-      roles: ["customer"],
-      meta: {
-        billing_phone: phone,
-      },
-    };
-
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Basic ${auth}`,
-      },
-      body: JSON.stringify(userData),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      
-      // Check if user already exists
-      if (response.status === 400 && 
-          (errorData?.code === "existing_user_email" || 
-           errorData?.code === "existing_user_login")) {
-        // Try to get existing user by email
-        return await getWordPressUserByEmail(email);
-      }
-      
-      console.error("Failed to create WordPress user:", errorData);
-      return null;
-    }
-
-    const user = await response.json();
-    return user as WordPressUser;
-  } catch (error) {
-    console.error("Error creating WordPress user:", error);
-    return null;
-  }
-};
-
-// ✅ NEW: Get existing WordPress user by email
-const getWordPressUserByEmail = async (
-  email: string
-): Promise<WordPressUser | null> => {
-  try {
-    const apiUrl = `${WOOCOMMERCE_CONFIG.BASE_URL}/wp-json/wp/v2/users?search=${encodeURIComponent(email)}`;
-    const auth = btoa(
-      `${WOOCOMMERCE_CONFIG.CONSUMER_KEY}:${WOOCOMMERCE_CONFIG.CONSUMER_SECRET}`
-    );
-
-    const response = await fetch(apiUrl, {
-      method: "GET",
-      headers: {
-        Authorization: `Basic ${auth}`,
-      },
-    });
-
-    if (!response.ok) {
-      return null;
-    }
-
-    const users = await response.json();
-    if (users && users.length > 0) {
-      return users[0] as WordPressUser;
-    }
-    
-    return null;
-  } catch (error) {
-    console.error("Error fetching WordPress user:", error);
-    return null;
-  }
 };
 
 const createWooCommerceOrder = async (
@@ -303,7 +198,7 @@ const updateWooCommerceOrderStatus = async (
 export default function Checkout(): React.ReactElement {
   const { items, clear } = useCart();
   const router = useRouter();
-  const { user } = useAuth();
+  const { user } = useAuth(); // âœ… Get logged-in user
   const { trackInitiateCheckout, trackAddPaymentInfo, trackPurchase } =
     useFacebookPixel();
 
@@ -343,6 +238,7 @@ export default function Checkout(): React.ReactElement {
   const [step, setStep] = useState<"form" | "processing">("form");
   const [errors, setErrors] = useState<Partial<FormData>>({});
 
+  // âœ… Auto-fill form if user is logged in
   useEffect(() => {
     if (user) {
       setForm((prev) => ({
@@ -402,7 +298,7 @@ export default function Checkout(): React.ReactElement {
         setCouponError("");
         toast({
           title: "Coupon Applied",
-          description: `You saved ₹${validation.discount}`,
+          description: `You saved â‚¹${validation.discount}`,
         });
       } else {
         setCouponError(validation.message);
@@ -501,33 +397,6 @@ export default function Checkout(): React.ReactElement {
     return [];
   };
 
-  // ✅ UPDATED: Get or create customer ID
-  const getOrCreateCustomerId = async (): Promise<number> => {
-    // If user is logged in, return their ID
-    if (user && user.id) {
-      return user.id;
-    }
-
-    // For guest users, try to create/get WordPress account
-    try {
-      const wpUser = await createWordPressUser(
-        form.email,
-        form.name,
-        form.phone
-      );
-      
-      if (wpUser && wpUser.id) {
-        console.log("WordPress account created/found:", wpUser.id);
-        return wpUser.id;
-      }
-    } catch (error) {
-      console.error("Failed to create WordPress user:", error);
-    }
-
-    // Fallback to 0 (guest)
-    return 0;
-  };
-
   const handleCODSubmit = async (): Promise<void> => {
     if (!validateForm()) {
       toast({
@@ -544,9 +413,6 @@ export default function Checkout(): React.ReactElement {
     try {
       const fullAddress = `${form.address}, ${form.city}, ${form.state} - ${form.pincode}`;
 
-      // ✅ Get or create customer ID
-      const customerId = await getOrCreateCustomerId();
-
       const shippingLines = [];
       if (codCharges > 0) {
         shippingLines.push({
@@ -558,12 +424,12 @@ export default function Checkout(): React.ReactElement {
 
       const orderData: Record<string, unknown> = {
         payment_method: "cod",
-        payment_method_title: "Cash on Delivery (COD) - ₹100 Extra",
+        payment_method_title: "Cash on Delivery (COD) - â‚¹100 Extra",
         status: "processing",
-        customer_id: customerId,
+        customer_id: user ? user.id : 0, // âœ… Link to user account if logged in
         billing: {
-          first_name: form.name.split(" ")[0] || form.name,
-          last_name: form.name.split(" ").slice(1).join(" ") || "",
+          first_name: form.name,
+          last_name: "",
           address_1: form.address,
           address_2: "",
           city: form.city,
@@ -574,8 +440,8 @@ export default function Checkout(): React.ReactElement {
           phone: form.phone,
         },
         shipping: {
-          first_name: form.name.split(" ")[0] || form.name,
-          last_name: form.name.split(" ").slice(1).join(" ") || "",
+          first_name: form.name,
+          last_name: "",
           address_1: form.address,
           address_2: "",
           city: form.city,
@@ -595,9 +461,9 @@ export default function Checkout(): React.ReactElement {
           (form.notes ? "\n\n" : "") +
           `WhatsApp: ${form.whatsapp}\n` +
           `Full Address: ${fullAddress}` +
-          `\nCOD Charges: ₹${codCharges}` +
+          `\nCOD Charges: â‚¹${codCharges}` +
           (appliedCoupon
-            ? `\nCoupon Applied: ${appliedCoupon} (₹${couponDiscount} discount)`
+            ? `\nCoupon Applied: ${appliedCoupon} (â‚¹${couponDiscount} discount)`
             : ""),
         meta_data: [
           { key: "whatsapp_number", value: form.whatsapp },
@@ -607,8 +473,7 @@ export default function Checkout(): React.ReactElement {
           { key: "cod_charges", value: codCharges.toString() },
           { key: "final_total", value: finalTotal.toString() },
           { key: "payment_method", value: "cod" },
-          { key: "user_type", value: user ? "registered" : (customerId > 0 ? "auto_registered" : "guest") },
-          { key: "customer_id", value: customerId.toString() },
+          { key: "user_type", value: user ? "registered" : "guest" }, // âœ… Track user type
           ...(appliedCoupon
             ? [
                 { key: "coupon_code", value: appliedCoupon },
@@ -635,11 +500,12 @@ export default function Checkout(): React.ReactElement {
 
       toast({
         title: "Order Placed Successfully!",
-        description: `Order #${wooOrder.id} confirmed. ${customerId > 0 && !user ? "Account created! Check your email." : ""}`,
+        description: `Order #${wooOrder.id} confirmed. Pay â‚¹${finalTotal.toFixed(2)} cash on delivery.`,
       });
 
       setTimeout(() => {
-        if (user || customerId > 0) {
+        // âœ… Redirect based on user status
+        if (user) {
           router.push(`/dashboard/orders/${wooOrder.id}`);
         } else {
           router.push(`/order-confirmation?wcOrderId=${wooOrder.id}&cod=true`);
@@ -681,6 +547,7 @@ export default function Checkout(): React.ReactElement {
       });
 
       setTimeout(() => {
+        // âœ… Redirect based on user status
         if (user) {
           router.push(`/dashboard/orders/${wooOrder.id}`);
         } else {
@@ -811,18 +678,15 @@ export default function Checkout(): React.ReactElement {
 
       const fullAddress = `${form.address}, ${form.city}, ${form.state} - ${form.pincode}`;
 
-      // ✅ Get or create customer ID
-      const customerId = await getOrCreateCustomerId();
-
       const orderData: Record<string, unknown> = {
         payment_method: "razorpay",
         payment_method_title:
           "Razorpay (Credit Card/Debit Card/NetBanking/UPI)",
         status: "pending",
-        customer_id: customerId,
+        customer_id: user ? user.id : 0, // âœ… Link to user account if logged in
         billing: {
-          first_name: form.name.split(" ")[0] || form.name,
-          last_name: form.name.split(" ").slice(1).join(" ") || "",
+          first_name: form.name,
+          last_name: "",
           address_1: form.address,
           address_2: "",
           city: form.city,
@@ -833,8 +697,8 @@ export default function Checkout(): React.ReactElement {
           phone: form.phone,
         },
         shipping: {
-          first_name: form.name.split(" ")[0] || form.name,
-          last_name: form.name.split(" ").slice(1).join(" ") || "",
+          first_name: form.name,
+          last_name: "",
           address_1: form.address,
           address_2: "",
           city: form.city,
@@ -855,7 +719,7 @@ export default function Checkout(): React.ReactElement {
           `WhatsApp: ${form.whatsapp}\n` +
           `Full Address: ${fullAddress}` +
           (appliedCoupon
-            ? `\nCoupon Applied: ${appliedCoupon} (₹${couponDiscount} discount)`
+            ? `\nCoupon Applied: ${appliedCoupon} (â‚¹${couponDiscount} discount)`
             : ""),
         meta_data: [
           { key: "whatsapp_number", value: form.whatsapp },
@@ -863,8 +727,7 @@ export default function Checkout(): React.ReactElement {
           { key: "original_subtotal", value: total.toString() },
           { key: "delivery_charges", value: "0" },
           { key: "final_total", value: finalTotal.toString() },
-          { key: "user_type", value: user ? "registered" : (customerId > 0 ? "auto_registered" : "guest") },
-          { key: "customer_id", value: customerId.toString() },
+          { key: "user_type", value: user ? "registered" : "guest" }, // âœ… Track user type
           ...(appliedCoupon
             ? [
                 { key: "coupon_code", value: appliedCoupon },
@@ -972,7 +835,7 @@ export default function Checkout(): React.ReactElement {
             </p>
           </div>
 
-          {/* ✅ Login Prompt for Guest Users */}
+          {/* âœ… Login Prompt for Guest Users */}
           {!user && (
             <div className="mb-8 p-4 bg-[#fdf6e9] border border-[#9e734d]/20 rounded-lg">
               <p className="text-sm text-gray-700 font-light">
@@ -988,7 +851,7 @@ export default function Checkout(): React.ReactElement {
             </div>
           )}
 
-          {/* ✅ User Welcome Message */}
+          {/* âœ… User Welcome Message */}
           {user && (
             <div className="mb-8 p-4 bg-green-50 border border-green-200 rounded-lg">
               <p className="text-sm text-green-800 font-light">
@@ -1013,17 +876,17 @@ export default function Checkout(): React.ReactElement {
                       {item.name}
                     </span>
                     <span className="text-gray-500 text-xs ml-2">
-                      ×{item.quantity}
+                      Ã—{item.quantity}
                     </span>
                   </div>
                   <span className="font-light text-sm text-gray-900">
-                    ₹{(parseFloat(item.price) * item.quantity).toFixed(2)}
+                    â‚¹{(parseFloat(item.price) * item.quantity).toFixed(2)}
                   </span>
                 </div>
               ))}
               <div className="flex justify-between text-sm text-gray-900 items-center py-2 font-light">
                 <span>Subtotal</span>
-                <span>₹{total.toFixed(2)}</span>
+                <span>â‚¹{total.toFixed(2)}</span>
               </div>
 
               {appliedCoupon && (
@@ -1037,7 +900,7 @@ export default function Checkout(): React.ReactElement {
                       Remove
                     </button>
                   </div>
-                  <span>-₹{couponDiscount.toFixed(2)}</span>
+                  <span>-â‚¹{couponDiscount.toFixed(2)}</span>
                 </div>
               )}
 
@@ -1049,7 +912,7 @@ export default function Checkout(): React.ReactElement {
               {codCharges > 0 && (
                 <div className="flex justify-between text-sm text-orange-600 items-center py-2 font-light">
                   <span>COD Charges</span>
-                  <span>₹{codCharges}</span>
+                  <span>â‚¹{codCharges}</span>
                 </div>
               )}
 
@@ -1058,12 +921,12 @@ export default function Checkout(): React.ReactElement {
                   Total
                 </span>
                 <span className="text-lg font-light text-gray-900">
-                  ₹{finalTotal.toFixed(2)}
+                  â‚¹{finalTotal.toFixed(2)}
                 </span>
               </div>
             </div>
           </div>
-          {/* ✨ Premium Freebies Section - Add after Order Summary, before Coupon */}
+          {/* âœ¨ Premium Freebies Section - Add after Order Summary, before Coupon */}
 <div className="border-2 border-dashed border-emerald-300 p-6 mb-6 rounded-lg bg-gradient-to-r from-emerald-50 via-green-50 to-emerald-50 shadow-sm relative overflow-hidden">
   {/* Decorative elements */}
   <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-200/20 rounded-full blur-3xl" />
@@ -1080,10 +943,10 @@ export default function Checkout(): React.ReactElement {
         </div>
         <div>
           <h3 className="text-sm font-bold text-emerald-700 uppercase tracking-wider">
-            🎁 Free Premium Gifts
+            ðŸŽ Free Premium Gifts
           </h3>
           <p className="text-xs text-gray-600 font-light">
-            Worth ₹250 • Automatically Included
+            Worth â‚¹250 â€¢ Automatically Included
           </p>
         </div>
       </div>
@@ -1106,8 +969,8 @@ export default function Checkout(): React.ReactElement {
     </div>
     <div className="flex-1">
       <p className="text-sm font-semibold text-gray-900">Premium Sticky Pad</p>
-      <p className="text-[10px] text-gray-500 font-light">High-Quality • Reusable</p>
-      <p className="text-xs text-emerald-600 font-medium mt-0.5">Worth ₹125</p>
+      <p className="text-[10px] text-gray-500 font-light">High-Quality â€¢ Reusable</p>
+      <p className="text-xs text-emerald-600 font-medium mt-0.5">Worth â‚¹125</p>
     </div>
   </div>
 
@@ -1124,8 +987,8 @@ export default function Checkout(): React.ReactElement {
     </div>
     <div className="flex-1">
       <p className="text-sm font-semibold text-gray-900">Cable Protector</p>
-      <p className="text-[10px] text-gray-500 font-light">Durable • Long-lasting</p>
-      <p className="text-xs text-emerald-600 font-medium mt-0.5">Worth ₹125</p>
+      <p className="text-[10px] text-gray-500 font-light">Durable â€¢ Long-lasting</p>
+      <p className="text-xs text-emerald-600 font-medium mt-0.5">Worth â‚¹125</p>
     </div>
   </div>
 </div>
@@ -1145,7 +1008,7 @@ export default function Checkout(): React.ReactElement {
 
           {/* Coupon Section */}
           <div className="border border-gray-200 rounded-lg bg-white shadow-sm overflow-hidden mb-6">
-  {/* ✨ Promotional Banner */}
+  {/* âœ¨ Promotional Banner */}
   <div className="bg-gradient-to-r from-[#9e734d] to-[#8a6342] p-4 text-center">
     <div className="flex items-center justify-center gap-2 mb-1">
       <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -1194,7 +1057,7 @@ export default function Checkout(): React.ReactElement {
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
             </svg>
             <p className="text-green-600 text-xs font-medium">
-              Coupon {appliedCoupon} applied! You saved ₹{couponDiscount}
+              Coupon {appliedCoupon} applied! You saved â‚¹{couponDiscount}
             </p>
           </div>
         )}
@@ -1253,7 +1116,7 @@ export default function Checkout(): React.ReactElement {
 
               <div>
                 <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">
-                  Email * {/* ✅ Email mandatory for all users */}
+                  Email * {/* âœ… Email mandatory for all users */}
                 </label>
                 <input
                   name="email"
@@ -1267,7 +1130,7 @@ export default function Checkout(): React.ReactElement {
                   placeholder="your@email.com"
                   value={form.email}
                   onChange={onChange}
-                  readOnly={!!user} // ✅ Read-only if logged in
+                  readOnly={!!user} // âœ… Read-only if logged in
                 />
                 {errors.email && (
                   <p className="text-red-500 text-xs mt-1 font-light">
@@ -1497,12 +1360,12 @@ export default function Checkout(): React.ReactElement {
                       : "bg-white text-gray-900 border-gray-300 hover:border-[#9e734d]"
                   }`}
                 >
-                  Cash on Delivery (+₹100)
+                  Cash on Delivery (+â‚¹100)
                 </button>
               </div>
               {paymentMethod === "cod" && (
                 <p className="text-xs text-orange-600 mt-2 font-light text-center">
-                  ₹100 extra charges for COD orders
+                  â‚¹100 extra charges for COD orders
                 </p>
               )}
             </div>
@@ -1515,16 +1378,16 @@ export default function Checkout(): React.ReactElement {
                 </span>
                 <div className="text-right">
                   <span className="text-xl font-light text-gray-900">
-                    ₹{finalTotal.toFixed(2)}
+                    â‚¹{finalTotal.toFixed(2)}
                   </span>
                   {appliedCoupon && (
                     <p className="text-xs text-[#9e734d] mt-1 font-light">
-                      Saved ₹{couponDiscount}
+                      Saved â‚¹{couponDiscount}
                     </p>
                   )}
                   {codCharges > 0 && (
                     <p className="text-xs text-orange-600 mt-1 font-light">
-                      Includes ₹{codCharges} COD charges
+                      Includes â‚¹{codCharges} COD charges
                     </p>
                   )}
                 </div>
@@ -1549,9 +1412,9 @@ export default function Checkout(): React.ReactElement {
                     : "Processing..."}
                 </div>
               ) : paymentMethod === "cod" ? (
-                `Place COD Order (₹${finalTotal.toFixed(2)})`
+                `Place COD Order (â‚¹${finalTotal.toFixed(2)})`
               ) : (
-                `Pay ₹${finalTotal.toFixed(2)} Securely`
+                `Pay â‚¹${finalTotal.toFixed(2)} Securely`
               )}
             </button>
           </form>
@@ -1559,9 +1422,9 @@ export default function Checkout(): React.ReactElement {
           {/* Trust Signals */}
           <div className="mt-8 text-center">
             <div className="flex items-center justify-center space-x-6 text-gray-500 text-xs font-light">
-              <span>• SSL Secured</span>
-              <span>• Encrypted Payments</span>
-              <span>• Free Delivery</span>
+              <span>â€¢ SSL Secured</span>
+              <span>â€¢ Encrypted Payments</span>
+              <span>â€¢ Free Delivery</span>
             </div>
           </div>
         </div>
