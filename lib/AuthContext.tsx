@@ -2,7 +2,8 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { loginCustomer, registerCustomer } from './woocommerceApi';
+// 👇 1. Yahan se 'registerCustomer' wapis import karo, lekin login hata do kyunki login hum plugin se kar rahe hain
+import { registerCustomer } from './woocommerceApi'; 
 
 interface User {
   id: number;
@@ -20,21 +21,6 @@ interface RegisterData {
   last_name?: string;
 }
 
-interface LoginResponse {
-  token: string;
-  user_email: string;
-  user_nicename: string;
-  user_display_name: string;
-  data?: {
-    id?: number;
-    user_id?: number;
-    ID?: number;
-  };
-  user_id?: number;
-  id?: number;
-  ID?: number;
-}
-
 interface AuthContextType {
   user: User | null;
   loading: boolean;
@@ -44,14 +30,6 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// Safe Base64 encoder for browser (btoa) / Node (Buffer)
-const encodeBasicAuth = (value: string) => {
-  if (typeof window === 'undefined') {
-    return Buffer.from(value, 'utf8').toString('base64');
-  }
-  return window.btoa(value);
-};
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -72,62 +50,54 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (username: string, password: string) => {
     try {
-      const response = (await loginCustomer(username, password)) as LoginResponse;
-
-      console.log('🔐 Login response:', response);
-
-      const authString =
-        'ck_9a1fbb9afa025bbe8591eb4322c3e1c68e1b1002:cs_42d947c7a1acb0c0ca89ca17b35629a530097e44';
-      const basicToken = encodeBasicAuth(authString);
-
-      const customerResponse = await fetch(
-        `https://cms.caishenunited.com/wp-json/wc/v3/customers?email=${encodeURIComponent(
-          response.user_email,
-        )}`,
-        {
-          headers: {
-            Authorization: `Basic ${basicToken}`,
-          },
+      // Direct fetch to our new Custom Plugin
+      const response = await fetch('https://cms.caishenunited.com/wp-json/custom-api/v1/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      });
 
-      if (!customerResponse.ok) {
-        throw new Error('Failed to fetch customer details');
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || 'Login failed. Please check credentials.');
       }
-
-      const customers = await customerResponse.json();
-      console.log('👥 Customer data:', customers);
-
-      if (!customers || !Array.isArray(customers) || customers.length === 0) {
-        throw new Error('Customer not found');
-      }
-
-      const customer = customers[0];
 
       const userData: User = {
-        id: customer.id,
-        email: customer.email,
-        username: customer.username || response.user_nicename,
-        first_name: customer.first_name || '',
-        last_name: customer.last_name || '',
+        id: result.data.id,
+        email: result.data.email,
+        username: result.data.username,
+        first_name: result.data.first_name,
+        last_name: result.data.last_name,
       };
-
-      console.log('✅ User data created:', userData);
 
       setUser(userData);
       Cookies.set('caishen_user', JSON.stringify(userData), { expires: 7 });
-      Cookies.set('caishen_token', response.token, { expires: 7 });
+      Cookies.set('caishen_token', result.data.token, { expires: 7 });
+
     } catch (error) {
       console.error('Login error:', error);
       throw error;
     }
   };
 
+  // 👇 2. Register function updated (Ab 'data' use ho raha hai, error hat jayega)
   const register = async (data: RegisterData) => {
     try {
-      const newUser = await registerCustomer(data);
+      console.log('Registering user:', data.username);
+      
+      // Purana register logic use karenge
+      const newUser = await registerCustomer(data); 
       console.log('📝 Registration response:', newUser);
+      
+      // Register hone ke baad naye plugin se auto-login
       await login(data.username, data.password);
+      
     } catch (error) {
       console.error('Registration error:', error);
       throw error;
