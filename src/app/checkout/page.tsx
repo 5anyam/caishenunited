@@ -298,7 +298,7 @@ export default function Checkout(): React.ReactElement {
         setCouponError("");
         toast({
           title: "Coupon Applied",
-          description: `You saved â‚¹${validation.discount}`,
+          description: `You saved ₹${validation.discount}`,
         });
       } else {
         setCouponError(validation.message);
@@ -424,7 +424,7 @@ export default function Checkout(): React.ReactElement {
 
       const orderData: Record<string, unknown> = {
         payment_method: "cod",
-        payment_method_title: "Cash on Delivery (COD) - â‚¹100 Extra",
+        payment_method_title: "Cash on Delivery (COD) - ₹100 Extra",
         status: "processing",
         customer_id: user ? user.id : 0, // âœ… Link to user account if logged in
         billing: {
@@ -461,9 +461,9 @@ export default function Checkout(): React.ReactElement {
           (form.notes ? "\n\n" : "") +
           `WhatsApp: ${form.whatsapp}\n` +
           `Full Address: ${fullAddress}` +
-          `\nCOD Charges: â‚¹${codCharges}` +
+          `\nCOD Charges: ₹${codCharges}` +
           (appliedCoupon
-            ? `\nCoupon Applied: ${appliedCoupon} (â‚¹${couponDiscount} discount)`
+            ? `\nCoupon Applied: ${appliedCoupon} (₹${couponDiscount} discount)`
             : ""),
         meta_data: [
           { key: "whatsapp_number", value: form.whatsapp },
@@ -500,7 +500,7 @@ export default function Checkout(): React.ReactElement {
 
       toast({
         title: "Order Placed Successfully!",
-        description: `Order #${wooOrder.id} confirmed. Pay â‚¹${finalTotal.toFixed(2)} cash on delivery.`,
+        description: `Order #${wooOrder.id} confirmed. Pay ₹${finalTotal.toFixed(2)} cash on delivery.`,
       });
 
       setTimeout(() => {
@@ -719,7 +719,7 @@ export default function Checkout(): React.ReactElement {
           `WhatsApp: ${form.whatsapp}\n` +
           `Full Address: ${fullAddress}` +
           (appliedCoupon
-            ? `\nCoupon Applied: ${appliedCoupon} (â‚¹${couponDiscount} discount)`
+            ? `\nCoupon Applied: ${appliedCoupon} (₹${couponDiscount} discount)`
             : ""),
         meta_data: [
           { key: "whatsapp_number", value: form.whatsapp },
@@ -880,13 +880,13 @@ export default function Checkout(): React.ReactElement {
                     </span>
                   </div>
                   <span className="font-light text-sm text-gray-900">
-                    â‚¹{(parseFloat(item.price) * item.quantity).toFixed(2)}
+                    ₹{(parseFloat(item.price) * item.quantity).toFixed(2)}
                   </span>
                 </div>
               ))}
               <div className="flex justify-between text-sm text-gray-900 items-center py-2 font-light">
                 <span>Subtotal</span>
-                <span>â‚¹{total.toFixed(2)}</span>
+                <span>₹{total.toFixed(2)}</span>
               </div>
 
               {appliedCoupon && (
@@ -900,7 +900,7 @@ export default function Checkout(): React.ReactElement {
                       Remove
                     </button>
                   </div>
-                  <span>-â‚¹{couponDiscount.toFixed(2)}</span>
+                  <span>-₹{couponDiscount.toFixed(2)}</span>
                 </div>
               )}
 
@@ -912,7 +912,7 @@ export default function Checkout(): React.ReactElement {
               {codCharges > 0 && (
                 <div className="flex justify-between text-sm text-orange-600 items-center py-2 font-light">
                   <span>COD Charges</span>
-                  <span>â‚¹{codCharges}</span>
+                  <span>₹{codCharges}</span>
                 </div>
               )}
 
@@ -921,7 +921,7 @@ export default function Checkout(): React.ReactElement {
                   Total
                 </span>
                 <span className="text-lg font-light text-gray-900">
-                  â‚¹{finalTotal.toFixed(2)}
+                  ₹{finalTotal.toFixed(2)}
                 </span>
               </div>
             </div>
@@ -946,7 +946,7 @@ export default function Checkout(): React.ReactElement {
             ðŸŽ Free Premium Gifts
           </h3>
           <p className="text-xs text-gray-600 font-light">
-            Worth â‚¹250 â€¢ Automatically Included
+            Worth ₹250 â€¢ Automatically Included
           </p>
         </div>
       </div>
@@ -970,7 +970,7 @@ export default function Checkout(): React.ReactElement {
     <div className="flex-1">
       <p className="text-sm font-semibold text-gray-900">Premium Sticky Pad</p>
       <p className="text-[10px] text-gray-500 font-light">High-Quality â€¢ Reusable</p>
-      <p className="text-xs text-emerald-600 font-medium mt-0.5">Worth â‚¹125</p>
+      <p className="text-xs text-emerald-600 font-medium mt-0.5">Worth ₹125</p>
     </div>
   </div>
 
@@ -988,7 +988,7 @@ export default function Checkout(): React.ReactElement {
     <div className="flex-1">
       <p className="text-sm font-semibold text-gray-900">Cable Protector</p>
       <p className="text-[10px] text-gray-500 font-light">Durable â€¢ Long-lasting</p>
-      <p className="text-xs text-emerald-600 font-medium mt-0.5">Worth â‚¹125</p>
+      <p className="text-xs text-emerald-600 font-medium mt-0.5">Worth ₹125</p>
     </div>
   </div>
 </div>
@@ -1057,7 +1057,7 @@ export default function Checkout(): React.ReactElement {
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
             </svg>
             <p className="text-green-600 text-xs font-medium">
-              Coupon {appliedCoupon} applied! You saved â‚¹{couponDiscount}
+              Coupon {appliedCoupon} applied! You saved ₹{couponDiscount}
             </p>
           </div>
         )}
@@ -1360,12 +1360,12 @@ export default function Checkout(): React.ReactElement {
                       : "bg-white text-gray-900 border-gray-300 hover:border-[#9e734d]"
                   }`}
                 >
-                  Cash on Delivery (+â‚¹100)
+                  Cash on Delivery (+₹100)
                 </button>
               </div>
               {paymentMethod === "cod" && (
                 <p className="text-xs text-orange-600 mt-2 font-light text-center">
-                  â‚¹100 extra charges for COD orders
+                  ₹100 extra charges for COD orders
                 </p>
               )}
             </div>
@@ -1378,16 +1378,16 @@ export default function Checkout(): React.ReactElement {
                 </span>
                 <div className="text-right">
                   <span className="text-xl font-light text-gray-900">
-                    â‚¹{finalTotal.toFixed(2)}
+                    ₹{finalTotal.toFixed(2)}
                   </span>
                   {appliedCoupon && (
                     <p className="text-xs text-[#9e734d] mt-1 font-light">
-                      Saved â‚¹{couponDiscount}
+                      Saved ₹{couponDiscount}
                     </p>
                   )}
                   {codCharges > 0 && (
                     <p className="text-xs text-orange-600 mt-1 font-light">
-                      Includes â‚¹{codCharges} COD charges
+                      Includes ₹{codCharges} COD charges
                     </p>
                   )}
                 </div>
@@ -1412,9 +1412,9 @@ export default function Checkout(): React.ReactElement {
                     : "Processing..."}
                 </div>
               ) : paymentMethod === "cod" ? (
-                `Place COD Order (â‚¹${finalTotal.toFixed(2)})`
+                `Place COD Order (₹${finalTotal.toFixed(2)})`
               ) : (
-                `Pay â‚¹${finalTotal.toFixed(2)} Securely`
+                `Pay ₹${finalTotal.toFixed(2)} Securely`
               )}
             </button>
           </form>
