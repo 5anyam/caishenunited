@@ -876,7 +876,7 @@ export default function Checkout(): React.ReactElement {
                       {item.name}
                     </span>
                     <span className="text-gray-500 text-xs ml-2">
-                      Ã—{item.quantity}
+                      {item.quantity}
                     </span>
                   </div>
                   <span className="font-light text-sm text-gray-900">
@@ -943,10 +943,10 @@ export default function Checkout(): React.ReactElement {
         </div>
         <div>
           <h3 className="text-sm font-bold text-emerald-700 uppercase tracking-wider">
-            ðŸŽ Free Premium Gifts
+            Free Premium Gifts
           </h3>
           <p className="text-xs text-gray-600 font-light">
-            Worth ₹250 â€¢ Automatically Included
+            Worth ₹250 Automatically Included
           </p>
         </div>
       </div>
@@ -969,7 +969,7 @@ export default function Checkout(): React.ReactElement {
     </div>
     <div className="flex-1">
       <p className="text-sm font-semibold text-gray-900">Premium Sticky Pad</p>
-      <p className="text-[10px] text-gray-500 font-light">High-Quality â€¢ Reusable</p>
+      <p className="text-[10px] text-gray-500 font-light">High-Quality and Reusable</p>
       <p className="text-xs text-emerald-600 font-medium mt-0.5">Worth ₹125</p>
     </div>
   </div>
@@ -987,7 +987,7 @@ export default function Checkout(): React.ReactElement {
     </div>
     <div className="flex-1">
       <p className="text-sm font-semibold text-gray-900">Cable Protector</p>
-      <p className="text-[10px] text-gray-500 font-light">Durable â€¢ Long-lasting</p>
+      <p className="text-[10px] text-gray-500 font-light">Durable and Long-lasting</p>
       <p className="text-xs text-emerald-600 font-medium mt-0.5">Worth ₹125</p>
     </div>
   </div>
@@ -1116,7 +1116,7 @@ export default function Checkout(): React.ReactElement {
 
               <div>
                 <label className="block text-xs font-light text-gray-600 mb-2 uppercase tracking-widest">
-                  Email * {/* âœ… Email mandatory for all users */}
+                  Email * {/* Email mandatory for all users */}
                 </label>
                 <input
                   name="email"
@@ -1130,7 +1130,7 @@ export default function Checkout(): React.ReactElement {
                   placeholder="your@email.com"
                   value={form.email}
                   onChange={onChange}
-                  readOnly={!!user} // âœ… Read-only if logged in
+                  readOnly={!!user} // Read-only if logged in
                 />
                 {errors.email && (
                   <p className="text-red-500 text-xs mt-1 font-light">
