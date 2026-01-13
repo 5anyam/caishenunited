@@ -24,7 +24,7 @@ export default function AnnouncementBar() {
         <span className="font-semibold text-white px-2.5 py-1 bg-white/20 rounded-md shadow-sm">
         Get 10% OFF
         </span>
-        {' '} and get Flat 10% off with more Exciting Offers.{' '}
+        {' '} with more Exciting Offers.{' '}
         
       </span>
     </span>
