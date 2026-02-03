@@ -108,7 +108,7 @@ export default function AppleCollectionPage() {
     });
   }, [products, activeCategory]);
 
-  // HELPER: Get a representative image for a series category
+  // HELPER: Get a representative image for a series
   const getSeriesImage = (seriesId: string) => {
     if (!products) return null;
     const rep = products.find(p => detectSeries(p.name) === seriesId);
