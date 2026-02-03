@@ -24,16 +24,16 @@ export default function Footer() {
                 target="_blank"
                 className="flex items-center gap-2 px-6 py-2.5 bg-white text-black rounded hover:bg-gray-100 transition-colors group"
               >
-                <img src="https://static.vecteezy.com/system/resources/thumbnails/014/018/563/small/amazon-logo-on-transparent-background-free-vector.jpg"/>
+                <img src="https://static.vecteezy.com/system/resources/thumbnails/014/018/563/small/amazon-logo-on-transparent-background-free-vector.jpg" className="h-10"/>
                 <ExternalLink className="w-3 h-3 opacity-50 group-hover:translate-x-0.5 transition-transform" />
               </Link>
               
               <Link 
                 href="https://www.flipkart.com/search?q=Caishen%20United" 
                 target="_blank"
-                className="flex items-center gap-2 px-6 py-2.5 bg-[#2874f0] text-white rounded hover:bg-[#1e65d8] transition-colors group"
+                className="flex items-center gap-2 px-6 py-2.5 text-white rounded transition-colors group"
               >
-                <img src="https://1000logos.net/wp-content/uploads/2021/02/Flipkart-logo.png"/>
+                <img src="https://1000logos.net/wp-content/uploads/2021/02/Flipkart-logo.png" className="h-10"/>
                 <ExternalLink className="w-3 h-3 opacity-50 group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </div>
