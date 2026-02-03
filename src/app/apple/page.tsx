@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, ChevronRight, ArrowLeft, Smartphone, ShoppingBag, X } from 'lucide-react';
+import { Search, ChevronRight, ArrowLeft, Smartphone, X } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchProducts } from '../../../lib/woocommerceApi';
 import { productToSlug } from '../../../lib/slug';
@@ -21,11 +21,6 @@ const IPHONE_SERIES = [
   // { id: 'accessories', name: 'Accessories', icon: 'case', keywords: ['case', 'cover'] },
 ];
 
-const TOP_NAV_CHIPS = [
-  { id: 'devices', label: 'Devices', icon: <Smartphone className="w-3 h-3" />, active: true },
-  { id: 'glaze', label: 'Glaze Case', icon: <ShoppingBag className="w-3 h-3" />, active: false },
-  { id: 'magsafe', label: 'MagSafe', icon: <div className="w-3 h-3 rounded-full border border-current" />, active: false },
-];
 
 // --- TYPES ---
 interface Category {
@@ -166,29 +161,6 @@ export default function AppleCollectionPage() {
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           {searchInput && <X onClick={() => setSearchInput('')} className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 cursor-pointer" />}
         </div>
-
-        {/* Chip Navigation (Horizontal Scroll) */}
-        {!activeCategory && (
-          <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2">
-            <button className="flex-shrink-0 w-10 h-10 rounded-full border border-black flex items-center justify-center">
-               <span className="block w-1.5 h-1.5 bg-black rounded-sm mb-0.5" />
-               <span className="block w-1.5 h-1.5 bg-black rounded-sm" />
-            </button>
-            {TOP_NAV_CHIPS.map(chip => (
-              <button 
-                key={chip.id}
-                className={`flex items-center gap-2 px-5 h-10 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                  chip.active 
-                    ? 'bg-black text-white' 
-                    : 'bg-white text-gray-900 border border-transparent'
-                }`}
-              >
-                {chip.icon}
-                {chip.label}
-              </button>
-            ))}
-          </div>
-        )}
 
         {/* Header Title when deeper in nav */}
         {activeCategory && (
