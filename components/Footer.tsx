@@ -1,10 +1,49 @@
 import Link from "next/link";
-import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
-import { Mail, Phone, MapPin, Shield } from "lucide-react";
+import { FaFacebookF, FaInstagram, FaYoutube, FaAmazon } from "react-icons/fa";
+import { Mail, Phone, MapPin, Shield, ShoppingBag, ExternalLink } from "lucide-react";
 
 export default function Footer() {
   return (
     <footer className="bg-black text-white border-t border-gray-800">
+      
+      {/* --- PRE-FOOTER: MARKETPLACES --- */}
+      <div className="border-b border-gray-800 bg-[#0F0F0F]">
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-3">
+              <ShoppingBag className="w-5 h-5 text-[#9e734d]" />
+              <div>
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Also Available On</h3>
+                <p className="text-xs text-gray-400 mt-1">Shop our premium collections on your favorite platforms</p>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-4">
+              <Link 
+                href="https://www.amazon.in/s?me=A2US963201569U&marketplaceID=A21TJRUUN4KGV" 
+                target="_blank"
+                className="flex items-center gap-2 px-6 py-2.5 bg-white text-black rounded hover:bg-gray-100 transition-colors group"
+              >
+                <FaAmazon className="text-lg" />
+                <span className="text-xs font-bold uppercase tracking-wide">Amazon</span>
+                <ExternalLink className="w-3 h-3 opacity-50 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+              
+              <Link 
+                href="https://www.flipkart.com/search?q=Caishen%20United" 
+                target="_blank"
+                className="flex items-center gap-2 px-6 py-2.5 bg-[#2874f0] text-white rounded hover:bg-[#1e65d8] transition-colors group"
+              >
+                <img src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/flipkart-plus_8d85f4.png" alt="Flipkart" className="h-4 w-auto object-contain brightness-0 invert" />
+                <span className="text-xs font-bold uppercase tracking-wide">Flipkart</span>
+                <ExternalLink className="w-3 h-3 opacity-50 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* --- END PRE-FOOTER --- */}
+
       <div className="max-w-7xl mx-auto px-4 py-12 sm:py-20">
         {/* Main Footer Content - 5 Columns */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-12 lg:gap-8">
@@ -26,7 +65,7 @@ export default function Footer() {
             {/* Trust Badge */}
             <div className="flex items-center gap-2 mb-6 text-[#9e734d]">
               <Shield className="w-4 h-4" />
-              <span className="text-[14px] uppercase tracking-wider font-bold">Sheild Your Device</span>
+              <span className="text-[14px] uppercase tracking-wider font-bold">Shield Your Device</span>
             </div>
             
             {/* Social Media Icons */}
@@ -66,6 +105,7 @@ export default function Footer() {
             </div>
           </div>
 
+
           {/* Column 2: Shop Links */}
           <div className="lg:col-span-1">
             <h4 className="text-[12px] font-bold text-[#9e734d] mb-4 sm:mb-6 uppercase tracking-[0.2em]">
@@ -99,6 +139,7 @@ export default function Footer() {
               </li>
             </ul>
           </div>
+
 
           {/* Column 3: Customer Service Links */}
           <div className="lg:col-span-1">
@@ -134,6 +175,7 @@ export default function Footer() {
             </ul>
           </div>
 
+
           {/* Column 4: Policies (Separate Column) */}
           <div className="lg:col-span-1">
             <h4 className="text-[12px] font-bold text-[#9e734d] mb-4 sm:mb-6 uppercase tracking-[0.2em]">
@@ -162,6 +204,7 @@ export default function Footer() {
               </li>
             </ul>
           </div>
+
 
           {/* Column 5: Contact Section */}
           <div className="lg:col-span-1">
@@ -200,6 +243,7 @@ export default function Footer() {
           </div>
         </div>
 
+
         {/* Newsletter Section */}
         <div className="mt-12 sm:mt-16 pt-8 sm:pt-12 border-t border-gray-800">
           <div className="max-w-2xl mx-auto text-center">
@@ -226,6 +270,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
+
 
       {/* Footer Bottom */}
       <div className="border-t border-gray-800 bg-[#0a0a0a]">

@@ -304,7 +304,7 @@ export default function Homepage() {
                 { 
                   name: 'Apple', 
                   models: 'iPhone 17 Pro, 16, 15 & more',
-                  link: '/shop/iphone-covers',
+                  link: '/apple',
                   logo: '/apple.svg',
                   bgColor: 'bg-gradient-to-br from-gray-50 to-gray-100',
                   hoverColor: 'hover:from-gray-100 hover:to-gray-200'
