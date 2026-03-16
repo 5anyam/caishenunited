@@ -76,7 +76,7 @@ const BannerSlider: React.FC = () => {
       <div
         className="w-full relative overflow-hidden"
         style={{
-          aspectRatio: typeof window !== 'undefined' && window.innerWidth < 768 ? '4/3' : '16/6'
+          aspectRatio: typeof window !== 'undefined' && window.innerWidth < 768 ? '4/3' : '16/7'
         }}
       >
         {/* Slides container */}
@@ -91,11 +91,11 @@ const BannerSlider: React.FC = () => {
               className="w-full h-full flex-shrink-0 relative group"
             >
               <img
-                src={banner.image}
-                alt={`Banner ${index + 1}`}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                loading={index === 0 ? 'eager' : 'lazy'}
-              />
+  src={banner.image}
+  alt={`Banner ${index + 1}`}
+  className="w-full h-full object-contain bg-black transition-transform duration-500 group-hover:scale-105"
+  loading={index === 0 ? 'eager' : 'lazy'}
+/>
             </Link>
           ))}
         </div>
