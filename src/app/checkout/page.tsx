@@ -267,7 +267,7 @@ export default function Checkout(): React.ReactElement {
     code: string
   ): { valid: boolean; discount: number; message: string } => {
     const upperCode = code.toUpperCase().trim();
-    if (upperCode === "NEWBEGIN10") {
+    if (upperCode === "NAVRATRI10") {
       return {
         valid: true,
         discount: Math.round(total * 0.1),
