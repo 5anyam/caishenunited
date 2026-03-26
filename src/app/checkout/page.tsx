@@ -276,6 +276,7 @@ export default function Checkout(): React.ReactElement {
     }
     return { valid: false, discount: 0, message: "Invalid coupon code" };
   };
+  
 
   const handleApplyCoupon = (): void => {
     if (!couponCode.trim()) {
