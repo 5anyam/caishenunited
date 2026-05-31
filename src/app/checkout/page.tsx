@@ -267,7 +267,7 @@ export default function Checkout(): React.ReactElement {
     code: string
   ): { valid: boolean; discount: number; message: string } => {
     const upperCode = code.toUpperCase().trim();
-    if (upperCode === "NAVRATRI10") {
+    if (upperCode === "CAISHEN10") {
       return {
         valid: true,
         discount: Math.round(total * 0.1),
@@ -1021,7 +1021,7 @@ export default function Checkout(): React.ReactElement {
       </h3>
     </div>
     <p className="text-white text-xs font-light leading-relaxed">
-      Use code <span className="font-bold bg-white/20 px-2 py-1 rounded mx-1">NAVRATRI10</span> and get
+      Use code <span className="font-bold bg-white/20 px-2 py-1 rounded mx-1">CAISHEN10</span> and get
       <span className="font-bold text-yellow-200"> Flat 10% OFF</span>
     </p>
     <p className="text-white/80 text-[10px] mt-1 font-light">
