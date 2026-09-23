@@ -24,7 +24,7 @@ export default function AnnouncementBar() {
         <span className="font-semibold text-white px-2.5 py-1 bg-white/20 rounded-md shadow-sm">
         Get 10% OFF
         </span>
-        {' '} with more Exciting Offers.{' '}
+        {' '} on orders of ₹399 &amp; above.{' '}
         
       </span>
     </span>

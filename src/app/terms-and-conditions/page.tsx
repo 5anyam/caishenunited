@@ -67,7 +67,7 @@ export default function TermsOfService() {
                 <div className="flex-1">
                   <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-3 md:mb-4">Payment & Order Processing</h2>
                   <p className="text-sm md:text-base text-gray-600 leading-relaxed mb-4">
-                    Payments are required to be successfully completed prior to order verification and dispatch, except for orders placed under the approved Cash on Delivery (COD) option. We accept various secure payment methods to ensure your convenience.
+                    All orders are prepaid. Payments are required to be successfully completed prior to order verification and dispatch. Cash on Delivery (COD) is not available. We accept various secure payment methods to ensure your convenience.
                   </p>
                 </div>
               </div>

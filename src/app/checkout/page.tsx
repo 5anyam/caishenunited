@@ -3,7 +3,7 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "../../../lib/cart";
-import { getFreeGiftStatus, FREE_GIFT_MIN_COVER_TOTAL, FREE_GIFT_MIN_COVER_QTY } from "../../../lib/freeGifts";
+import { getFreeGiftStatus, FREE_GIFT_MIN_COVER_TOTAL, FREE_GIFT_MIN_COVER_QTY, MIN_ORDER_FOR_OFFERS } from "../../../lib/freeGifts";
 import { useAuth } from "../../../lib/AuthContext"; // âœ… Auth integration
 import { toast } from "../../../hooks/use-toast";
 import { useFacebookPixel } from "../../../hooks/useFacebookPixel";
@@ -203,10 +203,6 @@ export default function Checkout(): React.ReactElement {
   const { trackInitiateCheckout, trackAddPaymentInfo, trackPurchase } =
     useFacebookPixel();
 
-  const [paymentMethod, setPaymentMethod] = useState<"razorpay" | "cod">(
-    "razorpay"
-  );
-
   const total = items.reduce(
     (sum, i) => sum + parseFloat(i.price) * i.quantity,
     0
@@ -215,7 +211,6 @@ export default function Checkout(): React.ReactElement {
   const freeGift = getFreeGiftStatus(items);
 
   const deliveryCharges = 0;
-  const codCharges = paymentMethod === "cod" ? 100 : 0;
 
   const [couponCode, setCouponCode] = useState<string>("");
   const [appliedCoupon, setAppliedCoupon] = useState<string>("");
@@ -224,7 +219,7 @@ export default function Checkout(): React.ReactElement {
   const [isApplyingCoupon, setIsApplyingCoupon] = useState<boolean>(false);
 
   const subtotalAfterCoupon = total - couponDiscount;
-  const finalTotal = subtotalAfterCoupon + deliveryCharges + codCharges;
+  const finalTotal = subtotalAfterCoupon + deliveryCharges;
 
   const [form, setForm] = useState<FormData>({
     name: "",
@@ -270,6 +265,13 @@ export default function Checkout(): React.ReactElement {
     code: string
   ): { valid: boolean; discount: number; message: string } => {
     const upperCode = code.toUpperCase().trim();
+    if (total < MIN_ORDER_FOR_OFFERS) {
+      return {
+        valid: false,
+        discount: 0,
+        message: `Coupons are valid on orders of ₹${MIN_ORDER_FOR_OFFERS} or more`,
+      };
+    }
     if (upperCode === "CAISHEN10") {
       return {
         valid: true,
@@ -401,137 +403,6 @@ export default function Checkout(): React.ReactElement {
     return [];
   };
 
-  const handleCODSubmit = async (): Promise<void> => {
-    if (!validateForm()) {
-      toast({
-        title: "Please fix the errors",
-        description: "Check all required fields",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setLoading(true);
-    setStep("processing");
-
-    try {
-      const fullAddress = `${form.address}, ${form.city}, ${form.state} - ${form.pincode}`;
-
-      const shippingLines = [];
-      if (codCharges > 0) {
-        shippingLines.push({
-          method_id: "cod",
-          method_title: "COD Handling Charges",
-          total: codCharges.toString(),
-        });
-      }
-
-      const orderData: Record<string, unknown> = {
-        payment_method: "cod",
-        payment_method_title: "Cash on Delivery (COD) - ₹100 Extra",
-        status: "processing",
-        customer_id: user ? user.id : 0, // âœ… Link to user account if logged in
-        billing: {
-          first_name: form.name,
-          last_name: "",
-          address_1: form.address,
-          address_2: "",
-          city: form.city,
-          state: form.state,
-          postcode: form.pincode,
-          country: "IN",
-          email: form.email,
-          phone: form.phone,
-        },
-        shipping: {
-          first_name: form.name,
-          last_name: "",
-          address_1: form.address,
-          address_2: "",
-          city: form.city,
-          state: form.state,
-          postcode: form.pincode,
-          country: "IN",
-        },
-        line_items: items.map((item) => ({
-          product_id: parseInt(String(item.id), 10),
-          quantity: item.quantity,
-        })),
-        shipping_lines: shippingLines,
-        fee_lines: getFeeLines(),
-        coupon_lines: [],
-        customer_note:
-          form.notes +
-          (form.notes ? "\n\n" : "") +
-          `WhatsApp: ${form.whatsapp}\n` +
-          `Full Address: ${fullAddress}` +
-          `\nCOD Charges: ₹${codCharges}` +
-          (appliedCoupon
-            ? `\nCoupon Applied: ${appliedCoupon} (₹${couponDiscount} discount)`
-            : "") +
-          (freeGift.eligible
-            ? `\nFree Gifts: Premium Sticky Pad + Cable Protector`
-            : ""),
-        meta_data: [
-          { key: "whatsapp_number", value: form.whatsapp },
-          { key: "free_gifts", value: freeGift.eligible ? "yes" : "no" },
-          { key: "full_address", value: fullAddress },
-          { key: "original_subtotal", value: total.toString() },
-          { key: "delivery_charges", value: "0" },
-          { key: "cod_charges", value: codCharges.toString() },
-          { key: "final_total", value: finalTotal.toString() },
-          { key: "payment_method", value: "cod" },
-          { key: "user_type", value: user ? "registered" : "guest" }, // âœ… Track user type
-          ...(appliedCoupon
-            ? [
-                { key: "coupon_code", value: appliedCoupon },
-                {
-                  key: "coupon_discount",
-                  value: couponDiscount.toString(),
-                },
-              ]
-            : []),
-        ],
-      };
-
-      const wooOrder = await createWooCommerceOrder(orderData);
-
-      const orderItems: CartItem[] = items.map((item) => ({
-        id: item.id,
-        name: item.name,
-        price: parseFloat(item.price),
-        quantity: item.quantity,
-      }));
-      trackPurchase(orderItems, finalTotal, String(wooOrder.id));
-
-      clear();
-
-      toast({
-        title: "Order Placed Successfully!",
-        description: `Order #${wooOrder.id} confirmed. Pay ₹${finalTotal.toFixed(2)} cash on delivery.`,
-      });
-
-      setTimeout(() => {
-        // âœ… Redirect based on user status
-        if (user) {
-          router.push(`/dashboard/orders/${wooOrder.id}`);
-        } else {
-          router.push(`/order-confirmation?wcOrderId=${wooOrder.id}&cod=true`);
-        }
-      }, 1000);
-    } catch (error) {
-      toast({
-        title: "Order Failed",
-        description:
-          error instanceof Error ? error.message : "Please try again",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-      setStep("form");
-    }
-  };
-
   const handlePaymentSuccess = async (
     wooOrder: WooCommerceOrder,
     response: RazorpayHandlerResponse
@@ -650,11 +521,6 @@ export default function Checkout(): React.ReactElement {
     event: FormEvent<HTMLFormElement>
   ): Promise<void> {
     event.preventDefault();
-
-    if (paymentMethod === "cod") {
-      await handleCODSubmit();
-      return;
-    }
 
     let wooOrder: WooCommerceOrder | null = null;
 
@@ -921,12 +787,6 @@ export default function Checkout(): React.ReactElement {
                 <span className="text-green-600 font-medium">Free</span>
               </div>
 
-              {codCharges > 0 && (
-                <div className="flex justify-between text-sm text-orange-600 items-center py-2 font-light">
-                  <span>COD Charges</span>
-                  <span>₹{codCharges}</span>
-                </div>
-              )}
 
               <div className="flex justify-between items-center py-3 border-t border-gray-200">
                 <span className="text-sm text-gray-900 font-light uppercase tracking-widest">
@@ -1043,7 +903,7 @@ export default function Checkout(): React.ReactElement {
       <span className="font-bold text-yellow-200"> Flat 10% OFF</span>
     </p>
     <p className="text-white/80 text-[10px] mt-1 font-light">
-      + More Exciting Offers on All Orders
+      On orders of ₹{MIN_ORDER_FOR_OFFERS} and above
     </p>
   </div>
 
@@ -1353,42 +1213,6 @@ export default function Checkout(): React.ReactElement {
               />
             </div>
 
-            {/* Payment Method */}
-            <div className="bg-gray-50 p-6 mb-8 border border-gray-200 rounded-lg">
-              <h3 className="text-xs font-light text-gray-600 mb-3 uppercase tracking-widest">
-                Payment Method
-              </h3>
-              <div className="flex gap-3">
-                <button
-                  type="button"
-                  onClick={() => setPaymentMethod("razorpay")}
-                  className={`flex-1 p-3 border text-xs font-light uppercase tracking-widest transition-colors rounded ${
-                    paymentMethod === "razorpay"
-                      ? "bg-gradient-to-r from-[#9e734d] to-[#8a6342] text-white border-transparent shadow-md"
-                      : "bg-white text-gray-900 border-gray-300 hover:border-[#9e734d]"
-                  }`}
-                >
-                  Online Payment
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPaymentMethod("cod")}
-                  className={`flex-1 p-3 border text-xs font-light uppercase tracking-widest transition-colors rounded ${
-                    paymentMethod === "cod"
-                      ? "bg-gradient-to-r from-[#9e734d] to-[#8a6342] text-white border-transparent shadow-md"
-                      : "bg-white text-gray-900 border-gray-300 hover:border-[#9e734d]"
-                  }`}
-                >
-                  Cash on Delivery (+₹100)
-                </button>
-              </div>
-              {paymentMethod === "cod" && (
-                <p className="text-xs text-orange-600 mt-2 font-light text-center">
-                  ₹100 extra charges for COD orders
-                </p>
-              )}
-            </div>
-
             {/* Amount */}
             <div className="bg-gray-50 p-6 mb-8 border border-gray-200 rounded-lg">
               <div className="flex items-center justify-between">
@@ -1402,11 +1226,6 @@ export default function Checkout(): React.ReactElement {
                   {appliedCoupon && (
                     <p className="text-xs text-[#9e734d] mt-1 font-light">
                       Saved ₹{couponDiscount}
-                    </p>
-                  )}
-                  {codCharges > 0 && (
-                    <p className="text-xs text-orange-600 mt-1 font-light">
-                      Includes ₹{codCharges} COD charges
                     </p>
                   )}
                 </div>
@@ -1426,12 +1245,8 @@ export default function Checkout(): React.ReactElement {
               {loading || step === "processing" ? (
                 <div className="flex items-center justify-center">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                  {paymentMethod === "cod"
-                    ? "Creating your order..."
-                    : "Processing..."}
+                  Processing...
                 </div>
-              ) : paymentMethod === "cod" ? (
-                `Place COD Order (₹${finalTotal.toFixed(2)})`
               ) : (
                 `Pay ₹${finalTotal.toFixed(2)} Securely`
               )}

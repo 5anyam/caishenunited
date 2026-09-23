@@ -1,5 +1,8 @@
 import type { WCCategoryRef } from './woocommerceApi'
 
+// No offers (coupons, free gifts) on orders below this amount.
+export const MIN_ORDER_FOR_OFFERS = 399
+
 // Free gifts (Sticky Pad + Cable Protector) apply to mobile cover orders only:
 // cover total of ₹399 or more, OR 2+ covers in the cart.
 export const FREE_GIFT_MIN_COVER_TOTAL = 399

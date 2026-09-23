@@ -1,6 +1,7 @@
 'use client';
 import Link from "next/link";
 import { useCart } from "../lib/cart";
+import { getFreeGiftStatus, FREE_GIFT_MIN_COVER_TOTAL, FREE_GIFT_MIN_COVER_QTY } from "../lib/freeGifts";
 import { Trash2, Minus, Plus, Package, X, ShoppingBag, CheckCircle, Gift } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -26,6 +27,7 @@ export default function CartDrawer() {
 
   const total: number = items.reduce((sum: number, i: CartItem) => sum + parseFloat(i.price) * i.quantity, 0);
   const totalItems: number = items.reduce((sum: number, i: CartItem) => sum + i.quantity, 0);
+  const freeGift = getFreeGiftStatus(items);
 
 
 
@@ -252,7 +254,13 @@ export default function CartDrawer() {
                   })}
                 </div>
 
-                {/* Free Gifts Section */}
+                {/* Free Gifts Section - mobile cover orders only */}
+                {!freeGift.eligible && freeGift.coverQty > 0 && (
+                  <div className="border-t-4 border-emerald-100 bg-emerald-50 p-3 text-center text-[11px] text-emerald-800 font-medium">
+                    🎁 Add one more cover to get Free Gifts Worth ₹250 (on cover orders of ₹{FREE_GIFT_MIN_COVER_TOTAL}+ or any {FREE_GIFT_MIN_COVER_QTY} covers)
+                  </div>
+                )}
+                {freeGift.eligible && (
                 <div className="border-t-4 border-emerald-100 bg-gradient-to-br from-emerald-50 to-green-50 p-3 sm:p-4">
                   {/* Header */}
                   <div className="flex items-center gap-2 mb-3">
@@ -304,6 +312,7 @@ export default function CartDrawer() {
                     </div>
                   </div>
                 </div>
+                )}
               </>
             )}
           </div>
@@ -335,6 +344,7 @@ export default function CartDrawer() {
                   <span className="text-green-600 font-medium">Free</span>
                 </div>
 
+                {freeGift.eligible && (
                 <div className="flex justify-between text-xs sm:text-sm text-emerald-600">
                   <span className="flex items-center gap-1">
                     <Gift className="w-3 h-3" />
@@ -342,6 +352,7 @@ export default function CartDrawer() {
                   </span>
                   <span className="font-medium">₹250</span>
                 </div>
+                )}
 
 
 
